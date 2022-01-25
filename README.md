@@ -19,9 +19,11 @@
 
 #### From this repository
 1. Clone this repository  
-`git clone https://github.com/catppuccin/KDE && cd kde`
+`git clone https://github.com/catppuccin/KDE && cd KDE/kde-store-archives/global-theme`  
 2. Install using the script  
-`chmod +x ./install.sh && ./install.sh`
+`kpackagetool5 -i catppuccin.tar.gz`
+  
+To get the material-like look, install [lightly application style](https://github.com/Luwx/Lightly) and select it from System Settings > Appearance > Application Style > Lightly.
 
 ## 💝 Thanks to
 
