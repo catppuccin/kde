@@ -1,0 +1,13 @@
+[Desktop Entry]
+Comment=
+Name=Catppuccin
+X-KDE-PluginInfo-Author=prayagjain
+X-KDE-PluginInfo-Category=Plasma Look And Feel
+X-KDE-PluginInfo-Email=prayagjain2@gmail.com
+X-KDE-PluginInfo-EnabledByDefault=true
+X-KDE-PluginInfo-License=MIT
+X-KDE-PluginInfo-Name=Catppuccin
+X-KDE-PluginInfo-Version=v1
+X-KDE-PluginInfo-Website=
+X-KDE-ServiceTypes=Plasma/LookAndFeel
+X-KPackage-Dependencies=kns://plasma-themes.knsrc/api.kde-look.org/1462611,kns://icons.knsrc/api.kde-look.org/1651940,kns://wallpaper.knsrc/api.kde-look.org/1571655
