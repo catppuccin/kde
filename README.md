@@ -27,6 +27,6 @@ To get the material-like look, install [lightly application style](https://githu
 
 ## 💝 Thanks to
 
-- [Pocco81](https://github.com/Pocco81)
+- [Prayag2](https://github.com/Prayag2)
 
 ---
