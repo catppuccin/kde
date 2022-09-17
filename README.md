@@ -18,25 +18,25 @@
 
 ## Usage
 
-### KDE Store
-1. Open System Settings
-2. Go to "Appearance"
-3. Click on "Get New Global Themes"
-4. Search for "Catppuccin"
-5. Click on "Install"
-6. Apply the theme
+1. `git clone https://github.com/catppuccin/kde`
+2. Choose a flavour.
+3. `cd kde/<your chosen flavor>.`
+4. `cp  ~/.local/share/color-schemes`.
+5. `kpackagetool5 -i Catppuccin-<your chosen flavor>.tar.gz`.   
+You need an working internet connection for this to work. Make sure system settings is not running.
+6. `lookandfeel -a Catppuccin-<flavor>` or alternatively open system settings and choose the global theme
 
-### From this repository
-1. Clone this repository  
-`git clone https://github.com/catppuccin/KDE && cd KDE/kde-store-archives/global-theme`  
-2. Install using the script  
-`kpackagetool5 -i catppuccin.tar.gz`
+
   
-> Note: to get the material-like look, install [lightly application style](https://github.com/Luwx/Lightly) and select it from System Settings > Appearance > Application Style > Lightly.
+	 Notes:
+> 1. To get a material-like look, install [lightly application style](https://github.com/Luwx/Lightly) and select it from System Settings > Appearance >  Application Style > Lightly.
+> 
+> 2. If you do not like the new icon for the application launcher set by the lightly plasma theme, simply delete `~/.local/share/plasma/desktoptheme> > /lightly-plasma-git/icons`. This will make it switch to the default.
 
 ## 💝 Thanks to
 
 - [Prayag2](https://github.com/Prayag2)
+- [Sourcastic](https://github.com/Sourcastic)
 
 &nbsp;
 
