@@ -24,7 +24,7 @@
 4. `cp Catppuccin<your chosen flavor>.colors ~/.local/share/color-schemes/Catppuccin<your chosen flavor>.colors`.
 5. `kpackagetool5 -i Catppuccin-<your chosen flavor>.tar.gz`.   
 You need an working internet connection for this to work. Make sure system settings is not running.
-6. `lookandfeel -a Catppuccin-<flavor>` or alternatively open system settings and choose the global theme
+6. `lookandfeeltool -a Catppuccin-<flavor>` or alternatively open system settings and choose the global theme
 
 
   
