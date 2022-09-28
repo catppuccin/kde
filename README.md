@@ -13,7 +13,7 @@
 
 
 <p align="center">
-  <img src="https://github.com/Prayag2/catppuccin_kde/blob/main/assets/ss.png"/>
+  <img src="https://github.com/catppuccin/kde/blob/main/assets/res.webp"/>
 </p>
 
 ## Usage
