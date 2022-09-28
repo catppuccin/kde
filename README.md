@@ -11,6 +11,11 @@
     <a href="https://github.com/catppuccin/kde/contributors"><img src="https://img.shields.io/github/contributors/catppuccin/kde?colorA=363a4f&colorB=a6da95&style=for-the-badge"></a>
 </p>
 
+
+<p align="center">
+  <img src="https://github.com/catppuccin/kde/blob/main/assets/res.webp"/>
+</p>
+
 ## Previews
 
 <details>
@@ -30,10 +35,6 @@
 <img src="https://github.com/catppuccin/kde/blob/main/assets/Mocha.webp"/>
 </details>
 
-
-<p align="center">
-  <img src="https://github.com/catppuccin/kde/blob/main/assets/res.webp"/>
-</p>
 
 ## Usage
 
