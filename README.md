@@ -11,9 +11,28 @@
     <a href="https://github.com/catppuccin/kde/contributors"><img src="https://img.shields.io/github/contributors/catppuccin/kde?colorA=363a4f&colorB=a6da95&style=for-the-badge"></a>
 </p>
 
+## Previews
+
+<details>
+<summary>🌻 Latte</summary>
+<img src="https://github.com/catppuccin/kde/blob/main/assets/Latte.webp"/>
+</details>
+<details>
+<summary>🪴 Frappé</summary>
+<img src="https://github.com/catppuccin/kde/blob/main/assets/Frappe.webp"/>
+</details>
+<details>
+<summary>🌺 Macchiato</summary>
+<img src="https://github.com/catppuccin/kde/blob/main/assets/Macchiato.webp"/>
+</details>
+<details>
+<summary>🌿 Mocha</summary>
+<img src="https://github.com/catppuccin/kde/blob/main/assets/Mocha.webp"/>
+</details>
+
 
 <p align="center">
-  <img src="https://github.com/Prayag2/catppuccin_kde/blob/main/assets/ss.png"/>
+  <img src="https://github.com/catppuccin/kde/blob/main/assets/res.webp"/>
 </p>
 
 ## Usage
