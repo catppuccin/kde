@@ -19,10 +19,10 @@
 ## Usage
 
 1. `git clone https://github.com/catppuccin/kde`
-2. Choose a flavour.
-3. `cd kde/<your chosen flavor>.`
-4. `cp Catppuccin<your chosen flavor>.colors ~/.local/share/color-schemes/Catppuccin<your chosen flavor>.colors`.
-5. `kpackagetool5 -i Catppuccin-<your chosen flavor>.tar.gz`.   
+2. Choose a flavor.
+3. `cd kde/<your chosen flavor>`
+4. `cp Catppuccin*.colors ~/.local/share/color-schemes/`.
+5. `kpackagetool5 -i Catppuccin-*.tar.gz`.   
 You need an working internet connection for this to work. Make sure system settings is not running.
 6. `lookandfeeltool -a Catppuccin-<flavor>` or alternatively open system settings and choose the global theme
 
