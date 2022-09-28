@@ -16,6 +16,25 @@
   <img src="https://github.com/catppuccin/kde/blob/main/assets/res.webp"/>
 </p>
 
+## Previews
+
+<details>
+<summary>🌻 Latte</summary>
+<img src="https://github.com/Sourcastic/kde/blob/main/assets/Latte.webp"/>
+</details>
+<details>
+<summary>🪴 Frappé</summary>
+<img src="https://github.com/Sourcastic/kde/blob/main/assets/Frappe.webp"/>
+</details>
+<details>
+<summary>🌺 Macchiato</summary>
+<img src="https://github.com/Sourcastic/kde/blob/main/assets/Macchiato.webp"/>
+</details>
+<details>
+<summary>🌿 Mocha</summary>
+<img src="https://github.com/Sourcastic/kde/blob/main/assets/Mocha.webp"/>
+</details>
+
 ## Usage
 
 1. `git clone https://github.com/catppuccin/kde`
