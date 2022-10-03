@@ -34,17 +34,15 @@ You need a working internet connection for this to work. Make sure system settin
 You need a working internet connection for this to work. Make sure system settings is not running.
 4. `lookandfeeltool -a Catppuccin-<flavor>` or alternatively open system settings and choose the global theme
 
+### Notes
+1. To get a material-like look, install [Lightly application style](https://github.com/Luwx/Lightly) and select it from System Settings > Appearance >  Application Style > Lightly.
+2. If you do not like the new icon for the application launcher set by the Lightly Plasma theme, simply delete `~/.local/share/plasma/desktoptheme/lightly-plasma-git/icons`. This will make it switch to the default.
+
 ## Update
 
 1. `cd catppuccin-kde`
 2. `git pull`
 3. Run the installation commands again, replacing `kpackagetool5 -i` with `kpackagetool5 -u`
-
-  
-	 Notes:
-> 1. To get a material-like look, install [Lightly application style](https://github.com/Luwx/Lightly) and select it from System Settings > Appearance >  Application Style > Lightly.
-> 
-> 2. If you do not like the new icon for the application launcher set by the lightly plasma theme, simply delete `~/.local/share/plasma/desktoptheme> > /lightly-plasma-git/icons`. This will make it switch to the default.
 
 ## 💝 Thanks to
 
