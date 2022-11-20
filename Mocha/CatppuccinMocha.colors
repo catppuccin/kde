@@ -1,5 +1,5 @@
 [ColorEffects:Disabled]
-Color=256, 256, 256
+Color=56, 56, 56
 ColorAmount=0.15000000000000002
 ColorEffect=2
 ContrastAmount=0.8
@@ -9,7 +9,7 @@ IntensityEffect=2
 
 [ColorEffects:Inactive]
 ChangeSelectionColor=true
-Color=256, 256, 256
+Color=56, 56, 56
 ColorAmount=0.025
 ColorEffect=2
 ContrastAmount=0.1
