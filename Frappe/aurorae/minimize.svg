@@ -19,15 +19,15 @@
      borderopacity="1.0"
      inkscape:pageopacity="1"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.8895974"
-     inkscape:cx="141.29994"
-     inkscape:cy="110.87018"
+     inkscape:zoom="3.3848654"
+     inkscape:cx="171.94184"
+     inkscape:cy="70.460704"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:snap-bbox="true"
      inkscape:window-width="1920"
-     inkscape:window-height="1004"
+     inkscape:window-height="996"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -67,7 +67,7 @@
      transform="translate(0,-1098.5197)">
 fab387
     <circle
-   style="fill:#f9e2af;fill-rule:evenodd;fill-opacity:1"
+   style="fill:#e5c890;fill-rule:evenodd;fill-opacity:1"
    id="active-center"
    cx="50"
    cy="1148.5197"
@@ -75,87 +75,92 @@ fab387
 <g
    id="hover-center">
   <circle
-     style="fill:#f9e2af;fill-opacity:1;fill-rule:evenodd"
+     style="fill:#e5c890;fill-opacity:1;fill-rule:evenodd"
      id="circle8776"
      cx="125"
      cy="1148.5197"
      r="35" />
   <rect
-     style="fill:#1e1e2e;fill-opacity:1;stroke:#000000;stroke-width:5.33571;paint-order:markers fill stroke"
-     id="rect22855-9"
-     width="36.331238"
-     height="4.436945"
-     x="-141.01262"
-     y="-1151.5444"
-     rx="0.80954218"
-     ry="1.0792978"
-     transform="matrix(-0.99997856,0.0065484,-0.00173202,-0.9999985,0,0)" />
-</g>
-<g
-   id="pressed-center">
-  <ellipse
-     style="fill:#f9e2af;fill-opacity:1;fill-rule:evenodd;stroke-width:0.999996"
-     id="circle9893"
-     cx="200.14928"
-     cy="1148.5197"
-     rx="35.149281"
-     ry="35.000004" />
-  <rect
-     style="fill:#1e1e2e;fill-opacity:1;stroke:#000000;stroke-width:5.33571;paint-order:markers fill stroke"
-     id="rect9895"
-     width="34.661415"
-     height="4.436945"
-     x="-215.43529"
-     y="-1152.0996"
-     rx="0.77233469"
-     ry="1.0792978"
-     transform="matrix(-0.99997644,0.00686388,-0.00165241,-0.99999863,0,0)" />
-  <circle
-     style="fill:#000000;fill-rule:evenodd;fill-opacity:1;opacity:0.3"
-     id="path9901"
-     cx="200"
-     cy="1148.5197"
-     r="35" />
+     style="fill:#303446;fill-opacity:1;fill-rule:evenodd"
+     id="rect1285"
+     width="40"
+     height="10"
+     x="105"
+     y="1143.5197"
+     rx="5.1051011"
+     ry="5.1051378" />
 </g>
 <g
    id="hover-inactive-center">
   <circle
-     style="opacity:1;fill:#313244;fill-opacity:1;fill-rule:evenodd;stroke-width:1"
+     style="fill:#414559;fill-opacity:1;fill-rule:evenodd;stroke-width:1"
      id="circle9972"
      cx="275"
      cy="1148.5199"
      r="35" />
   <rect
-     style="fill:#1e1e2e;fill-opacity:1;stroke:#000000;stroke-width:5.33571;paint-order:markers fill stroke"
-     id="rect9970"
-     width="34.661415"
-     height="4.436945"
-     x="-290.43622"
-     y="-1152.6146"
-     rx="0.77233469"
-     ry="1.0792978"
-     transform="matrix(-0.99997644,0.00686388,-0.00165241,-0.99999863,0,0)" />
+     style="fill:#303446;fill-opacity:1;fill-rule:evenodd"
+     id="rect1379"
+     width="40"
+     height="10"
+     x="255"
+     y="1143.5197"
+     rx="5.1051011"
+     ry="5.1051378" />
 </g>
 <circle
-   style="fill:#313244;fill-opacity:1;fill-rule:evenodd;stroke-width:0.999999"
+   style="fill:#414559;fill-opacity:1;fill-rule:evenodd;stroke-width:0.999999"
    id="inactive-center"
    cx="350"
    cy="1148.5197"
    r="35"
    inkscape:label="" />
 <circle
-   style="fill:#313244;fill-opacity:1;fill-rule:evenodd;stroke-width:0.999999"
+   style="fill:#414559;fill-opacity:1;fill-rule:evenodd;stroke-width:0.999999"
    id="deactivated-center"
    cx="425"
    cy="1148.5197"
    r="35"
    inkscape:label="" />
 <circle
-   style="fill:#313244;fill-opacity:1;fill-rule:evenodd;stroke-width:0.999999"
+   style="fill:#414559;fill-opacity:1;fill-rule:evenodd;stroke-width:0.999999"
    id="deactivated-inactive-center"
    cx="500.00006"
    cy="1148.5197"
    r="35"
    inkscape:label="" />
+<rect
+   style="fill:#303446;fill-opacity:1;fill-rule:evenodd"
+   id="rect1283"
+   width="40"
+   height="10"
+   x="135"
+   y="1033.5197"
+   rx="5.1051011"
+   ry="5.1051378" />
+<g
+   id="pressed-center">
+  <circle
+     style="fill:#e5c890;fill-opacity:1;fill-rule:evenodd"
+     id="circle1298"
+     cx="200"
+     cy="1148.5197"
+     r="35" />
+  <rect
+     style="fill:#303446;fill-opacity:1;fill-rule:evenodd"
+     id="rect1300"
+     width="40"
+     height="10"
+     x="180"
+     y="1143.5197"
+     rx="5.1051011"
+     ry="5.1051378" />
+  <circle
+     style="fill:#000000;fill-rule:evenodd;fill-opacity:1;opacity:0.3"
+     id="path1356"
+     cx="200"
+     cy="1148.5197"
+     r="35" />
+</g>
 </g>
 </svg>

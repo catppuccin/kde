@@ -7,7 +7,7 @@
    id="svg4428"
    version="1.1"
    inkscape:version="1.2.1 (9c6d41e410, 2022-07-14, custom)"
-   sodipodi:docname="alldesktops.svg"
+   sodipodi:docname="keepabove.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -355,14 +355,14 @@
   </defs>
   <sodipodi:namedview
      id="base"
-     pagecolor="#ff0f1"
+     pagecolor="#eff1f5"
      bordercolor="#666666"
      borderopacity="1.0"
      inkscape:pageopacity="1"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.6235315"
-     inkscape:cx="315.22396"
-     inkscape:cy="77.186037"
+     inkscape:zoom="4.7179353"
+     inkscape:cx="-15.684827"
+     inkscape:cy="42.285446"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -374,12 +374,11 @@
      inkscape:window-maximized="1"
      showborder="false"
      inkscape:showpageshadow="false"
-     inkscape:bbox-nodes="true"
-     inkscape:snap-bbox-edge-midpoints="false"
      inkscape:snap-nodes="false"
+     inkscape:bbox-nodes="true"
      inkscape:snap-others="false"
      inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#ff0f1">
+     inkscape:deskcolor="#eff0f1">
     <inkscape:grid
        type="xygrid"
        id="grid4436"
@@ -408,116 +407,81 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-1092.653)">
-    <g
-       id="4"
-       inkscape:label="#g3842"
-       transform="translate(86.4,-3.2)" />
-    <g
+    <circle
+       style="fill:#ea76cb;fill-opacity:1;fill-rule:evenodd"
        id="active-center"
-       inkscape:label=""
-       transform="matrix(3.7795276,0,0,3.7795276,-65.000003,1097.653)"
-       style="fill:#89b4fa;fill-opacity:1">
-      <circle
-         style="fill:#89b4fa;fill-opacity:1;fill-rule:evenodd;stroke-width:0.264583"
-         id="circle12771-9"
-         cx="31.75"
-         cy="11.90625"
-         r="9.260417"
-         inkscape:label="" />
-    </g>
-    <g
-       id="reference"
-       inkscape:label="#reference"
-       transform="matrix(3.7795276,0,0,3.7795276,5.0000011,982.653)"
-       style="fill:#89b4fa;fill-opacity:1">
-      <circle
-         style="fill:#89b4fa;fill-opacity:1;fill-rule:evenodd;stroke-width:0.264583"
-         id="circle12771-9-3"
-         cx="31.75"
-         cy="11.90625"
-         r="9.260417"
-         inkscape:label="" />
-    </g>
+       cx="50"
+       cy="1142.653"
+       r="35" />
     <g
        id="hover-center">
-      <g
-         id="g24547"
-         inkscape:label=""
-         transform="matrix(3.7795276,0,0,3.7795276,9.9999971,1097.653)"
-         style="fill:#89b4fa;fill-opacity:1">
-        <circle
-           style="fill:#89b4fa;fill-opacity:1;fill-rule:evenodd;stroke-width:0.264583"
-           id="circle24545"
-           cx="31.75"
-           cy="11.90625"
-           r="9.260417"
-           inkscape:label="" />
-      </g>
       <circle
-         style="fill:#11111b;fill-opacity:1;fill-rule:evenodd;stroke-width:1"
-         id="path24549"
-         cx="130"
-         cy="1142.653"
-         r="14.999954" />
-    </g>
-    <g
-       id="pressed-center"
-       inkscape:label="">
-      <circle
-         style="fill:#89b4fa;fill-opacity:1;fill-rule:evenodd;stroke-width:0.999999"
-         id="circle28346"
-         cx="205.00005"
-         cy="1142.6531"
-         r="35"
-         inkscape:label="" />
-      <circle
-         style="fill:#11111b;fill-opacity:1;fill-rule:evenodd;stroke-width:1"
-         id="circle28350"
-         cx="205.00005"
-         cy="1142.6531"
-         r="14.999954" />
-      <circle
-         style="opacity:0.3;fill:#000000;fill-opacity:1;fill-rule:evenodd"
-         id="path28357"
-         cx="205"
+         style="fill:#ea76cb;fill-opacity:1;fill-rule:evenodd"
+         id="circle11719"
+         cx="125.12206"
          cy="1142.653"
          r="35" />
+      <path
+         id="chevron"
+         style="fill:#eff1f5;fill-opacity:1;stroke-width:1"
+         d="m 124.98917,1122.653 a 7.5785402,8.1379997 0 0 0 -5.36793,2.3933 l -17.4182,18.7035 a 7.5785402,8.1379997 0 0 0 0,11.5296 l 0.007,-0.02 a 7.5785402,8.1379997 0 0 0 10.73642,0 l 12.05617,-12.9464 12.0561,12.9462 a 7.59173,8.1521636 0 0 0 10.73644,-11.5286 l -17.43687,-18.6838 a 7.5785402,8.1379997 0 0 0 -5.36837,-2.3937 z" />
     </g>
     <g
        id="hover-inactive-center">
       <circle
-         style="fill:#313244;fill-opacity:1;fill-rule:evenodd"
-         id="path28825"
-         cx="280"
+         style="fill:#ccd0da;fill-opacity:1;fill-rule:evenodd;stroke-width:1"
+         id="circle11812"
+         cx="275"
+         cy="1142.653"
+         r="35" />
+      <path
+         id="path1297"
+         style="fill:#eff1f5;fill-opacity:1;stroke-width:1"
+         d="m 275.0043,1122.653 a 7.5751446,8.1379345 0 0 0 -5.36552,2.3933 l -17.4104,18.7034 a 7.5751446,8.1379345 0 0 0 0,11.5295 l 0.007,-0.02 a 7.5751446,8.1379345 0 0 0 10.73161,0 l 12.05076,-12.9464 12.0507,12.9461 a 7.5883284,8.1520983 0 0 0 10.73163,-11.5285 l -17.42906,-18.6837 a 7.5751446,8.1379345 0 0 0 -5.36596,-2.3937 z" />
+    </g>
+    <circle
+       style="fill:#ccd0da;fill-opacity:1;fill-rule:evenodd;stroke-width:0.999999"
+       id="inactive-center"
+       cx="350"
+       cy="1142.653"
+       r="35"
+       inkscape:label="" />
+    <circle
+       style="fill:#ccd0da;fill-opacity:1;fill-rule:evenodd;stroke-width:0.999999"
+       id="deactivated-center"
+       cx="424.99997"
+       cy="1142.653"
+       r="35"
+       inkscape:label="" />
+    <circle
+       style="fill:#ccd0da;fill-opacity:1;fill-rule:evenodd;stroke-width:0.999999"
+       id="deactivated-inactive-center"
+       cx="500.00003"
+       cy="1142.653"
+       r="35"
+       inkscape:label="" />
+    <path
+       id="path1293"
+       style="fill:#eff1f5;fill-opacity:1;stroke-width:0.999995"
+       d="m 130,1042.653 a 7.5777461,8.1339775 0 0 0 -5.36736,2.3921 l -17.41638,18.6944 a 7.5777461,8.1339775 0 0 0 0,11.5238 l 0.007,-0.02 a 7.5777461,8.1339775 0 0 0 10.7353,0 l 12.0549,-12.94 12.05484,12.9398 a 7.5909345,8.1481344 0 0 0 10.73531,-11.523 l -17.43504,-18.6747 a 7.5777461,8.1339775 0 0 0 -5.36781,-2.3924 z" />
+    <g
+       id="pressed-center">
+      <circle
+         style="fill:#ea76cb;fill-opacity:1;fill-rule:evenodd;stroke-width:0.999999"
+         id="circle11741"
+         cx="200"
          cy="1142.653"
          r="35" />
       <circle
-         style="fill:#11111b;fill-opacity:1;fill-rule:evenodd;stroke-width:1"
-         id="circle28817"
-         cx="280.00006"
-         cy="1142.653"
-         r="14.999954" />
+         style="opacity:0.3;fill:#000000;fill-opacity:1;fill-rule:evenodd"
+         id="path11804"
+         cx="200"
+         cy="1142.6534"
+         r="35" />
+      <path
+         id="path1295"
+         style="fill:#eff1f5;fill-opacity:1;stroke-width:1"
+         d="m 200.00102,1122.653 a 7.5741521,8.1379313 0 0 0 -5.36482,2.3933 l -17.40812,18.7034 a 7.5741521,8.1379313 0 0 0 0,11.5295 l 0.007,-0.02 a 7.5741521,8.1379313 0 0 0 10.7302,0 l 12.04919,-12.9463 12.04912,12.9461 a 7.5873343,8.1520951 0 0 0 10.73022,-11.5285 l -17.42677,-18.6837 a 7.5741521,8.1379313 0 0 0 -5.36526,-2.3937 z" />
     </g>
-    <circle
-       style="fill:#313244;fill-opacity:1;fill-rule:evenodd;stroke-width:0.999999"
-       id="inactive-center"
-       cx="355"
-       cy="1142.653"
-       r="35"
-       inkscape:label="" />
-    <circle
-       style="fill:#313244;fill-opacity:1;fill-rule:evenodd;stroke-width:0.999999"
-       id="deactivated-center"
-       cx="429.99997"
-       cy="1142.653"
-       r="35"
-       inkscape:label="" />
-    <circle
-       style="fill:#313244;fill-opacity:1;fill-rule:evenodd;stroke-width:0.999999"
-       id="deactivated-inactive-center"
-       cx="505.00003"
-       cy="1142.653"
-       r="35"
-       inkscape:label="" />
   </g>
 </svg>
