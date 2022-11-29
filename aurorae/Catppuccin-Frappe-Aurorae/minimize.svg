@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="550"
+   height="100"
+   id="svg4428"
+   version="1.1"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14, custom)"
+   sodipodi:docname="minimize.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs4430" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#11111b"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="1"
+     inkscape:pageshadow="2"
+     inkscape:zoom="3.3848654"
+     inkscape:cx="171.94184"
+     inkscape:cy="70.460704"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:snap-bbox="true"
+     inkscape:window-width="1920"
+     inkscape:window-height="996"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     showborder="true"
+     inkscape:showpageshadow="false"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#eff0f1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2261" />
+  </sodipodi:namedview>
+  <defs
+     id="defs3">
+    <style
+       id="current-color-scheme"
+       type="text/css">.ColorScheme-Text {
+        color:#e0e0e0;
+        stop-color:#e0e0e0;
+      }
+      .ColorScheme-Background {
+        color:#2c2c2c;
+        stop-color:#2c2c2c;
+      }
+      .ColorScheme-HeaderBackground {
+        color:#242424;
+        stop-color:#242424;
+      }
+      .ColorScheme-Highlight {
+        color:#e0e0e0;
+        stop-color:#e0e0e0;
+      }</style>
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-1098.5197)">
+fab387
+    <circle
+   style="fill:#e5c890;fill-rule:evenodd;fill-opacity:1"
+   id="active-center"
+   cx="50"
+   cy="1148.5197"
+   r="35" />
+<g
+   id="hover-center">
+  <circle
+     style="fill:#e5c890;fill-opacity:1;fill-rule:evenodd"
+     id="circle8776"
+     cx="125"
+     cy="1148.5197"
+     r="35" />
+  <rect
+     style="fill:#303446;fill-opacity:1;fill-rule:evenodd"
+     id="rect1285"
+     width="40"
+     height="10"
+     x="105"
+     y="1143.5197"
+     rx="5.1051011"
+     ry="5.1051378" />
+</g>
+<g
+   id="hover-inactive-center">
+  <circle
+     style="fill:#414559;fill-opacity:1;fill-rule:evenodd;stroke-width:1"
+     id="circle9972"
+     cx="275"
+     cy="1148.5199"
+     r="35" />
+  <rect
+     style="fill:#303446;fill-opacity:1;fill-rule:evenodd"
+     id="rect1379"
+     width="40"
+     height="10"
+     x="255"
+     y="1143.5197"
+     rx="5.1051011"
+     ry="5.1051378" />
+</g>
+<circle
+   style="fill:#414559;fill-opacity:1;fill-rule:evenodd;stroke-width:0.999999"
+   id="inactive-center"
+   cx="350"
+   cy="1148.5197"
+   r="35"
+   inkscape:label="" />
+<circle
+   style="fill:#414559;fill-opacity:1;fill-rule:evenodd;stroke-width:0.999999"
+   id="deactivated-center"
+   cx="425"
+   cy="1148.5197"
+   r="35"
+   inkscape:label="" />
+<circle
+   style="fill:#414559;fill-opacity:1;fill-rule:evenodd;stroke-width:0.999999"
+   id="deactivated-inactive-center"
+   cx="500.00006"
+   cy="1148.5197"
+   r="35"
+   inkscape:label="" />
+<rect
+   style="fill:#303446;fill-opacity:1;fill-rule:evenodd"
+   id="rect1283"
+   width="40"
+   height="10"
+   x="135"
+   y="1033.5197"
+   rx="5.1051011"
+   ry="5.1051378" />
+<g
+   id="pressed-center">
+  <circle
+     style="fill:#e5c890;fill-opacity:1;fill-rule:evenodd"
+     id="circle1298"
+     cx="200"
+     cy="1148.5197"
+     r="35" />
+  <rect
+     style="fill:#303446;fill-opacity:1;fill-rule:evenodd"
+     id="rect1300"
+     width="40"
+     height="10"
+     x="180"
+     y="1143.5197"
+     rx="5.1051011"
+     ry="5.1051378" />
+  <circle
+     style="fill:#000000;fill-rule:evenodd;fill-opacity:1;opacity:0.3"
+     id="path1356"
+     cx="200"
+     cy="1148.5197"
+     r="35" />
+</g>
+</g>
+</svg>

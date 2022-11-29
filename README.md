@@ -43,15 +43,21 @@
 ### Install all flavors
 1. `cd catppuccin-kde`
 2. `find . -type f -name "*.colors" -exec cp "{}" ~/.local/share/color-schemes \;`
-3. `find . -type f -name "*.tar.gz" -exec kpackagetool5 -i "{}" \;`  
-You need a working internet connection for this to work. Make sure system settings is not running.
+3. `cp aurorae/* ~/.local/share/aurorae/themes -ra`
+4. `find . -type f -name "*.tar.gz" -exec kpackagetool5 -i "{}" \;`   
+You'll need a working internet connection for this to work.
+5. `lookandfeeltool -a Catppuccin-<flavor>`  
+or alternatively: Open system settings and choose the global theme. You might have to reload system settings to see changes.
+ You might have to reload system settings to see changes.
 
 ### Install one flavor
-1. `cd catppuccin-kde/<your chosen flavor>`
-2. `cp Catppuccin*.colors ~/.local/share/color-schemes/`
-3. `kpackagetool5 -i Catppuccin-*.tar.gz`  
-You need a working internet connection for this to work. Make sure system settings is not running.
-4. `lookandfeeltool -a Catppuccin-<flavor>` or alternatively open system settings and choose the global theme
+1. `cp aurorae/<flavor> ~/.local/share/aurorae/themes -ra`
+2. `cd catppuccin-kde/<flavor>`
+3. `cp Catppuccin*.colors ~/.local/share/color-schemes/`
+4. `kpackagetool5 -i Catppuccin-*.tar.gz`  
+You'll need a working internet connection for this to work.
+5. `lookandfeeltool -a Catppuccin-<flav or>`  
+Or alternatively: Open system settings and choose the global theme. You might have to reload system settings to see changes.
 
 ### Notes
 1. To get a material-like look, install [Lightly application style](https://github.com/Luwx/Lightly) and select it from System Settings > Appearance >  Application Style > Lightly.
@@ -63,10 +69,18 @@ You need a working internet connection for this to work. Make sure system settin
 2. `git pull`
 3. Run the installation commands again, replacing `kpackagetool5 -i` with `kpackagetool5 -u`
 
+## TODO: 
+[X] Add aurorae theme  
+[ ] Add plasma style  
+[ ] Make bash script to make install easier from repo  
+[ ] Upload everything, including global theme to KDE Store
+
 ## 💝 Thanks to
 
 - [Prayag2](https://github.com/Prayag2)
-- [Sourcastic](https://github.com/Sourcastic)
+- [Sourcastic](https://github.com/Sourcastic)  
+
+
 
 &nbsp;
 
