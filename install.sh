@@ -11,7 +11,7 @@ read a
 if [ $f == "frappe" ] then # Frappe
     echo "Test";
     cd frappe
-    cp CatppuccinFrappe-$a.colors ~/.local/share/color-schemes;
+    cp frappe.colors ~/.local/share/color-schemes;
     cp Catppuccin-Frappe/contents/defaults default-backup;
     echo "ColorScheme=Catppuccin-Frappe-$a" >> Catppuccin-Frappe/contents/defaults;
     tar -cvz Catppuccin-Frappe -f $f-$a.tar.gz;
