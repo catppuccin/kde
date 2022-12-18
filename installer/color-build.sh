@@ -40,7 +40,7 @@ FILE_EXT="${SOURCE##*.}"
 #function defined to build the file
 build(){
 #combine everything to get the output path
-OUTPUT="${OUT}/${PALETTE}.${FILE_EXT}"
+OUTPUT="${OUT}/Catppuccin$FLAVOURNAME.${FILE_EXT}"
 SCRIPT="./Pallets/${PALETTE}.sed"
 
 #does the actual sed-fu 
@@ -48,11 +48,18 @@ SCRIPT="./Pallets/${PALETTE}.sed"
 }
 
 #no arrays due to posix compliancy
-PALETTE=frappe
-build
-PALETTE=mocha
-build
-PALETTE=macchiato
-build
-PALETTE=latte
-build
+if [ $FLAVOURNAME = "Mocha" ]; then
+   PALETTE=mocha
+   build
+elif [ $FLAVOURNAME = "Macchiato" ]; then
+   PALETTE=macchiato
+   build
+elif [ $FLAVOURNAME = "Frappe" ]; then
+   PALETTE=frappe
+   build
+elif [ $FLAVOURNAME = "Latte" ]; then
+   PALETTE=latte
+   build
+else clear && echo "Invalid pallet $FLAVOURNAME 
+" && exit
+fi

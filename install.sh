@@ -228,14 +228,17 @@ elif [ $ACCENT == 14 ]; then
 else echo "Not a valid accent" && exit
 fi
 
-echo $ACCENTCOLOR
+# echo $ACCENTCOLOR
 
 echo ""
 echo -e "Install $FLAVOURNAME $ACCENTNAME? [Y/n]:"
 read CONFIRMATION
 
 if [ $CONFIRMATION = "Y" ]; then
-    ACCENTCOLOR=$ACCENTCOLOR FLAVOURNAME=$FLAVOURNAME ./build.sh; #Pass args to build script
+    ACCENTCOLOR=$ACCENTCOLOR FLAVOURNAME=$FLAVOURNAME ACCENTNAME=$ACCENTNAME ./build.sh; #Pass args to build script
+    mv ./dist/Catppuccin$FLAVOURNAME.colors $COLORDIR
+    plasma-apply-colorscheme Catppuccin$FLAVOURNAME
+    
 else echo "Exiting.." && exit
 
 fi
