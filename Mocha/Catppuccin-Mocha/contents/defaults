@@ -1,0 +1,12 @@
+[kdeglobals][General]
+ColorScheme=CatppuccinMocha
+
+[kwinrc][org.kde.kdecoration2]
+library=org.kde.kwin.aurorae
+theme=__aurorae__svg__Colloid-dark-round
+
+[kdeglobals][Icons]
+Theme=Breeze-Dark
+
+[plasmarc][Theme]
+name=lightly-plasma-git
