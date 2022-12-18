@@ -3,12 +3,12 @@
 COLORDIR=~/.local/share/color-schemes
 AURORAEDIR=~/.local/share/aurorae/themes
 LOOKANDFEELDIR=~/.local/share/plasma/look-and-feel
+
 echo "Creating dirs..."
 
 mkdir -p $COLORDIR
 mkdir -p $AURORAEDIR
 mkdir -p $LOOKANDFEELDIR
-
 
 echo ""
 
@@ -228,11 +228,14 @@ elif [ $ACCENT == 14 ]; then
 else echo "Not a valid accent" && exit
 fi
 
+echo $ACCENTCOLOR
+
 echo ""
 echo -e "Install $FLAVOURNAME $ACCENTNAME? [Y/n]:"
 read CONFIRMATION
 
 if [ $CONFIRMATION = "Y" ]; then
-    
+    ACCENTCOLOR=$ACCENTCOLOR FLAVOURNAME=$FLAVOURNAME ./build.sh; #Pass args to build script
 else echo "Exiting.." && exit
+
 fi

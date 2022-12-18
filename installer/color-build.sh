@@ -5,7 +5,6 @@
 ####################
 #Help and Arguments#
 ####################
-echo $PWD
 help()
 {
     echo ""
