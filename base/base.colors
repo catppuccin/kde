@@ -118,7 +118,7 @@ ForegroundPositive=$green
 ForegroundVisited=$mauve
 
 [General]
-ColorScheme=Catppuccin--flavour
+ColorScheme=Catppuccin--flavour--accentName
 Name=Catppuccin --flavour --accentName
 accentActiveTitlebar=false
 shadeSortColumn=true
