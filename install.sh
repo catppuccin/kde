@@ -9,6 +9,7 @@ echo "Creating dirs..."
 mkdir -p $COLORDIR
 mkdir -p $AURORAEDIR
 mkdir -p $LOOKANDFEELDIR
+mkdir ./dist
 
 echo ""
 
@@ -236,9 +237,10 @@ read CONFIRMATION
 
 if [ $CONFIRMATION = "Y" ]; then
     ACCENTCOLOR=$ACCENTCOLOR FLAVOURNAME=$FLAVOURNAME ACCENTNAME=$ACCENTNAME ./build.sh; #Pass args to build script
-    mv ./dist/Catppuccin$FLAVOURNAME.colors $COLORDIR
-    plasma-apply-colorscheme Catppuccin$FLAVOURNAME
+    mv ./dist/Catppuccin$FLAVOURNAME$ACCENTNAME.colors $COLORDIR
+    plasma-apply-colorscheme Catppuccin$FLAVOURNAME$ACCENTNAME
     
+    rm -rf ./dist
 else echo "Exiting.." && exit
 
 fi

@@ -40,7 +40,7 @@ FILE_EXT="${SOURCE##*.}"
 #function defined to build the file
 build(){
 #combine everything to get the output path
-OUTPUT="${OUT}/Catppuccin$FLAVOURNAME.${FILE_EXT}"
+OUTPUT="${OUT}/Catppuccin$FLAVOURNAME$ACCENTNAME.${FILE_EXT}"
 SCRIPT="./Pallets/${PALETTE}.sed"
 
 #does the actual sed-fu 
