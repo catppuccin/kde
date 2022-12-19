@@ -3,7 +3,7 @@ ColorScheme=CatppuccinMocha
 
 [kwinrc][org.kde.kdecoration2]
 library=org.kde.kwin.aurorae
-theme=__aurorae__svg__Colloid-dark-round
+theme=
 
 [kdeglobals][Icons]
 Theme=Breeze-Dark

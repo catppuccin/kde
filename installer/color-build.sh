@@ -41,7 +41,7 @@ FILE_EXT="${SOURCE##*.}"
 build(){
 #combine everything to get the output path
 OUTPUT="${OUT}/Catppuccin$FLAVOURNAME$ACCENTNAME.${FILE_EXT}"
-SCRIPT="./Pallets/${PALETTE}.sed"
+SCRIPT="installer/Pallets/${PALETTE}.sed"
 
 #does the actual sed-fu 
 < "$SOURCE" sed -f "$SCRIPT" > "$OUTPUT"
@@ -60,6 +60,5 @@ elif [ $FLAVOURNAME = "Frappe" ]; then
 elif [ $FLAVOURNAME = "Latte" ]; then
    PALETTE=latte
    build
-else clear && echo "Invalid pallet $FLAVOURNAME 
-" && exit
+else clear && echo "Invalid pallet $FLAVOURNAME" && exit
 fi

@@ -229,18 +229,23 @@ elif [ $ACCENT == 14 ]; then
 else echo "Not a valid accent" && exit
 fi
 
-# echo $ACCENTCOLOR
-
 echo ""
 echo -e "Install $FLAVOURNAME $ACCENTNAME? [Y/n]:"
 read CONFIRMATION
 
 if [ $CONFIRMATION = "Y" ]; then
+    # install color scheme
     ACCENTCOLOR=$ACCENTCOLOR FLAVOURNAME=$FLAVOURNAME ACCENTNAME=$ACCENTNAME ./build.sh; #Pass args to build script
     mv ./dist/Catppuccin$FLAVOURNAME$ACCENTNAME.colors $COLORDIR
     plasma-apply-colorscheme Catppuccin$FLAVOURNAME$ACCENTNAME
     
     rm -rf ./dist
-else echo "Exiting.." && exit
 
+    # install aurorae
+    cp ./base/aurorae/Catppuccin-$FLAVOURNAME-Aurorae $AURORAEDIR -r
+    echo "Aurorae theme installed 
+Select the Aurorae theme from the settings under Appearance >> Window decorations"
+
+
+else echo "Exiting.." && exit
 fi
