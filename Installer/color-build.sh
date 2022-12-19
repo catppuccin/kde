@@ -41,7 +41,7 @@ FILE_EXT="${SOURCE##*.}"
 build(){
 #combine everything to get the output path
 OUTPUT="${OUT}/Catppuccin$FLAVOURNAME$ACCENTNAME.${FILE_EXT}"
-SCRIPT="installer/Pallets/${PALETTE}.sed"
+SCRIPT="Installer/Pallets/${PALETTE}.sed"
 
 #does the actual sed-fu 
 < "$SOURCE" sed -f "$SCRIPT" > "$OUTPUT"

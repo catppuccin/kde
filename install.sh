@@ -238,11 +238,10 @@ if [ $CONFIRMATION = "Y" ]; then
     ACCENTCOLOR=$ACCENTCOLOR FLAVOURNAME=$FLAVOURNAME ACCENTNAME=$ACCENTNAME ./build.sh; #Pass args to build script
     mv ./dist/Catppuccin$FLAVOURNAME$ACCENTNAME.colors $COLORDIR
     plasma-apply-colorscheme Catppuccin$FLAVOURNAME$ACCENTNAME
-    
     rm -rf ./dist
 
     # install aurorae
-    cp ./base/aurorae/Catppuccin-$FLAVOURNAME-Aurorae $AURORAEDIR -r
+    cp ./Resources/aurorae/Catppuccin-$FLAVOURNAME-Aurorae $AURORAEDIR -r
     echo "Aurorae theme installed 
 Select the Aurorae theme from the settings under Appearance >> Window decorations"
 

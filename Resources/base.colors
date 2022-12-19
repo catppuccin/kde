@@ -7,6 +7,7 @@ ContrastEffect=1
 IntensityAmount=-1
 IntensityEffect=2
 
+
 [ColorEffects:Inactive]
 ChangeSelectionColor=true
 Color=112,111,110
@@ -17,6 +18,7 @@ ContrastEffect=2
 Enable=false
 IntensityAmount=0
 IntensityEffect=0
+
 
 [Colors:Button]
 BackgroundAlternate=--accentColor
@@ -32,6 +34,7 @@ ForegroundNormal=$text
 ForegroundPositive=$green
 ForegroundVisited=$mauve
 
+
 [Colors:Complementary]
 BackgroundAlternate=$crust
 BackgroundNormal=$mantle
@@ -46,6 +49,7 @@ ForegroundNormal=$text
 ForegroundPositive=$green
 ForegroundVisited=$mauve
 
+
 [Colors:Header]
 BackgroundAlternate=$crust
 BackgroundNormal=$mantle
@@ -59,6 +63,7 @@ ForegroundNeutral=$yellow
 ForegroundNormal=$text
 ForegroundPositive=$green
 ForegroundVisited=$mauve
+
 
 [Colors:Selection]
 BackgroundAlternate=--accentColor
@@ -75,6 +80,7 @@ ForegroundNormal=$crust
 ForegroundPositive=$green
 ForegroundVisited=$mauve
 
+
 [Colors:Tooltip]
 BackgroundAlternate=27,25,35
 BackgroundNormal=$base
@@ -88,6 +94,7 @@ ForegroundNeutral=$yellow
 ForegroundNormal=$text
 ForegroundPositive=$green
 ForegroundVisited=$mauve
+
 
 [Colors:View]
 BackgroundAlternate=$mantle
@@ -103,6 +110,7 @@ ForegroundNormal=$text
 ForegroundPositive=$green
 ForegroundVisited=$mauve
 
+
 [Colors:Window]
 BackgroundAlternate=$crust
 BackgroundNormal=$mantle
@@ -117,14 +125,17 @@ ForegroundNormal=$text
 ForegroundPositive=$green
 ForegroundVisited=$mauve
 
+
 [General]
 ColorScheme=Catppuccin--flavour--accentName
 Name=Catppuccin --flavour --accentName
 accentActiveTitlebar=false
 shadeSortColumn=true
 
+
 [KDE]
 contrast=4
+
 
 [WM]
 activeBackground=$base
