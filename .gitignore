@@ -1,3 +1,4 @@
 # Ignore text editor files
 .editorconfig
 .directory
+dist/**
