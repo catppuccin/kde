@@ -1,12 +1,12 @@
 [ColorEffects:Disabled]
-Color=56,56,56
-ColorAmount=0.15000000000000002
-ColorEffect=2
-ContrastAmount=0.8
+Color=$surface0
+ColorAmount=0.150
+ColorEffect=1
+ColorAmount=0.4250
+ContrastAmount=0.1
 ContrastEffect=1
 IntensityAmount=-1
 IntensityEffect=2
-
 
 [ColorEffects:Inactive]
 ChangeSelectionColor=true
@@ -15,10 +15,9 @@ ColorAmount=0.025
 ColorEffect=2
 ContrastAmount=0.1
 ContrastEffect=2
-Enable=false
+Enable=true
 IntensityAmount=0
 IntensityEffect=0
-
 
 [Colors:Button]
 BackgroundAlternate=--accentColor
