@@ -252,15 +252,18 @@ if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
     cd ..
 
     #Modifying lightly plasma theme
-    rm -rf $DESKTOPTHEMEDIR/lightly-plasma-git/icons
-    rm -rf $DESKTOPTHEMEDIR/lightly-plasma-git/solid
-    rm -rf $DESKTOPTHEMEDIR/lightly-plasma-git/opaque
+    rm -rf $DESKTOPTHEMEDIR/lightly-plasma-git/icons/*
     rm -rf $DESKTOPTHEMEDIR/lightly-plasma-git/translucent
     rm $DESKTOPTHEMEDIR/lightly-plasma-git/widgets/tabbar.svgz
     rm $DESKTOPTHEMEDIR/lightly-plasma-git/dialogs/background.svgz
-    cp Patches/glowbar.svg $DESKTOPTHEMEDIR/lightly-plasma-git/widgets
-    cp Patches/panel-background.svgz $DESKTOPTHEMEDIR/lightly-plasma-git/widgets
-    cp Patches/background.svg $DESKTOPTHEMEDIR/lightly-plasma-git/dialogs
+    
+    cp $DESKTOPTHEMEDIR/lightly-plasma-git/opaque/* $DESKTOPTHEMEDIR/lightly-plasma-git -Rf
+    cp ./Patches/glowbar.svg $DESKTOPTHEMEDIR/lightly-plasma-git/widgets -rf
+    cp ./Patches/panel-background.svgz $DESKTOPTHEMEDIR/lightly-plasma-git/widgets
+
+    # Modify description to state that it has been modified by kde catppuccin installer
+    sed -e s/A\ plasma\ style\ with\ close\ to\ the\ look\ of\ the\ newest\ Lightly./*MODIFIED\ BY\ CATPPUCCIN\ KDE\ INSTALLER*\ A\ plasma\ style\ with\ close\ to\ the\ look\ of\ the\ newest\ Lightly./g $DESKTOPTHEMEDIR/lightly-plasma-git/metadata.desktop >> $DESKTOPTHEMEDIR/lightly-plasma-git/newMetadata.desktop
+    cp -f $DESKTOPTHEMEDIR/metadata.desktop $DESKTOPTHEMEDIR/lightly-plasma-git/metadata.desktop && rm $DESKTOPTHEMEDIR/metadata.desktop
 
     # install aurorae
     cp ./Resources/aurorae/Catppuccin-$FLAVOURNAME-Aurorae $AURORAEDIR -r
