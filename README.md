@@ -37,48 +37,22 @@
 
 ## Installation
 
-1. `mkdir -p ~/.local/share/color-schemes`
-2. `git clone https://github.com/catppuccin/kde catppuccin-kde`
+1. `git clone https://github.com/catppuccin/kde catppuccin-kde & cd catppuccin-kde`
+2. Run the install script using `sh install.sh`
 
-### Install all flavors
-1. `cd catppuccin-kde`
-2. `find . -type f -name "*.colors" -exec cp "{}" ~/.local/share/color-schemes \;`
-3. `cp aurorae/* ~/.local/share/aurorae/themes -ra`
-4. `find . -type f -name "*.tar.gz" -exec kpackagetool5 -i "{}" \;`   
-You'll need a working internet connection for this to work.
-5. `lookandfeeltool -a Catppuccin-<flavor>`  
-or alternatively: Open system settings and choose the global theme. You might have to reload system settings to see changes.
- You might have to reload system settings to see changes.
 
-### Install one flavor
-1. `cp aurorae/<flavor> ~/.local/share/aurorae/themes -ra`
-2. `cd catppuccin-kde/<flavor>`
-3. `cp Catppuccin*.colors ~/.local/share/color-schemes/`
-4. `kpackagetool5 -i Catppuccin-*.tar.gz`  
-You'll need a working internet connection for this to work.
-5. `lookandfeeltool -a Catppuccin-<flav or>`  
-Or alternatively: Open system settings and choose the global theme. You might have to reload system settings to see changes.
+## Lisencing
+The theme makes modifications to [doncsugar's](https://github.com/doncsugar) [lightly plasma style](https://github.com/doncsugar/lightly-plasma-git]). It is lisenced under GPL 3.0 and as such, all the changes to the plasma theme are also lisenced under GPL. The MIT Lisence still applies to the color scheme and the window decorations theme.
+
 
 ### Notes
-1. To get a material-like look, install [Lightly application style](https://github.com/Luwx/Lightly) and select it from System Settings > Appearance >  Application Style > Lightly.
-2. If you do not like the new icon for the application launcher set by the Lightly Plasma theme, simply delete `~/.local/share/plasma/desktoptheme/lightly-plasma-git/icons`. This will make it switch to the default.
-
-## Update
-
-1. `cd catppuccin-kde`
-2. `git pull`
-3. Run the installation commands again, replacing `kpackagetool5 -i` with `kpackagetool5 -u`
-
-## TODO: 
-[X] Add aurorae theme  
-[ ] Add plasma style  
-[ ] Make bash script to make install easier from repo  
-[ ] Upload everything, including global theme to KDE Store
+To get a material-like look, install (Lightly application style)[https://github.com/Luwx/Lightly] and select it from System Settings > Appearance >  Application Style > Lightly.
 
 ## 💝 Thanks to
 
 - [Prayag2](https://github.com/Prayag2)
 - [Sourcastic](https://github.com/Sourcastic)  
+- [Cequallium](https://github.com/Cequallium)
 
 
 
