@@ -257,8 +257,9 @@ if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
     rm $DESKTOPTHEMEDIR/lightly-plasma-git/widgets/tabbar.svgz
     rm $DESKTOPTHEMEDIR/lightly-plasma-git/dialogs/background.svgz
     
-    cp $DESKTOPTHEMEDIR/lightly-plasma-git/opaque/* $DESKTOPTHEMEDIR/lightly-plasma-git -Rf
+    cp $DESKTOPTHEMEDIR/lightly-plasma-git/solid/* $DESKTOPTHEMEDIR/lightly-plasma-git -Rf
     cp ./Patches/glowbar.svg $DESKTOPTHEMEDIR/lightly-plasma-git/widgets -rf
+    cp ./Patches/background.svg $DESKTOPTHEMEDIR/lightly-plasma-git/widgets -rf
     cp ./Patches/panel-background.svgz $DESKTOPTHEMEDIR/lightly-plasma-git/widgets
 
     # Modify description to state that it has been modified by kde catppuccin installer
