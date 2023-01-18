@@ -40,13 +40,12 @@
 1. `git clone https://github.com/catppuccin/kde catppuccin-kde & cd catppuccin-kde`
 2. Run the install script using `sh install.sh`
 
+### Notes
+To get a material-like look, install [Lightly application style](https://github.com/Luwx/Lightly) and select it from System Settings > Appearance >  Application Style > Lightly.
 
 ## Lisencing
 The theme makes modifications to [doncsugar's](https://github.com/doncsugar) [lightly plasma style](https://github.com/doncsugar/lightly-plasma-git]). It is lisenced under GPL 3.0 and as such, all the changes to the plasma theme are also lisenced under GPL. The MIT Lisence still applies to the color scheme and the window decorations theme.
 
-
-### Notes
-To get a material-like look, install (Lightly application style)[https://github.com/Luwx/Lightly] and select it from System Settings > Appearance >  Application Style > Lightly.
 
 ## 💝 Thanks to
 
