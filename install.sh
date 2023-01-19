@@ -238,7 +238,7 @@ read CONFIRMATION
 if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
     echo ""
 
-    cp -r Resources/Catppuccin-Global-Theme ./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME
+    cp -r Resources/Catppuccin-$FLAVOURNAME-Global ./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME
 
     ACCENTCOLOR=$ACCENTCOLOR FLAVOURNAME=$FLAVOURNAME ACCENTNAME=$ACCENTNAME ./build.sh; #Pass args to build script
 

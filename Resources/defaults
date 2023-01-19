@@ -5,8 +5,5 @@ ColorScheme=Catppuccin--flavour--accentName
 library=org.kde.kwin.aurorae
 theme=__aurorae__svg__Catppuccin---flavour-Aurorae
 
-[kdeglobals][Icons]
-Theme=Papirus-Colors-Dark
-
 [plasmarc][Theme]
 name=lightly-plasma-git
