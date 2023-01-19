@@ -13,60 +13,47 @@
 
 
 <p align="center">
-  <img src="https://github.com/catppuccin/kde/blob/main/assets/res.webp"/>
+  <img src="https://github.com/catppuccin/kde/blob/main/Assets/res.webp"/>
 </p>
 
 ## Previews
 
 <details>
 <summary>🌻 Latte</summary>
-<img src="https://github.com/catppuccin/kde/blob/main/assets/Latte.webp"/>
+<img src="https://github.com/catppuccin/kde/blob/main/Assets/Latte.webp"/>
 </details>
 <details>
 <summary>🪴 Frappé</summary>
-<img src="https://github.com/catppuccin/kde/blob/main/assets/Frappe.webp"/>
+<img src="https://github.com/catppuccin/kde/blob/main/Assets/Frappe.webp"/>
 </details>
 <details>
 <summary>🌺 Macchiato</summary>
-<img src="https://github.com/catppuccin/kde/blob/main/assets/Macchiato.webp"/>
+<img src="https://github.com/catppuccin/kde/blob/main/Assets/Macchiato.webp"/>
 </details>
 <details>
 <summary>🌿 Mocha</summary>
-<img src="https://github.com/catppuccin/kde/blob/main/assets/Mocha.webp"/>
+<img src="https://github.com/catppuccin/kde/blob/main/Assets/Mocha.webp"/>
 </details>
 
 ## Installation
 
-1. `mkdir -p ~/.local/share/color-schemes`
-2. `git clone https://github.com/catppuccin/kde catppuccin-kde`
-
-### Install all flavors
-1. `cd catppuccin-kde`
-2. `find . -type f -name "*.colors" -exec cp "{}" ~/.local/share/color-schemes \;`
-3. `find . -type f -name "*.tar.gz" -exec kpackagetool5 -i "{}" \;`  
-You need a working internet connection for this to work. Make sure system settings is not running.
-
-### Install one flavor
-1. `cd catppuccin-kde/<your chosen flavor>`
-2. `cp Catppuccin*.colors ~/.local/share/color-schemes/`
-3. `kpackagetool5 -i Catppuccin-*.tar.gz`  
-You need a working internet connection for this to work. Make sure system settings is not running.
-4. `lookandfeeltool -a Catppuccin-<flavor>` or alternatively open system settings and choose the global theme
+1. `git clone https://github.com/catppuccin/kde catppuccin-kde & cd catppuccin-kde`
+2. Run the install script using `sh install.sh` and follow the instructions.
 
 ### Notes
-1. To get a material-like look, install [Lightly application style](https://github.com/Luwx/Lightly) and select it from System Settings > Appearance >  Application Style > Lightly.
-2. If you do not like the new icon for the application launcher set by the Lightly Plasma theme, simply delete `~/.local/share/plasma/desktoptheme/lightly-plasma-git/icons`. This will make it switch to the default.
+To get a modern, more consistent look, install the [Lightly application style](https://github.com/Luwx/Lightly) and select it from System Settings > Appearance >  Application Style > Lightly.
 
-## Update
+## Licensing
+The theme makes modifications to [doncsugar's](https://github.com/doncsugar) [lightly plasma style](https://github.com/doncsugar/lightly-plasma-git]). It is licensed under GPL 3.0 and as such, all the changes to the plasma theme are also licensed under GPL. The MIT License still applies to the color scheme and the window decorations theme.
 
-1. `cd catppuccin-kde`
-2. `git pull`
-3. Run the installation commands again, replacing `kpackagetool5 -i` with `kpackagetool5 -u`
 
 ## 💝 Thanks to
 
 - [Prayag2](https://github.com/Prayag2)
-- [Sourcastic](https://github.com/Sourcastic)
+- [Sourcastic](https://github.com/Sourcastic)  
+- [Cequallium](https://github.com/Cequallium)
+
+
 
 &nbsp;
 
