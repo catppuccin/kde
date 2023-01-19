@@ -38,7 +38,7 @@
 ## Installation
 
 1. `git clone https://github.com/catppuccin/kde catppuccin-kde & cd catppuccin-kde`
-2. Run the install script using `sh install.sh` and follow the instructions.
+2. Run the install script using `./install.sh` and follow the instructions.
 
 ### Notes
 To get a modern, more consistent look, install the [Lightly application style](https://github.com/Luwx/Lightly) and select it from System Settings > Appearance >  Application Style > Lightly.
