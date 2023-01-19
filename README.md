@@ -13,7 +13,7 @@
 
 
 <p align="center">
-  <img src="https://github.com/catppuccin/kde/blob/main/Assets/res.webp"/>
+  <img src="https://github.com/catppuccin/kde/blob/main/Assets/res.png"/>
 </p>
 
 ## Previews
