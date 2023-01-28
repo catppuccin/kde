@@ -3,7 +3,7 @@ ColorScheme=Catppuccin--flavour--accentName
 
 [kwinrc][org.kde.kdecoration2]
 library=org.kde.kwin.aurorae
-theme=__aurorae__svg__Catppuccin---flavour-Aurorae
+theme=--aurorae
 
 [plasmarc][Theme]
 name=lightly-plasma-git
