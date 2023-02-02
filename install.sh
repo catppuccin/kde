@@ -290,16 +290,16 @@ function BuildColorscheme {
 
 function BuildSplashScreen {
     # Hydrate Dummy colors according to Pallet
-    FLAVOURNAME=$FLAVOURNAME ./Installer/color-build.sh -s ./Resources/splash/images/busywidget.svg -o ./dist/$GLOBALTHEMEDIR/contents/splash/images/_busywidget.svg
+    FLAVOURNAME=$FLAVOURNAME ./Installer/color-build.sh -s ./Resources/splash/images/busywidget.svg -o ./dist/$GLOBALTHEMENAME/contents/splash/images/_busywidget.svg
     # Replace Accent in colors file
-    sed ./dist/$GLOBALTHEMEDIR/contents/splash/images/_busywidget.svg -e s/REPLACE--ACCENT/$ACCENTCOLOR/g > ./dist/$GLOBALTHEMEDIR/contents/splash/images/busywidget.svg
+    sed ./dist/$GLOBALTHEMENAME/contents/splash/images/_busywidget.svg -e s/REPLACE--ACCENT/$ACCENTCOLOR/g > ./dist/$GLOBALTHEMENAME/contents/splash/images/busywidget.svg
     # Cleanup temporary file
-    rm ./dist/$GLOBALTHEMEDIR/contents/splash/images/_busywidget.svg
+    rm ./dist/$GLOBALTHEMENAME/contents/splash/images/_busywidget.svg
     # Hydrate Dummy colors according to Pallet (QML file)
-    FLAVOURNAME=$FLAVOURNAME ./Installer/color-build.sh -s ./Resources/splash/Splash.qml -o ./dist/$GLOBALTHEMEDIR/contents/splash/Splash.qml
+    FLAVOURNAME=$FLAVOURNAME ./Installer/color-build.sh -s ./Resources/splash/Splash.qml -o ./dist/$GLOBALTHEMENAME/contents/splash/Splash.qml
     # Add CTP Logo
     # TODO: Switch between latte & mocha logo based on Pallet
-    cp ./Resources/splash/images/Logo.png ./dist/$GLOBALTHEMEDIR/contents/splash/images
+    cp ./Resources/splash/images/Logo.png ./dist/$GLOBALTHEMENAME/contents/splash/images
 }
 
 echo ""
@@ -310,9 +310,9 @@ clear
 if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
 
     # Prepare Global Theme Folder
-    GLOBALTHEMEDIR="Catppuccin-$FLAVOURNAME-$ACCENTNAME"
-    cp -r ./Resources/Catppuccin-$FLAVOURNAME-Global ./dist/$GLOBALTHEMEDIR
-    mkdir -p ./dist/$GLOBALTHEMEDIR/contents/splash/images
+    GLOBALTHEMENAME="Catppuccin-$FLAVOURNAME-$ACCENTNAME"
+    cp -r ./Resources/Catppuccin-$FLAVOURNAME-Global ./dist/$GLOBALTHEMENAME
+    mkdir -p ./dist/$GLOBALTHEMENAME/contents/splash/images
     
     # Build SplashScreen
     echo "Building SplashScreen.."
@@ -335,8 +335,8 @@ if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
     "
     sleep 1
     echo "Installing Global Theme.."
-    cd ./dist && tar -cf $GLOBALTHEMEDIR.tar.gz $GLOBALTHEMEDIR
-    kpackagetool5 -i $GLOBALTHEMEDIR.tar.gz
+    cd ./dist && tar -cf $GLOBALTHEMENAME.tar.gz $GLOBALTHEMENAME
+    kpackagetool5 -i $GLOBALTHEMENAME.tar.gz
     cd ..
 
     echo "Modifying lightly plasma theme.."
@@ -348,6 +348,7 @@ if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
     # Cleanup
     echo "Cleaning up.."
     # rm -rf ./dist
+    # rm -rf ./dist
 
     # Apply theme
     echo ""
@@ -355,7 +356,7 @@ if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
     read CONFIRMATION
 
     if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
-        lookandfeeltool -a $GLOBALTHEMEDIR
+        lookandfeeltool -a $GLOBALTHEMENAME
         clear
     else
         echo "You can apply theme at any time using system settings"
