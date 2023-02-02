@@ -310,7 +310,7 @@ clear
 if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
 
     # Prepare Global Theme Folder
-    GLOBALTHEMEDIR=Catppuccin-$FLAVOURNAME-$ACCENTNAME
+    GLOBALTHEMEDIR="Catppuccin-$FLAVOURNAME-$ACCENTNAME"
     cp -r ./Resources/Catppuccin-$FLAVOURNAME-Global ./dist/$GLOBALTHEMEDIR
     mkdir -p ./dist/$GLOBALTHEMEDIR/contents/splash/images
     
@@ -347,7 +347,7 @@ if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
 
     # Cleanup
     echo "Cleaning up.."
-    rm -rf ./dist
+    # rm -rf ./dist
 
     # Apply theme
     echo ""
