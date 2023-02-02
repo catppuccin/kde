@@ -5,22 +5,21 @@ AURORAEDIR=~/.local/share/aurorae/themes
 LOOKANDFEELDIR=~/.local/share/plasma/look-and-feel
 DESKTOPTHEMEDIR=~/.local/share/plasma/desktoptheme
 
-echo "Creating theme directories..."
-
+echo "Creating theme directories.."
 mkdir -p $COLORDIR
 mkdir -p $AURORAEDIR
 mkdir -p $LOOKANDFEELDIR
 mkdir -p $DESKTOPTHEMEDIR
 mkdir ./dist
 
+clear
 echo ""
-
-echo -e "Choose flavor out of -
+echo "Choose flavor out of -
  1. Mocha
  2. Macchiato 
  3. Frappe
  4. Latte 
-\n (Type the number corresponding to said pallet)
+(Type the number corresponding to said pallet)
 "
 read FLAVOUR
 clear
@@ -40,25 +39,25 @@ else echo "Not a valid flavour name" && exit;
 fi
 echo ""
 
-echo -e "Choose an accent -
-1. Rosewater
-2. Flamingo
-3. Pink
-4. Mauve
-5. Red
-6. Maroon
-7. Peach
-8. Yellow
-9. Green
-10. Teal
-11. Sky
-12. Sapphire
-13. Blue
-14. Lavender
+echo "Choose an accent -
+ 1. Rosewater
+ 2. Flamingo
+ 3. Pink
+ 4. Mauve
+ 5. Red
+ 6. Maroon
+ 7. Peach
+ 8. Yellow
+ 9. Green
+ 10. Teal
+ 11. Sky
+ 12. Sapphire
+ 13. Blue
+ 14. Lavender
 "
 read ACCENT
 clear
-
+# Sets accent based on the pallet selected (Best to fold this in your respective editor)
 if [[ $ACCENT == "1" ]]; then
 
     if [[ $FLAVOUR == "1" ]]; then
@@ -231,55 +230,135 @@ elif [[ $ACCENT == "14" ]]; then
 else echo "Not a valid accent" && exit
 fi
 
-echo ""
-echo -e "Install $FLAVOURNAME $ACCENTNAME? [Y/n]:"
-read CONFIRMATION
+echo "Choose window decoration style -
+ 1. Modern (Mixed)
+ 2. Classic (MacOS like)
+"
+read WINDECSTYLE
+clear
 
-if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
-    echo ""
+if [[ $WINDECSTYLE == "1" ]]; then
+    WINDECSTYLENAME=Modern
+    WINDECSTYLECODE=__aurorae__svg__Catppuccin$FLAVOURNAME-Modern
+    echo "Hey! thanks for picking 'Modern', this one has a few rules or else it might break
+ 1: Use 3 icons on the right, With the 'Close' Button on the Far-Right
+ 2: If you would like the pin on all desktops button, You need to place it on the left."
+    echo "We apologize if you wanted a different configuration :("
+    sleep 2
+elif [[ $WINDECSTYLE == "2" ]]; then
+    WINDECSTYLENAME=Classic
+    WINDECSTYLECODE=__aurorae__svg__Catppuccin$FLAVOURNAME-Classic
+fi
 
-    cp -r Resources/Catppuccin-$FLAVOURNAME-Global ./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME
+function ModifyLightlyPlasma {
 
-    ACCENTCOLOR=$ACCENTCOLOR FLAVOURNAME=$FLAVOURNAME ACCENTNAME=$ACCENTNAME ./build.sh; #Pass args to build script
-
-    # install color scheme
-    mv ./dist/Catppuccin$FLAVOURNAME$ACCENTNAME.colors $COLORDIR
-
-    # install global theme
-    cd ./dist
-    tar -cf Catppuccin-$FLAVOURNAME-$ACCENTNAME.tar.gz Catppuccin-$FLAVOURNAME-$ACCENTNAME
-    kpackagetool5 -i Catppuccin-$FLAVOURNAME-$ACCENTNAME.tar.gz
-    cd ..
-
-    #Modifying lightly plasma theme
     rm -rf $DESKTOPTHEMEDIR/lightly-plasma-git/icons/*
     rm -rf $DESKTOPTHEMEDIR/lightly-plasma-git/translucent
     rm $DESKTOPTHEMEDIR/lightly-plasma-git/widgets/tabbar.svgz
     rm $DESKTOPTHEMEDIR/lightly-plasma-git/dialogs/background.svgz
-    
+
+    # Copy Patches
     cp $DESKTOPTHEMEDIR/lightly-plasma-git/solid/* $DESKTOPTHEMEDIR/lightly-plasma-git -Rf
     cp ./Patches/glowbar.svg $DESKTOPTHEMEDIR/lightly-plasma-git/widgets -rf
     cp ./Patches/background.svg $DESKTOPTHEMEDIR/lightly-plasma-git/widgets -rf
     cp ./Patches/panel-background.svgz $DESKTOPTHEMEDIR/lightly-plasma-git/widgets
 
-    # Modify description to state that it has been modified by kde catppuccin installer
+    # Modify description to state that it has been modified by the KDE Catppuccin Installer
     sed -e s/A\ plasma\ style\ with\ close\ to\ the\ look\ of\ the\ newest\ Lightly./*MODIFIED\ BY\ CATPPUCCIN\ KDE\ INSTALLER*\ A\ plasma\ style\ with\ close\ to\ the\ look\ of\ the\ newest\ Lightly./g $DESKTOPTHEMEDIR/lightly-plasma-git/metadata.desktop >> $DESKTOPTHEMEDIR/lightly-plasma-git/newMetadata.desktop
     cp -f $DESKTOPTHEMEDIR/metadata.desktop $DESKTOPTHEMEDIR/lightly-plasma-git/metadata.desktop && rm $DESKTOPTHEMEDIR/metadata.desktop
+}
 
-    # install aurorae
-    cp ./Resources/aurorae/Catppuccin-$FLAVOURNAME-Aurorae $AURORAEDIR -r
+function AuroraeInstall {
+    if [[ $WINDECSTYLE == "1" ]]; then
+        cp ./Resources/aurorae/Catppuccin$FLAVOURNAME-Modern $AURORAEDIR -r;
+    elif [[ $WINDECSTYLE == "2" ]]; then
+        cp ./Resources/aurorae/Catppuccin$FLAVOURNAME-Classic $AURORAEDIR -r;
+    fi
+}
 
+function BuildColorscheme {
+    # Add Metadata & Replace Accent in colors file
+    sed -e s/--accentColor/$ACCENTCOLOR/g -e s/--flavour/$FLAVOURNAME/g -e s/--accentName/$ACCENTNAME/g ./Resources/base.colors > ./dist/base.colors
+    # Hydrate Metadata with Pallet + Accent Info
+    sed -e s/--accentName/$ACCENTNAME/g -e s/--flavour/$FLAVOURNAME/g ./Resources/metadata.desktop > ./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME/metadata.desktop
+    # Modify 'defaults' to set the correct Aurorae Theme
+    sed -e s/--accentName/$ACCENTNAME/g -e s/--flavour/$FLAVOURNAME/g -e s/--aurorae/$WINDECSTYLECODE/g ./Resources/defaults > ./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME/contents/defaults
+    # Hydrate Dummy colors according to Pallet
+    FLAVOURNAME=$FLAVOURNAME ACCENTNAME=$ACCENTNAME ./Installer/color-build.sh -o ./dist/Catppuccin$FLAVOURNAME$ACCENTNAME.colors -s ./dist/base.colors
+}
+
+function BuildSplashScreen {
+    # Hydrate Dummy colors according to Pallet
+    FLAVOURNAME=$FLAVOURNAME ./Installer/color-build.sh -s ./Resources/splash/images/busywidget.svg -o ./dist/$GLOBALTHEMENAME/contents/splash/images/_busywidget.svg
+    # Replace Accent in colors file
+    sed ./dist/$GLOBALTHEMENAME/contents/splash/images/_busywidget.svg -e s/REPLACE--ACCENT/$ACCENTCOLOR/g > ./dist/$GLOBALTHEMENAME/contents/splash/images/busywidget.svg
+    # Cleanup temporary file
+    rm ./dist/$GLOBALTHEMENAME/contents/splash/images/_busywidget.svg
+    # Hydrate Dummy colors according to Pallet (QML file)
+    FLAVOURNAME=$FLAVOURNAME ./Installer/color-build.sh -s ./Resources/splash/Splash.qml -o ./dist/$GLOBALTHEMENAME/contents/splash/Splash.qml
+    # Add CTP Logo
+    # TODO: Switch between latte & mocha logo based on Pallet
+    cp ./Resources/splash/images/Logo.png ./dist/$GLOBALTHEMENAME/contents/splash/images
+}
+
+echo ""
+echo "Install $FLAVOURNAME $ACCENTNAME? with the $WINDECSTYLENAME window Decorations? [Y/n]:"
+read CONFIRMATION
+clear
+
+if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
+
+    # Prepare Global Theme Folder
+    GLOBALTHEMENAME="Catppuccin-$FLAVOURNAME-$ACCENTNAME"
+    cp -r ./Resources/Catppuccin-$FLAVOURNAME-Global ./dist/$GLOBALTHEMENAME
+    mkdir -p ./dist/$GLOBALTHEMENAME/contents/splash/images
+    
+    # Build SplashScreen
+    echo "Building SplashScreen.."
+    BuildSplashScreen
+
+    # Build Colorscheme
+    echo "Building Colorscheme.."
+
+    # Generate Color scheme
+    BuildColorscheme
+
+    # Install Colorscheme
+    echo "Installing Colorscheme.."
+    mv ./dist/Catppuccin$FLAVOURNAME$ACCENTNAME.colors $COLORDIR
+
+    # Install Global Theme.
+    # This refers to the QDBusConnection: error: could not send signal to service error which has no effect in our testing on the working of this Installer.
+    echo "
+ WARNING: There might be some errors that might not affect the installer at all during this step, Please advise.
+    "
+    sleep 1
+    echo "Installing Global Theme.."
+    cd ./dist && tar -cf $GLOBALTHEMENAME.tar.gz $GLOBALTHEMENAME
+    kpackagetool5 -i $GLOBALTHEMENAME.tar.gz
+    cd ..
+
+    echo "Modifying lightly plasma theme.."
+    ModifyLightlyPlasma
+
+    echo "Installing aurorae theme.."
+    AuroraeInstall
+
+    # Cleanup
+    echo "Cleaning up.."
     rm -rf ./dist
 
+    # Apply theme
     echo ""
     echo "Do you want to apply theme? [Y/n]:"
     read CONFIRMATION
+
     if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
-        lookandfeeltool -a Catppuccin-$FLAVOURNAME-$ACCENTNAME
+        lookandfeeltool -a $GLOBALTHEMENAME
+        clear
     else
         echo "You can apply theme at any time using system settings"
+        sleep 0.5
     fi
-
-
 else echo "Exiting.." && exit
 fi

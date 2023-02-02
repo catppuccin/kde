@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# from github.com/skinatro/theme-tool./
+# from github.com/skinatro/theme-tool/
 
 ####################
 #Help and Arguments#
@@ -36,29 +36,28 @@ fi
 
 #extract file extension
 FILE_EXT="${SOURCE##*.}"
-
 #function defined to build the file
 build(){
 #combine everything to get the output path
-OUTPUT="${OUT}/Catppuccin$FLAVOURNAME$ACCENTNAME.${FILE_EXT}"
 SCRIPT="Installer/Pallets/${PALETTE}.sed"
 
 #does the actual sed-fu 
-< "$SOURCE" sed -f "$SCRIPT" > "$OUTPUT"
+< "$SOURCE" sed -f "$SCRIPT" > "$OUT"
+
 }
 
 #no arrays due to posix compliancy
 if [ $FLAVOURNAME = "Mocha" ]; then
-   PALETTE=mocha
+   PALETTE=Mocha
    build
 elif [ $FLAVOURNAME = "Macchiato" ]; then
-   PALETTE=macchiato
+   PALETTE=Macchiato
    build
 elif [ $FLAVOURNAME = "Frappe" ]; then
-   PALETTE=frappe
+   PALETTE=Frappe
    build
 elif [ $FLAVOURNAME = "Latte" ]; then
-   PALETTE=latte
+   PALETTE=Latte
    build
 else clear && echo "Invalid pallet $FLAVOURNAME" && exit
 fi
