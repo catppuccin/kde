@@ -34,11 +34,12 @@ Rectangle {
         anchors.fill: parent
         opacity: 0
 
+        // TODO: Make DropShadow more Intense
         DropShadow {
             anchors.fill: logo
-            horizontalOffset: 50
+            horizontalOffset: 20
             verticalOffset: 0
-            radius: 60.0
+            radius: 30.0
             samples: 17
             color: "$crust"
             source: logo

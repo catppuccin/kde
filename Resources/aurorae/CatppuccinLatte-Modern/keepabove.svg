@@ -37,16 +37,16 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1920"
-     inkscape:window-height="1026"
+     inkscape:window-height="1044"
      id="namedview19"
      showgrid="false"
      inkscape:zoom="4.1305824"
-     inkscape:cx="159.54167"
-     inkscape:cy="68.392293"
+     inkscape:cx="307.94689"
+     inkscape:cy="68.634389"
      inkscape:window-x="0"
-     inkscape:window-y="54"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="pressed-inactive-center"
+     inkscape:current-layer="layer1"
      inkscape:showpageshadow="0"
      inkscape:pagecheckerboard="1"
      inkscape:deskcolor="#1f1f1f" />
@@ -70,7 +70,7 @@
          id="g1790"
          transform="matrix(5.8494693,0,0,5.8494693,-603.94204,-483.75186)">
         <circle
-           style="opacity:1;fill:#a265f7;fill-opacity:1;stroke:none;stroke-width:0.714375;stroke-linecap:square;stroke-linejoin:round;paint-order:markers fill stroke"
+           style="opacity:1;fill:#8839ef;fill-opacity:1;stroke:none;stroke-width:0.714375;stroke-linecap:square;stroke-linejoin:round;paint-order:markers fill stroke"
            id="circle1583"
            cx="107.09383"
            cy="92.81501"
@@ -121,7 +121,7 @@
          id="g1665"
          transform="translate(15.874964,-1.7095545e-5)">
         <rect
-           style="opacity:0.25;fill:#a265f7;fill-opacity:1;stroke:none;stroke-width:0.714374;stroke-linecap:square;stroke-linejoin:round;paint-order:markers fill stroke"
+           style="opacity:0.25;fill:#8839ef;fill-opacity:1;stroke:none;stroke-width:0.714374;stroke-linecap:square;stroke-linejoin:round;paint-order:markers fill stroke"
            id="rect1911-3"
            width="5.3069439"
            height="5.1138883"
@@ -129,7 +129,7 @@
            y="84.9664"
            ry="0" />
         <circle
-           style="opacity:1;fill:#a265f7;fill-opacity:1;stroke:none;stroke-width:0.714375;stroke-linecap:square;stroke-linejoin:round;paint-order:markers fill stroke"
+           style="opacity:1;fill:#8839ef;fill-opacity:1;stroke:none;stroke-width:0.714375;stroke-linecap:square;stroke-linejoin:round;paint-order:markers fill stroke"
            id="circle1597"
            cx="107.09383"
            cy="87.523346"
@@ -164,7 +164,7 @@
          transform="matrix(1.0007231,0,0,1.0007231,15.795625,-0.05575913)"
          style="fill:#a265f7">
         <rect
-           style="opacity:1;fill:#a265f7;fill-opacity:1;stroke:none;stroke-width:0.714374;stroke-linecap:square;stroke-linejoin:round;paint-order:markers fill stroke"
+           style="opacity:1;fill:#8839ef;fill-opacity:1;stroke:none;stroke-width:0.714374;stroke-linecap:square;stroke-linejoin:round;paint-order:markers fill stroke"
            id="rect3687"
            width="5.3069439"
            height="5.1138883"

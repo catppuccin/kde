@@ -5,7 +5,7 @@ AURORAEDIR=~/.local/share/aurorae/themes
 LOOKANDFEELDIR=~/.local/share/plasma/look-and-feel
 DESKTOPTHEMEDIR=~/.local/share/plasma/desktoptheme
 
-echo "Creating theme directories..."
+echo "Creating theme directories.."
 mkdir -p $COLORDIR
 mkdir -p $AURORAEDIR
 mkdir -p $LOOKANDFEELDIR
@@ -245,7 +245,7 @@ if [[ $WINDECSTYLE == "1" ]]; then
  1: Use 3 icons on the right, With the 'Close' Button on the Far-Right
  2: If you would like the pin on all desktops button, You need to place it on the left."
     echo "We apologize if you wanted a different configuration :("
-    sleep 0.5
+    sleep 2
 elif [[ $WINDECSTYLE == "2" ]]; then
     WINDECSTYLENAME=Classic
     WINDECSTYLECODE=__aurorae__svg__Catppuccin$FLAVOURNAME-Classic
@@ -278,21 +278,28 @@ function AuroraeInstall {
 }
 
 function BuildColorscheme {
+    # Add Metadata & Replace Accent in colors file
     sed -e s/--accentColor/$ACCENTCOLOR/g -e s/--flavour/$FLAVOURNAME/g -e s/--accentName/$ACCENTNAME/g ./Resources/base.colors > ./dist/base.colors
     # Hydrate Metadata with Pallet + Accent Info
     sed -e s/--accentName/$ACCENTNAME/g -e s/--flavour/$FLAVOURNAME/g ./Resources/metadata.desktop > ./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME/metadata.desktop
     # Modify 'defaults' to set the correct Aurorae Theme
     sed -e s/--accentName/$ACCENTNAME/g -e s/--flavour/$FLAVOURNAME/g -e s/--aurorae/$WINDECSTYLECODE/g ./Resources/defaults > ./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME/contents/defaults
-
+    # Hydrate Dummy colors according to Pallet
     FLAVOURNAME=$FLAVOURNAME ACCENTNAME=$ACCENTNAME ./Installer/color-build.sh -o ./dist/Catppuccin$FLAVOURNAME$ACCENTNAME.colors -s ./dist/base.colors
 }
 
 function BuildSplashScreen {
-    FLAVOURNAME=$FLAVOURNAME ./Installer/color-build.sh -s ./Resources/splash/images/busywidget.svg -o ./dist/$GLOBALTHEME/contents/splash/images/_busywidget.svg
-    sed ./dist/$GLOBALTHEME/contents/splash/images/_busywidget.svg -e s/REPLACE--ACCENT/$ACCENTCOLOR/g > ./dist/$GLOBALTHEME/contents/splash/images/busywidget.svg
-    rm ./dist/$GLOBALTHEME/contents/splash/images/_busywidget.svg
-    FLAVOURNAME=$FLAVOURNAME ./Installer/color-build.sh -s ./Resources/splash/Splash.qml -o ./dist/$GLOBALTHEME/contents/splash/Splash.qml
-    cp ./Resources/splash/images/Logo.png ./dist/$GLOBALTHEME/contents/splash/images
+    # Hydrate Dummy colors according to Pallet
+    FLAVOURNAME=$FLAVOURNAME ./Installer/color-build.sh -s ./Resources/splash/images/busywidget.svg -o ./dist/$GLOBALTHEMEDIR/contents/splash/images/_busywidget.svg
+    # Replace Accent in colors file
+    sed ./dist/$GLOBALTHEMEDIR/contents/splash/images/_busywidget.svg -e s/REPLACE--ACCENT/$ACCENTCOLOR/g > ./dist/$GLOBALTHEMEDIR/contents/splash/images/busywidget.svg
+    # Cleanup temporary file
+    rm ./dist/$GLOBALTHEMEDIR/contents/splash/images/_busywidget.svg
+    # Hydrate Dummy colors according to Pallet (QML file)
+    FLAVOURNAME=$FLAVOURNAME ./Installer/color-build.sh -s ./Resources/splash/Splash.qml -o ./dist/$GLOBALTHEMEDIR/contents/splash/Splash.qml
+    # Add CTP Logo
+    # TODO: Switch between latte & mocha logo based on Pallet
+    cp ./Resources/splash/images/Logo.png ./dist/$GLOBALTHEMEDIR/contents/splash/images
 }
 
 echo ""
@@ -303,23 +310,22 @@ clear
 if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
 
     # Prepare Global Theme Folder
-    GLOBALTHEME=Catppuccin-$FLAVOURNAME-$ACCENTNAME
-
-    cp -r ./Resources/Catppuccin-$FLAVOURNAME-Global ./dist/$GLOBALTHEME
-    mkdir -p ./dist/$GLOBALTHEME/contents/splash/images
+    GLOBALTHEMEDIR=Catppuccin-$FLAVOURNAME-$ACCENTNAME
+    cp -r ./Resources/Catppuccin-$FLAVOURNAME-Global ./dist/$GLOBALTHEMEDIR
+    mkdir -p ./dist/$GLOBALTHEMEDIR/contents/splash/images
     
     # Build SplashScreen
-    echo "Building SplashScreen"
+    echo "Building SplashScreen.."
     BuildSplashScreen
 
     # Build Colorscheme
-    echo "Building Colorscheme"
+    echo "Building Colorscheme.."
 
     # Generate Color scheme
     BuildColorscheme
 
     # Install Colorscheme
-    echo "Installing Colorscheme"
+    echo "Installing Colorscheme.."
     mv ./dist/Catppuccin$FLAVOURNAME$ACCENTNAME.colors $COLORDIR
 
     # Install Global Theme.
@@ -329,8 +335,8 @@ if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
     "
     sleep 1
     echo "Installing Global Theme.."
-    cd ./dist && tar -cf $GLOBALTHEME.tar.gz $GLOBALTHEME
-    kpackagetool5 -i $GLOBALTHEME.tar.gz
+    cd ./dist && tar -cf $GLOBALTHEMEDIR.tar.gz $GLOBALTHEMEDIR
+    kpackagetool5 -i $GLOBALTHEMEDIR.tar.gz
     cd ..
 
     echo "Modifying lightly plasma theme.."
@@ -349,7 +355,7 @@ if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
     read CONFIRMATION
 
     if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
-        lookandfeeltool -a $GLOBALTHEME
+        lookandfeeltool -a $GLOBALTHEMEDIR
         clear
     else
         echo "You can apply theme at any time using system settings"
