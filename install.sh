@@ -10,7 +10,6 @@ mkdir -p $COLORDIR
 mkdir -p $AURORAEDIR
 mkdir -p $LOOKANDFEELDIR
 mkdir -p $DESKTOPTHEMEDIR
-rm -r ./dist/*
 mkdir ./dist
 
 clear
@@ -347,8 +346,7 @@ if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
 
     # Cleanup
     echo "Cleaning up.."
-    # rm -rf ./dist
-    # rm -rf ./dist
+    rm -rf ./dist
 
     # Apply theme
     echo ""
