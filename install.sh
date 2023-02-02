@@ -5,15 +5,15 @@ AURORAEDIR=~/.local/share/aurorae/themes
 LOOKANDFEELDIR=~/.local/share/plasma/look-and-feel
 DESKTOPTHEMEDIR=~/.local/share/plasma/desktoptheme
 
-clear
 echo "Creating theme directories..."
-
 mkdir -p $COLORDIR
 mkdir -p $AURORAEDIR
 mkdir -p $LOOKANDFEELDIR
 mkdir -p $DESKTOPTHEMEDIR
+rm -r ./dist/*
 mkdir ./dist
 
+clear
 echo ""
 echo "Choose flavor out of -
  1. Mocha
@@ -41,20 +41,20 @@ fi
 echo ""
 
 echo "Choose an accent -
-1. Rosewater
-2. Flamingo
-3. Pink
-4. Mauve
-5. Red
-6. Maroon
-7. Peach
-8. Yellow
-9. Green
-10. Teal
-11. Sky
-12. Sapphire
-13. Blue
-14. Lavender
+ 1. Rosewater
+ 2. Flamingo
+ 3. Pink
+ 4. Mauve
+ 5. Red
+ 6. Maroon
+ 7. Peach
+ 8. Yellow
+ 9. Green
+ 10. Teal
+ 11. Sky
+ 12. Sapphire
+ 13. Blue
+ 14. Lavender
 "
 read ACCENT
 clear
@@ -232,8 +232,8 @@ else echo "Not a valid accent" && exit
 fi
 
 echo "Choose window decoration style -
-1. Modern (Mixed)
-2. Classic (MacOS like)
+ 1. Modern (Mixed)
+ 2. Classic (MacOS like)
 "
 read WINDECSTYLE
 clear
@@ -242,9 +242,9 @@ if [[ $WINDECSTYLE == "1" ]]; then
     WINDECSTYLENAME=Modern
     WINDECSTYLECODE=__aurorae__svg__Catppuccin$FLAVOURNAME-Modern
     echo "Hey! thanks for picking 'Modern', this one has a few rules or else it might break
-        1: Use 3 icons on the right, With the 'Close' Button on the Far-Right
-        2: If you would like the pin on all desktops button, You need to place it on the left."
-    echo "I apologize if you wanted a different configuration :("
+ 1: Use 3 icons on the right, With the 'Close' Button on the Far-Right
+ 2: If you would like the pin on all desktops button, You need to place it on the left."
+    echo "We apologize if you wanted a different configuration :("
     sleep 0.5
 elif [[ $WINDECSTYLE == "2" ]]; then
     WINDECSTYLENAME=Classic
@@ -277,26 +277,46 @@ function AuroraeInstall {
     fi
 }
 
+function BuildColorscheme {
+    sed -e s/--accentColor/$ACCENTCOLOR/g -e s/--flavour/$FLAVOURNAME/g -e s/--accentName/$ACCENTNAME/g ./Resources/base.colors > ./dist/base.colors
+    # Hydrate Metadata with Pallet + Accent Info
+    sed -e s/--accentName/$ACCENTNAME/g -e s/--flavour/$FLAVOURNAME/g ./Resources/metadata.desktop > ./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME/metadata.desktop
+    # Modify 'defaults' to set the correct Aurorae Theme
+    sed -e s/--accentName/$ACCENTNAME/g -e s/--flavour/$FLAVOURNAME/g -e s/--aurorae/$WINDECSTYLECODE/g ./Resources/defaults > ./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME/contents/defaults
+
+    FLAVOURNAME=$FLAVOURNAME ACCENTNAME=$ACCENTNAME ./Installer/color-build.sh -o ./dist/Catppuccin$FLAVOURNAME$ACCENTNAME.colors -s ./dist/base.colors
+}
+
+function BuildSplashScreen {
+    FLAVOURNAME=$FLAVOURNAME ./Installer/color-build.sh -s ./Resources/splash/images/busywidget.svg -o ./dist/$GLOBALTHEME/contents/splash/images/_busywidget.svg
+    sed ./dist/$GLOBALTHEME/contents/splash/images/_busywidget.svg -e s/REPLACE--ACCENT/$ACCENTCOLOR/g > ./dist/$GLOBALTHEME/contents/splash/images/busywidget.svg
+    rm ./dist/$GLOBALTHEME/contents/splash/images/_busywidget.svg
+    FLAVOURNAME=$FLAVOURNAME ./Installer/color-build.sh -s ./Resources/splash/Splash.qml -o ./dist/$GLOBALTHEME/contents/splash/Splash.qml
+    cp ./Resources/splash/images/Logo.png ./dist/$GLOBALTHEME/contents/splash/images
+}
+
 echo ""
 echo "Install $FLAVOURNAME $ACCENTNAME? with the $WINDECSTYLENAME window Decorations? [Y/n]:"
 read CONFIRMATION
 clear
 
 if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
-    cp -r Resources/Catppuccin-$FLAVOURNAME-Global ./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME
+
+    # Prepare Global Theme Folder
+    GLOBALTHEME=Catppuccin-$FLAVOURNAME-$ACCENTNAME
+
+    cp -r ./Resources/Catppuccin-$FLAVOURNAME-Global ./dist/$GLOBALTHEME
+    mkdir -p ./dist/$GLOBALTHEME/contents/splash/images
+    
+    # Build SplashScreen
+    echo "Building SplashScreen"
+    BuildSplashScreen
 
     # Build Colorscheme
     echo "Building Colorscheme"
-    # ACCENTCOLOR=$ACCENTCOLOR FLAVOURNAME=$FLAVOURNAME ACCENTNAME=$ACCENTNAME WINDECSTYLECODE=$WINDECSTYLECODE ./build.sh;
-    
+
     # Generate Color scheme
-    sed -e s/--accentColor/$ACCENTCOLOR/g -e s/--flavour/$FLAVOURNAME/g -e s/--accentName/$ACCENTNAME/g ./Resources/base.colors >> ./dist/base.colors
-    # Hydrate Metadata with Pallet + Accent Info
-    sed -e s/--accentName/$ACCENTNAME/g -e s/--flavour/$FLAVOURNAME/g ./Resources/metadata.desktop >> ./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME/metadata.desktop
-    # Modify 'defaults' to set the correct Aurorae Theme
-    sed -e s/--accentName/$ACCENTNAME/g -e s/--flavour/$FLAVOURNAME/g -e s/--aurorae/$WINDECSTYLECODE/g ./Resources/defaults >> ./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME/contents/defaults
-    
-    FLAVOURNAME=$FLAVOURNAME ACCENTNAME=$ACCENTNAME ./Installer/color-build.sh -o ./dist -s ./dist/base.colors 
+    BuildColorscheme
 
     # Install Colorscheme
     echo "Installing Colorscheme"
@@ -305,12 +325,12 @@ if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
     # Install Global Theme.
     # This refers to the QDBusConnection: error: could not send signal to service error which has no effect in our testing on the working of this Installer.
     echo "
-    WARNING: There might be some errors that might not affect the installer at all during this step, Please advise.
+ WARNING: There might be some errors that might not affect the installer at all during this step, Please advise.
     "
     sleep 1
     echo "Installing Global Theme.."
-    cd ./dist && tar -cf Catppuccin-$FLAVOURNAME-$ACCENTNAME.tar.gz Catppuccin-$FLAVOURNAME-$ACCENTNAME
-    kpackagetool5 -i Catppuccin-$FLAVOURNAME-$ACCENTNAME.tar.gz
+    cd ./dist && tar -cf $GLOBALTHEME.tar.gz $GLOBALTHEME
+    kpackagetool5 -i $GLOBALTHEME.tar.gz
     cd ..
 
     echo "Modifying lightly plasma theme.."
@@ -329,7 +349,7 @@ if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
     read CONFIRMATION
 
     if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
-        lookandfeeltool -a Catppuccin-$FLAVOURNAME-$ACCENTNAME
+        lookandfeeltool -a $GLOBALTHEME
         clear
     else
         echo "You can apply theme at any time using system settings"
