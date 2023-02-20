@@ -298,7 +298,7 @@ function BuildSplashScreen {
     # Hydrate Dummy colors according to Pallet
     FLAVOURNAME="$FLAVOURNAME" ./Installer/color-build.sh -s ./Resources/Splash/images/busywidget.svg -o ./dist/"$GLOBALTHEMENAME"/contents/splash/images/_busywidget.svg
 
-    # Replace Accent in colors file
+    # Replace Accent in Loader SVG
     sed ./dist/"$GLOBALTHEMENAME"/contents/splash/images/_busywidget.svg -e s/REPLACE--ACCENT/"$ACCENTCOLOR"/g > ./dist/"$GLOBALTHEMENAME"/contents/splash/images/busywidget.svg
 
     # Cleanup temporary file
