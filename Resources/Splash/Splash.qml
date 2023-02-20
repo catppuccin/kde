@@ -37,13 +37,13 @@ Rectangle {
         // TODO: Make DropShadow more Intense
         DropShadow {
             anchors.fill: logo
-            horizontalOffset: 20
-            verticalOffset: 0
-            radius: 30.0
+            horizontalOffset: 0
+            verticalOffset: 30
+            radius: 200.0
             samples: 17
-            color: "$crust"
+            color: "#000000"
             source: logo
-            opacity: 1
+            opacity: 0.1
         }
 
         Image {
@@ -52,7 +52,7 @@ Rectangle {
             property real size: PlasmaCore.Units.gridUnit * 8
 
             anchors.centerIn: parent
-
+            //TODO: do it
             source: "images/Logo.png"
 
             sourceSize.width: size

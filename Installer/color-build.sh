@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# from github.com/skinatro/theme-tool/
+# From github.com/skinatro/theme-tool/
 
 ####################
 #Help and Arguments#

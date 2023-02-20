@@ -21,7 +21,7 @@ echo "Choose flavor out of -
  4. Latte 
 (Type the number corresponding to said pallet)
 "
-read FLAVOUR
+read -r FLAVOUR
 clear
 if [[ $FLAVOUR == "1" ]]; then
     echo "The pallet Mocha(1) was selected";
@@ -55,7 +55,7 @@ echo "Choose an accent -
  13. Blue
  14. Lavender
 "
-read ACCENT
+read -r ACCENT
 clear
 # Sets accent based on the pallet selected (Best to fold this in your respective editor)
 if [[ $ACCENT == "1" ]]; then
@@ -234,12 +234,12 @@ echo "Choose window decoration style -
  1. Modern (Mixed)
  2. Classic (MacOS like)
 "
-read WINDECSTYLE
+read -r WINDECSTYLE
 clear
 
 if [[ $WINDECSTYLE == "1" ]]; then
     WINDECSTYLENAME=Modern
-    WINDECSTYLECODE=__aurorae__svg__Catppuccin$FLAVOURNAME-Modern
+    WINDECSTYLECODE=__aurorae__svg__Catppuccin"$FLAVOURNAME"-Modern
     echo "Hey! thanks for picking 'Modern', this one has a few rules or else it might break
  1: Use 3 icons on the right, With the 'Close' Button on the Far-Right
  2: If you would like the pin on all desktops button, You need to place it on the left."
@@ -247,11 +247,10 @@ if [[ $WINDECSTYLE == "1" ]]; then
     sleep 2
 elif [[ $WINDECSTYLE == "2" ]]; then
     WINDECSTYLENAME=Classic
-    WINDECSTYLECODE=__aurorae__svg__Catppuccin$FLAVOURNAME-Classic
+    WINDECSTYLECODE=__aurorae__svg__Catppuccin"$FLAVOURNAME"-Classic
 fi
 
 function ModifyLightlyPlasma {
-
     rm -rf $DESKTOPTHEMEDIR/lightly-plasma-git/icons/*
     rm -rf $DESKTOPTHEMEDIR/lightly-plasma-git/translucent
     rm $DESKTOPTHEMEDIR/lightly-plasma-git/widgets/tabbar.svgz
@@ -270,48 +269,62 @@ function ModifyLightlyPlasma {
 
 function AuroraeInstall {
     if [[ $WINDECSTYLE == "1" ]]; then
-        cp ./Resources/aurorae/Catppuccin$FLAVOURNAME-Modern $AURORAEDIR -r;
+        cp ./Resources/Aurorae/Catppuccin"$FLAVOURNAME"-Modern $AURORAEDIR -r
+        if [[ $FLAVOUR = "4" ]]; then
+            cp ./Resources/Aurorae/Common/CatppuccinLatte-Modernrc $AURORAEDIR/Catppuccin"$FLAVOURNAME"-Modern/CatppuccinLatte-Modernrc
+        else
+            cp ./Resources/Aurorae/Common/Catppuccin-Modernrc $AURORAEDIR/Catppuccin"$FLAVOURNAME"-Modern/Catppuccin-"$FLAVOURNAME"-Modernrc
+        fi
     elif [[ $WINDECSTYLE == "2" ]]; then
-        cp ./Resources/aurorae/Catppuccin$FLAVOURNAME-Classic $AURORAEDIR -r;
+        cp ./Resources/Aurorae/Catppuccin"$FLAVOURNAME"-Classic $AURORAEDIR -r
     fi
 }
 
 function BuildColorscheme {
     # Add Metadata & Replace Accent in colors file
-    sed -e s/--accentColor/$ACCENTCOLOR/g -e s/--flavour/$FLAVOURNAME/g -e s/--accentName/$ACCENTNAME/g ./Resources/base.colors > ./dist/base.colors
+    sed -e s/--accentColor/$ACCENTCOLOR/g -e s/--flavour/$FLAVOURNAME/g -e s/--accentName/$ACCENTNAME/g ./Resources/Base.colors > ./dist/base.colors
+
     # Hydrate Metadata with Pallet + Accent Info
-    sed -e s/--accentName/$ACCENTNAME/g -e s/--flavour/$FLAVOURNAME/g ./Resources/metadata.desktop > ./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME/metadata.desktop
+    sed -e s/--accentName/$ACCENTNAME/g -e s/--flavour/$FLAVOURNAME/g ./Resources/LookAndFeel/metadata.desktop > ./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME/metadata.desktop
+
     # Modify 'defaults' to set the correct Aurorae Theme
-    sed -e s/--accentName/$ACCENTNAME/g -e s/--flavour/$FLAVOURNAME/g -e s/--aurorae/$WINDECSTYLECODE/g ./Resources/defaults > ./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME/contents/defaults
+    sed -e s/--accentName/$ACCENTNAME/g -e s/--flavour/$FLAVOURNAME/g -e s/--aurorae/$WINDECSTYLECODE/g ./Resources/LookAndFeel/defaults > ./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME/contents/defaults
+
     # Hydrate Dummy colors according to Pallet
-    FLAVOURNAME=$FLAVOURNAME ACCENTNAME=$ACCENTNAME ./Installer/color-build.sh -o ./dist/Catppuccin$FLAVOURNAME$ACCENTNAME.colors -s ./dist/base.colors
+    FLAVOURNAME="$FLAVOURNAME" ACCENTNAME="$ACCENTNAME" ./Installer/color-build.sh -o ./dist/Catppuccin$FLAVOURNAME$ACCENTNAME.colors -s ./dist/base.colors
 }
 
 function BuildSplashScreen {
     # Hydrate Dummy colors according to Pallet
-    FLAVOURNAME=$FLAVOURNAME ./Installer/color-build.sh -s ./Resources/splash/images/busywidget.svg -o ./dist/$GLOBALTHEMENAME/contents/splash/images/_busywidget.svg
+    FLAVOURNAME="$FLAVOURNAME" ./Installer/color-build.sh -s ./Resources/Splash/images/busywidget.svg -o ./dist/"$GLOBALTHEMENAME"/contents/splash/images/_busywidget.svg
+
     # Replace Accent in colors file
-    sed ./dist/$GLOBALTHEMENAME/contents/splash/images/_busywidget.svg -e s/REPLACE--ACCENT/$ACCENTCOLOR/g > ./dist/$GLOBALTHEMENAME/contents/splash/images/busywidget.svg
+    sed ./dist/"$GLOBALTHEMENAME"/contents/splash/images/_busywidget.svg -e s/REPLACE--ACCENT/"$ACCENTCOLOR"/g > ./dist/"$GLOBALTHEMENAME"/contents/splash/images/busywidget.svg
+
     # Cleanup temporary file
-    rm ./dist/$GLOBALTHEMENAME/contents/splash/images/_busywidget.svg
+    rm ./dist/"$GLOBALTHEMENAME"/contents/splash/images/_busywidget.svg
+
     # Hydrate Dummy colors according to Pallet (QML file)
-    FLAVOURNAME=$FLAVOURNAME ./Installer/color-build.sh -s ./Resources/splash/Splash.qml -o ./dist/$GLOBALTHEMENAME/contents/splash/Splash.qml
-    # Add CTP Logo
-    # TODO: Switch between latte & mocha logo based on Pallet
-    cp ./Resources/splash/images/Logo.png ./dist/$GLOBALTHEMENAME/contents/splash/images
+    FLAVOURNAME="$FLAVOURNAME" ./Installer/color-build.sh -s ./Resources/Splash/Splash.qml -o ./dist/"$GLOBALTHEMENAME"/contents/splash/Splash.qml
+
+    if [[ $FLAVOUR == "4" ]]; then
+        cp ./Resources/Splash/images/Latte_Logo.png ./dist/"$GLOBALTHEMENAME"/contents/splash/images/Logo.png
+    else
+        cp ./Resources/Splash/images/Logo.png ./dist/"$GLOBALTHEMENAME"/contents/splash/images/Logo.png
+    fi
 }
 
 echo ""
 echo "Install $FLAVOURNAME $ACCENTNAME? with the $WINDECSTYLENAME window Decorations? [Y/n]:"
-read CONFIRMATION
+read -r CONFIRMATION
 clear
 
 if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
 
     # Prepare Global Theme Folder
     GLOBALTHEMENAME="Catppuccin-$FLAVOURNAME-$ACCENTNAME"
-    cp -r ./Resources/Catppuccin-$FLAVOURNAME-Global ./dist/$GLOBALTHEMENAME
-    mkdir -p ./dist/$GLOBALTHEMENAME/contents/splash/images
+    cp -r ./Resources/LookAndFeel/Catppuccin-"$FLAVOURNAME"-Global ./dist/"$GLOBALTHEMENAME"
+    mkdir -p ./dist/"$GLOBALTHEMENAME"/contents/splash/images
     
     # Build SplashScreen
     echo "Building SplashScreen.."
@@ -325,17 +338,18 @@ if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
 
     # Install Colorscheme
     echo "Installing Colorscheme.."
-    mv ./dist/Catppuccin$FLAVOURNAME$ACCENTNAME.colors $COLORDIR
+    mv ./dist/Catppuccin"$FLAVOURNAME$ACCENTNAME".colors $COLORDIR
 
     # Install Global Theme.
-    # This refers to the QDBusConnection: error: could not send signal to service error which has no effect in our testing on the working of this Installer.
+    # This refers to the QDBusConnection: error: could not send signal to service error
+    # Which has had no effect in our testing on the working of this Installer.
     echo "
  WARNING: There might be some errors that might not affect the installer at all during this step, Please advise.
     "
     sleep 1
     echo "Installing Global Theme.."
-    cd ./dist && tar -cf $GLOBALTHEMENAME.tar.gz $GLOBALTHEMENAME
-    kpackagetool5 -i $GLOBALTHEMENAME.tar.gz
+    cd ./dist && tar -cf "$GLOBALTHEMENAME".tar.gz "$GLOBALTHEMENAME"
+    kpackagetool5 -i "$GLOBALTHEMENAME".tar.gz
     cd ..
 
     echo "Modifying lightly plasma theme.."
@@ -351,7 +365,7 @@ if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
     # Apply theme
     echo ""
     echo "Do you want to apply theme? [Y/n]:"
-    read CONFIRMATION
+    read -r CONFIRMATION
 
     if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
         lookandfeeltool -a $GLOBALTHEMENAME
