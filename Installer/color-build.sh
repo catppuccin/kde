@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # From github.com/skinatro/theme-tool/
 
@@ -34,8 +34,6 @@ fi
 #Script begin#
 ##############
 
-#extract file extension
-FILE_EXT="${SOURCE##*.}"
 #function defined to build the file
 build(){
 #combine everything to get the output path
@@ -47,16 +45,16 @@ SCRIPT="Installer/Pallets/${PALETTE}.sed"
 }
 
 #no arrays due to posix compliancy
-if [ $FLAVOURNAME = "Mocha" ]; then
+if [ "$FLAVOURNAME" = "Mocha" ]; then
    PALETTE=Mocha
    build
-elif [ $FLAVOURNAME = "Macchiato" ]; then
+elif [ "$FLAVOURNAME" = "Macchiato" ]; then
    PALETTE=Macchiato
    build
-elif [ $FLAVOURNAME = "Frappe" ]; then
+elif [ "$FLAVOURNAME" = "Frappe" ]; then
    PALETTE=Frappe
    build
-elif [ $FLAVOURNAME = "Latte" ]; then
+elif [ "$FLAVOURNAME" = "Latte" ]; then
    PALETTE=Latte
    build
 else clear && echo "Invalid pallet $FLAVOURNAME" && exit

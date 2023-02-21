@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 COLORDIR=~/.local/share/color-schemes
 AURORAEDIR=~/.local/share/aurorae/themes
@@ -282,16 +282,16 @@ function AuroraeInstall {
 
 function BuildColorscheme {
     # Add Metadata & Replace Accent in colors file
-    sed -e s/--accentColor/$ACCENTCOLOR/g -e s/--flavour/$FLAVOURNAME/g -e s/--accentName/$ACCENTNAME/g ./Resources/Base.colors > ./dist/base.colors
+    sed -e s/--accentColor/"$ACCENTCOLOR"/g -e s/--flavour/"$FLAVOURNAME"/g -e s/--accentName/"$ACCENTNAME"/g ./Resources/Base.colors > ./dist/base.colors
 
     # Hydrate Metadata with Pallet + Accent Info
-    sed -e s/--accentName/$ACCENTNAME/g -e s/--flavour/$FLAVOURNAME/g ./Resources/LookAndFeel/metadata.desktop > ./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME/metadata.desktop
+    sed -e s/--accentName/"$ACCENTNAME"/g -e s/--flavour/"$FLAVOURNAME"/g ./Resources/LookAndFeel/metadata.desktop > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/metadata.desktop
 
     # Modify 'defaults' to set the correct Aurorae Theme
-    sed -e s/--accentName/$ACCENTNAME/g -e s/--flavour/$FLAVOURNAME/g -e s/--aurorae/$WINDECSTYLECODE/g ./Resources/LookAndFeel/defaults > ./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME/contents/defaults
+    sed -e s/--accentName/"$ACCENTNAME"/g -e s/--flavour/"$FLAVOURNAME"/g -e s/--aurorae/"$WINDECSTYLECODE"/g ./Resources/LookAndFeel/defaults > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/contents/defaults
 
     # Hydrate Dummy colors according to Pallet
-    FLAVOURNAME="$FLAVOURNAME" ACCENTNAME="$ACCENTNAME" ./Installer/color-build.sh -o ./dist/Catppuccin$FLAVOURNAME$ACCENTNAME.colors -s ./dist/base.colors
+    FLAVOURNAME=$FLAVOURNAME ./Installer/color-build.sh -o ./dist/Catppuccin$FLAVOURNAME$ACCENTNAME.colors -s ./dist/base.colors
 }
 
 function BuildSplashScreen {
@@ -368,7 +368,7 @@ if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
     read -r CONFIRMATION
 
     if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
-        lookandfeeltool -a $GLOBALTHEMENAME
+        lookandfeeltool -a "$GLOBALTHEMENAME"
         clear
     else
         echo "You can apply theme at any time using system settings"
