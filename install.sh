@@ -17,7 +17,7 @@ echo ""
 echo "Choose flavor out of -
  1. Mocha
  2. Macchiato 
- 3. Frappe
+ 3. Frappé
  4. Latte 
 (Type the number corresponding to said pallet)
 "
