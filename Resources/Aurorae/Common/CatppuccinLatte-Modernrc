@@ -1,6 +1,6 @@
 [General]
-ActiveTextColor=#cdd6f4
-InactiveTextColor=#a6adc8
+ActiveTextColor=#4c4f69
+InactiveTextColor=#5c5f77
 TitleAlignment=Center
 TitleVerticalAlignment=Center
 Animation=0
@@ -11,8 +11,8 @@ BorderLeft=0
 BorderRight=0
 BorderBottom=0
 
-ButtonHeight=46
-ButtonWidth=46
+ButtonHeight=37
+ButtonWidth=37
 
 ButtonMarginTop=0
 ButtonMarginLeft=0
@@ -38,4 +38,4 @@ TitleEdgeBottom=0
 TitleEdgeLeft=0
 TitleEdgeRight=0
 TitleEdgeTop=0
-TitleHeight=37
+TitleHeight=26
