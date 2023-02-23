@@ -271,12 +271,17 @@ function AuroraeInstall {
     if [[ $WINDECSTYLE == "1" ]]; then
         cp ./Resources/Aurorae/Catppuccin"$FLAVOURNAME"-Modern $AURORAEDIR -r
         if [[ $FLAVOUR = "4" ]]; then
-            cp ./Resources/Aurorae/Common/CatppuccinLatte-Modernrc $AURORAEDIR/Catppuccin"$FLAVOURNAME"-Modern/CatppuccinLatte-Modernrc
+            cp ./Resources/Aurorae/Common/CatppuccinLatte-Modernrc $AURORAEDIR/CatppuccinLatte-Modern/CatppuccinLatte-Modernrc
         else
-            cp ./Resources/Aurorae/Common/Catppuccin-Modernrc $AURORAEDIR/Catppuccin"$FLAVOURNAME"-Modern/Catppuccin-"$FLAVOURNAME"-Modernrc
+            cp ./Resources/Aurorae/Common/Catppuccin-Modernrc $AURORAEDIR/Catppuccin"$FLAVOURNAME"-Modern/Catppuccin"$FLAVOURNAME"-Modernrc
         fi
     elif [[ $WINDECSTYLE == "2" ]]; then
         cp ./Resources/Aurorae/Catppuccin"$FLAVOURNAME"-Classic $AURORAEDIR -r
+        if [[ $FLAVOUR = "4" ]]; then
+            cp ./Resources/Aurorae/Common/CatppuccinLatte-Classicrc $AURORAEDIR/CatppuccinLatte-Classic/CatppuccinLatte-Classicrc
+        else
+            cp ./Resources/Aurorae/Common/Catppuccin-Classicrc $AURORAEDIR/Catppuccin"$FLAVOURNAME"-Classic/Catppuccin"$FLAVOURNAME"-Classicrc
+        fi
     fi
 }
 
