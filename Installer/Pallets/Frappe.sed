@@ -1,26 +1,26 @@
-s/$rosewater/#f2d5cf/g
-s/$flamingo/#eebebe/g
-s/$pink/#f4b8e4/g
-s/$mauve/#ca9ee6/g
-s/$red/#e78284/g
-s/$maroon/#ea999c/g
-s/$peach/#ef9f76/g
-s/$yellow/#e5c890/g
-s/$green/#a6d189/g
-s/$teal/#81c8be/g
-s/$sky/#99d1db/g
-s/$sapphire/#85c1dc/g
-s/$blue/#8caaee/g
-s/$lavender/#babbf1/g
-s/$text/#c6d0f5/g
-s/$subtext1/#b5bfe2/g
-s/$subtext0/#a5adce/g
-s/$overlay2/#949cbb/g
-s/$overlay1/#838ba7/g
-s/$overlay0/#737994/g
-s/$surface2/#626880/g
-s/$surface1/#51576d/g
-s/$surface0/#414559/g
-s/$base/#303446/g
-s/$mantle/#292c3c/g
-s/$crust/#232634/g
+s/$rosewater/242, 213, 207/g
+s/$flamingo/238, 190, 190/g
+s/$pink/244, 184, 228/g
+s/$mauve/202, 158, 230/g
+s/$red/231, 130, 132/g
+s/$maroon/234, 153, 156/g
+s/$peach/239, 159, 118/g
+s/$yellow/229, 200, 144/g
+s/$green/166, 209, 137/g
+s/$teal/129, 200, 190/g
+s/$sky/153, 209, 219/g
+s/$sapphire/133, 193, 220/g
+s/$blue/140, 170, 238/g
+s/$lavender/186, 187, 241/g
+s/$text/198, 208, 245/g
+s/$subtext1/181, 191, 226/g
+s/$subtext0/165, 173, 206/g
+s/$overlay1/131, 139, 167/g
+s/$overlay2/148, 156, 187/g
+s/$overlay0/115, 121, 148/g
+s/$surface2/98, 104, 128/g
+s/$surface1/81, 87, 109/g
+s/$surface0/65, 69, 89/g
+s/$base/48, 52, 70/g
+s/$mantle/41, 44, 60/g
+s/$crust/35, 38, 52/g
