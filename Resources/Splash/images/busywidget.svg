@@ -31,55 +31,6 @@
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="busywidget" />
-  <defs
-     id="defs2258">
-    <style
-       id="current-color-scheme"
-       type="text/css">.ColorScheme-Text {
-        color:#31363b;
-        stop-color:#31363b;
-      }
-      .ColorScheme-Background {
-        color:#eff0f1;
-        stop-color:#eff0f1;
-      }
-      .ColorScheme-Highlight {
-        color:#3daee9;
-        stop-color:#3daee9;
-      }
-      .ColorScheme-ViewText {
-        color:#31363b;
-        stop-color:#31363b;
-      }
-      .ColorScheme-ViewBackground {
-        color:#fcfcfc;
-        stop-color:#fcfcfc;
-      }
-      .ColorScheme-ViewHover {
-        color:#93cee9;
-        stop-color:#93cee9;
-      }
-      .ColorScheme-ViewFocus{
-        color:#3daee9;
-        stop-color:#3daee9;
-      }
-      .ColorScheme-ButtonText {
-        color:#31363b;
-        stop-color:#31363b;
-      }
-      .ColorScheme-ButtonBackground {
-        color:#eff0f1;
-        stop-color:#eff0f1;
-      }
-      .ColorScheme-ButtonHover {
-        color:#93cee9;
-        stop-color:#93cee9;
-      }
-      .ColorScheme-ButtonFocus{
-        color:#3daee9;
-        stop-color:#3daee9;
-      }</style>
-  </defs>
   <g
      transform="translate(.52916664 -249.37498)"
      id="g2277">
@@ -135,21 +86,21 @@
          id="g3455">
         <path
            id="path3342"
-           style="fill:$crust;stroke:$crust;stroke-width:2.64583;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:6.87919;paint-order:markers fill stroke"
+           style="fill:rgb($crust);stroke:rgb($crust);stroke-width:2.64583;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:6.87919;paint-order:markers fill stroke"
            d="m 22.930458,17.991665 a 4.9387908,4.9387908 0 0 1 -4.938791,4.938791 4.9387908,4.9387908 0 0 1 -4.938791,-4.938791 4.9387908,4.9387908 0 0 1 4.938791,-4.938791 4.9387908,4.9387908 0 0 1 4.938791,4.938791 z"
            transform="translate(36.247917,249.37498)" />
         <path
            id="path3401"
-           style="color:#000000;fill:$mantle;fill-opacity:1;stroke-width:2.64583;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:6.87919;-inkscape-stroke:none;paint-order:markers fill stroke"
+           style="color:#000000;fill:rgb($mantle);fill-opacity:1;stroke-width:2.64583;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:6.87919;-inkscape-stroke:none;paint-order:markers fill stroke"
            d="M 17.992184 14.374833 C 15.979526 14.374833 14.374833 15.979526 14.374833 17.992184 C 14.374833 20.004843 15.979526 21.607467 17.992184 21.607467 C 20.004843 21.607467 21.607467 20.004843 21.607467 17.992184 C 21.607467 15.979526 20.004843 14.374833 17.992184 14.374833 z "
            transform="translate(36.247917,249.37498)" />
         <path
-           style="color:#000000;fill:REPLACE--ACCENT;fill-opacity:0.96482414;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:6.87919;-inkscape-stroke:none;paint-order:markers fill stroke;opacity:0.3"
+           style="color:#000000;fill:rgb(REPLACE--ACCENT);fill-opacity:0.96482414;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:6.87919;-inkscape-stroke:none;paint-order:markers fill stroke;opacity:0.3"
            d="m 17.992187,11.730469 c -3.442571,0 -6.261718,2.819147 -6.261718,6.261718 0,3.442572 2.819147,6.261719 6.261718,6.261719 3.442572,0 6.261719,-2.819147 6.261719,-6.261719 0,-3.442571 -2.819147,-6.261718 -6.261719,-6.261718 z m 0,2.644531 c 2.012661,0 3.615235,1.604527 3.615235,3.617187 0,2.012661 -1.602574,3.615235 -3.615235,3.615235 -2.01266,0 -3.617187,-1.602574 -3.617187,-3.615235 0,-2.01266 1.604527,-3.617187 3.617187,-3.617187 z"
            id="path3403"
            transform="translate(36.247917,249.37498)" />
         <path
-           style="fill:none;fill-opacity:1;stroke:REPLACE--ACCENT;stroke-width:2.64583;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:6.87919;paint-order:markers fill stroke"
+           style="fill:none;fill-opacity:1;stroke:rgb(REPLACE--ACCENT);stroke-width:2.64583;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:6.87919;paint-order:markers fill stroke"
            id="path3234"
            sodipodi:type="arc"
            sodipodi:cx="17.991667"
