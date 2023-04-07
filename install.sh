@@ -270,6 +270,8 @@ if [[ $WINDECSTYLE == "1" ]]; then
 elif [[ $WINDECSTYLE == "2" ]]; then
     WINDECSTYLENAME=Classic
     WINDECSTYLECODE=__aurorae__svg__Catppuccin"$FLAVOURNAME"-Classic
+else
+    echo "Not a valid Window decoration"
 fi
 
 function ModifyLightlyPlasma {
@@ -351,7 +353,7 @@ function InstallGlobalTheme {
     # Prepare Global Theme Folder
     cp -r ./Resources/LookAndFeel/Catppuccin-"$FLAVOURNAME"-Global ./dist/"$GLOBALTHEMENAME"
     mkdir -p ./dist/"$GLOBALTHEMENAME"/contents/splash/images
-    
+
     # Hydrate Metadata with Pallet + Accent Info
     sed -e s/--accentName/"$ACCENTNAME"/g -e s/--flavour/"$FLAVOURNAME"/g ./Resources/LookAndFeel/metadata.desktop > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME/metada"ta.desktop
 
@@ -365,7 +367,7 @@ function InstallGlobalTheme {
     # Install Global Theme.
     # This refers to the QDBusConnection: error: could not send signal to service error
     # Which has had no effect in our testing on the working of this Installer.
-    
+
     echo "
  WARNING: There might be some errors that might not affect the installer at all during this step, Please advise.
     "
@@ -411,11 +413,11 @@ function InstallColorscheme {
 }
 
 function GetCursor {
-    # Fetches cursors 
+    # Fetches cursors
     echo "Downloading Catppuccin Cursors from Catppuccin/cursors..."
     sleep 1.5
     wget -P ./dist https://github.com/catppuccin/cursors/releases/download/v0.2.0/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"-Cursors.zip
-    wget -P ./dist https://github.com/catppuccin/cursors/releases/download/v0.2.0/Catppuccin-"$FLAVOURNAME"-Dark-Cursors.zip 
+    wget -P ./dist https://github.com/catppuccin/cursors/releases/download/v0.2.0/Catppuccin-"$FLAVOURNAME"-Dark-Cursors.zip
     cd ./dist && unzip Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"-Cursors.zip
     unzip Catppuccin-"$FLAVOURNAME"-Dark-Cursors.zip
     cd ..
@@ -480,6 +482,10 @@ if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
         lookandfeeltool -a "$GLOBALTHEMENAME"
         clear
         echo "The cursors will fully apply once you log out"
+
+        # Some legacy apps still look in ~/.icons
+        echo "You may want to run the following in your terminal if you notice any inconsistencies for the cursor theme"
+        echo "ln -s ~/.local/share/icons/ ~/.icons"
     else
         echo "You can apply theme at any time using system settings"
         sleep 0.5
