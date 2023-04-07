@@ -20,11 +20,11 @@
 
 <details>
 <summary>🌻 Latte</summary>
-<img src="https://github.com/catppuccin/kde/blob/main/Resources/LookAndFeel/Catppuccin-Latte-Global/contents/previews/fullcreenpreview.jpg"/>
+<img src="https://github.com/catppuccin/kde/blob/main/Resources/LookAndFeel/Catppuccin-Latte-Global/contents/previews/fullscreenpreview.jpg"/>
 </details>
 <details>
 <summary>🪴 Frappé</summary>
-<img src="https://github.com/catppuccin/kde/blob/main/Resources/LookAndFeel/Catppuccin-Frappe-Global/contents/previews/fullcreenpreview.jpg"/>
+<img src="https://github.com/catppuccin/kde/blob/main/Resources/LookAndFeel/Catppuccin-Frappe-Global/contents/previews/fullscreenpreview.jpg"/>
 </details>
 <details>
 <summary>🌺 Macchiato</summary>
