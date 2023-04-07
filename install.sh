@@ -3,13 +3,15 @@
 COLORDIR=~/.local/share/color-schemes
 AURORAEDIR=~/.local/share/aurorae/themes
 LOOKANDFEELDIR=~/.local/share/plasma/look-and-feel
-DESKTOPTHEMEDIR=~/.local/share/plasma/desktoptheme/
+DESKTOPTHEMEDIR=~/.local/share/plasma/desktoptheme
+CURSORDIR=~/.local/share/icons
 
 echo "Creating theme directories.."
 mkdir -p $COLORDIR
 mkdir -p $AURORAEDIR
 mkdir -p $LOOKANDFEELDIR
 mkdir -p $DESKTOPTHEMEDIR
+mkdir -p $CURSORDIR
 mkdir ./dist
 
 # Fast install
@@ -350,7 +352,7 @@ function InstallGlobalTheme {
     
     # Hydrate Metadata with Pallet + Accent Info
     sed -e s/--accentName/$ACCENTNAME/g -e s/--flavour/$FLAVOURNAME/g ./Resources/LookAndFeel/metadata.desktop > ./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME/metadata.desktop
-    
+
     # Modify 'defaults' to set the correct Aurorae Theme
     sed -e s/--accentName/$ACCENTNAME/g -e s/--flavour/$FLAVOURNAME/g -e s/--aurorae/$WINDECSTYLECODE/g ./Resources/LookAndFeel/defaults > ./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME/contents/defaults
 
@@ -406,6 +408,22 @@ function InstallColorscheme {
     mv ./dist/Catppuccin$FLAVOURNAME$ACCENTNAME.colors $COLORDIR
 }
 
+function GetCursor {
+    echo "Downloading Catppuccin Cursors from Catppuccin/cursors..."
+    sleep 1.5
+    wget -P ./dist https://github.com/catppuccin/cursors/releases/download/v0.2.0/Catppuccin-$FLAVOURNAME-$ACCENTNAME-Cursors.zip
+    wget -P ./dist https://github.com/catppuccin/cursors/releases/download/v0.2.0/Catppuccin-$FLAVOURNAME-Dark-Cursors.zip 
+    cd ./dist && unzip Catppuccin-$FLAVOURNAME-$ACCENTNAME-Cursors.zip
+    unzip Catppuccin-$FLAVOURNAME-Dark-Cursors.zip
+    cd ..
+}
+
+function InstallCursor {
+    GetCursor
+    mv ./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME-Cursors $CURSORDIR
+    mv ./dist/Catppuccin-$FLAVOURNAME-Dark-Cursors $CURSORDIR
+}
+
 if [[ $DEBUGMODE == "" ]]; then
     echo ""
     echo "Install $FLAVOURNAME $ACCENTNAME? with the $WINDECSTYLENAME window Decorations? [y/n]:"
@@ -425,6 +443,8 @@ elif [[ $DEBUGMODE == "splash" ]]; then
     mkdir -p ./dist/$GLOBALTHEMENAME/contents/splash/images
 
     BuildSplashScreen
+elif [[ $DEBUGMODE == "cursor" ]]; then
+    GetCursor
 else
     echo "Invalid Debug Mode"
 fi
@@ -440,6 +460,9 @@ if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
     echo "Installing aurorae theme.."
     AuroraeInstall
 
+    echo "Installing Catppuccin Cursor theme.."
+    InstallCursor
+
     # Cleanup
     echo "Cleaning up.."
     rm -rf ./dist
@@ -452,6 +475,7 @@ if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
     if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
         lookandfeeltool -a "$GLOBALTHEMENAME"
         clear
+        echo "The cursors will fully apply once you log out"
     else
         echo "You can apply theme at any time using system settings"
         sleep 0.5

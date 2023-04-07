@@ -1,12 +1,14 @@
 [kdeglobals][General]
 ColorScheme=Catppuccin--flavour--accentName
 
+[kcminputrc][Mouse]
+cursorTheme=Catppuccin---flavour---accentName-Cursors
+
 [kwinrc][org.kde.kdecoration2]
-library=org.kde.kwin.aurorae
-theme=--aurorae
 ButtonsOnLeft=
 ButtonsOnRight=IAX
-BorderSize=None
+library=org.kde.kwin.aurorae
+theme=--aurorae
 
 [plasmarc][Theme]
 name=lightly-plasma-git
