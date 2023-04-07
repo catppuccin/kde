@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Syntax <Flavour = 1-4 > <Accent = 1-14> <WindowDec = 1/2> <Debug = global/color/splash/cursor>
+
 COLORDIR=~/.local/share/color-schemes
 AURORAEDIR=~/.local/share/aurorae/themes
 LOOKANDFEELDIR=~/.local/share/plasma/look-and-feel
@@ -409,6 +411,7 @@ function InstallColorscheme {
 }
 
 function GetCursor {
+    # Fetches cursors 
     echo "Downloading Catppuccin Cursors from Catppuccin/cursors..."
     sleep 1.5
     wget -P ./dist https://github.com/catppuccin/cursors/releases/download/v0.2.0/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"-Cursors.zip
@@ -424,6 +427,7 @@ function InstallCursor {
     mv ./dist/Catppuccin-"$FLAVOURNAME"-Dark-Cursors $CURSORDIR
 }
 
+# Syntax <Flavour> <Accent> <WindowDec> <Debug = global/color/splash/cursor>
 if [[ $DEBUGMODE == "" ]]; then
     echo ""
     echo "Install $FLAVOURNAME $ACCENTNAME? with the $WINDECSTYLENAME window Decorations? [y/n]:"
