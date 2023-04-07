@@ -14,7 +14,7 @@ s/$blue/137, 180, 250/g
 s/$lavender/180, 190, 254/g
 s/$text/205, 214, 244/g
 s/$subtext1/186, 194, 222/g
-s/$subtext0/166, 173, 200   /g
+s/$subtext0/166, 173, 200/g
 s/$overlay1/127, 132, 156/g
 s/$overlay2/147, 153, 178/g
 s/$overlay0/108, 112, 134/g

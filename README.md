@@ -20,19 +20,19 @@
 
 <details>
 <summary>🌻 Latte</summary>
-<img src="https://github.com/catppuccin/kde/blob/main/Assets/Latte.webp"/>
+<img src="https://github.com/catppuccin/kde/blob/main/Resources/LookAndFeel/Catppuccin-Latte-Global/contents/previews/fullscreenpreview.jpg"/>
 </details>
 <details>
 <summary>🪴 Frappé</summary>
-<img src="https://github.com/catppuccin/kde/blob/main/Assets/Frappe.webp"/>
+<img src="https://github.com/catppuccin/kde/blob/main/Resources/LookAndFeel/Catppuccin-Frappe-Global/contents/previews/fullscreenpreview.jpg"/>
 </details>
 <details>
 <summary>🌺 Macchiato</summary>
-<img src="https://github.com/catppuccin/kde/blob/main/Assets/Macchiato.webp"/>
+<img src="https://github.com/catppuccin/kde/blob/main/Resources/LookAndFeel/Catppuccin-Macchiato-Global/contents/previews/fullscreenpreview.jpg"/>
 </details>
 <details>
 <summary>🌿 Mocha</summary>
-<img src="https://github.com/catppuccin/kde/blob/main/Assets/Mocha.webp"/>
+<img src="https://github.com/catppuccin/kde/blob/main/Resources/LookAndFeel/Catppuccin-Mocha-Global/contents/previews/fullcreenpreview.jpg"/>
 </details>
 
 ## Installation
