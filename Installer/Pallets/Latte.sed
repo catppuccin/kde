@@ -19,7 +19,7 @@ s/$overlay2/124, 127, 147/g
 s/$overlay1/140, 143, 161/g
 s/$overlay0/156, 160, 176/g
 s/$surface2/172, 176, 190/g
-s/$surface1/188, 192, 204   /g
+s/$surface1/188, 192, 204/g
 s/$surface0/204, 208, 218/g
 s/$base/239, 241, 245/g
 s/$mantle/230, 233, 239/g

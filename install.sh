@@ -330,15 +330,15 @@ function BuildSplashScreen {
     # Hydrate Dummy colors according to Pallet
     FLAVOURNAME=$FLAVOURNAME ./Installer/color-build.sh -s ./Resources/Splash/images/busywidget.svg -o ./dist/$GLOBALTHEMENAME/contents/splash/images/_busywidget.svg
     # Replace Accent in colors file
-    sed ./dist/$GLOBALTHEMENAME/contents/splash/images/_busywidget.svg -e s/REPLACE--ACCENT/$ACCENTCOLOR/g > ./dist/$GLOBALTHEMENAME/contents/splash/images/busywidget.svg
+    sed ./dist/"$GLOBALTHEMENAME"/contents/splash/images/_busywidget.svg -e s/REPLACE--ACCENT/$ACCENTCOLOR/g > ./dist/"$GLOBALTHEMENAME"/contents/splash/images/busywidget.svg
     # Cleanup temporary file
     rm ./dist/"$GLOBALTHEMENAME"/contents/splash/images/_busywidget.svg
 
     # Hydrate Dummy colors according to Pallet (QML file)
-    sed -e s/REPLACE--MANTLE/$MANTLECOLOR/g ./Resources/Splash/Splash.qml > ./dist/$GLOBALTHEMENAME/contents/splash/Splash.qml
+    sed -e s/REPLACE--MANTLE/"$MANTLECOLOR"/g ./Resources/Splash/Splash.qml > ./dist/"$GLOBALTHEMENAME"/contents/splash/Splash.qml
     # Add CTP Logo
     if [[ $FLAVOUR != "4" ]]; then
-        cp ./Resources/Splash/images/Logo.png ./dist/$GLOBALTHEMENAME/contents/splash//images/Logo.png
+        cp ./Resources/Splash/images/Logo.png ./dist/"$GLOBALTHEMENAME"/contents/splash/images/Logo.png
     else
         cp ./Resources/Splash/images/Latte_Logo.png ./dist/"$GLOBALTHEMENAME"/contents/splash/images/Logo.png
     fi
@@ -347,14 +347,14 @@ function BuildSplashScreen {
 function InstallGlobalTheme {
 
     # Prepare Global Theme Folder
-    cp -r ./Resources/LookAndFeel/Catppuccin-$FLAVOURNAME-Global ./dist/$GLOBALTHEMENAME
-    mkdir -p ./dist/$GLOBALTHEMENAME/contents/splash/images
+    cp -r ./Resources/LookAndFeel/Catppuccin-"$FLAVOURNAME"-Global ./dist/"$GLOBALTHEMENAME"
+    mkdir -p ./dist/"$GLOBALTHEMENAME"/contents/splash/images
     
     # Hydrate Metadata with Pallet + Accent Info
-    sed -e s/--accentName/$ACCENTNAME/g -e s/--flavour/$FLAVOURNAME/g ./Resources/LookAndFeel/metadata.desktop > ./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME/metadata.desktop
+    sed -e s/--accentName/"$ACCENTNAME"/g -e s/--flavour/"$FLAVOURNAME"/g ./Resources/LookAndFeel/metadata.desktop > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME/metada"ta.desktop
 
     # Modify 'defaults' to set the correct Aurorae Theme
-    sed -e s/--accentName/$ACCENTNAME/g -e s/--flavour/$FLAVOURNAME/g -e s/--aurorae/$WINDECSTYLECODE/g ./Resources/LookAndFeel/defaults > ./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME/contents/defaults
+    sed -e s/--accentName/"$ACCENTNAME"/g -e s/--flavour/"$FLAVOURNAME"/g -e s/--aurorae/"$WINDECSTYLECODE"/g ./Resources/LookAndFeel/defaults > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/contents/defaults
 
     # Build SplashScreen
     echo "Building SplashScreen.."
@@ -381,7 +381,7 @@ function InstallGlobalTheme {
         echo " 1: Rerunning the install script"
         echo " 2: Check your intenet connection"
         echo " 3: See if https://store.kde.org is blocked"
-        echo " 4: Manually installing Lightly-plasma from https://pling.com/p/1879921/"
+        echo " 4: Manually installing Lightly-Plasma from https://pling.com/p/1879921/"
         echo ""
         echo "Would you like to install Catppuccin/KDE without lightly plasma? [y/n]:"
         read -r CONFIRMATION
@@ -405,23 +405,23 @@ function InstallColorscheme {
 
     # Install Colorscheme
     echo "Installing Colorscheme.."
-    mv ./dist/Catppuccin$FLAVOURNAME$ACCENTNAME.colors $COLORDIR
+    mv ./dist/Catppuccin"$FLAVOURNAME$ACCENTNAME".colors $COLORDIR
 }
 
 function GetCursor {
     echo "Downloading Catppuccin Cursors from Catppuccin/cursors..."
     sleep 1.5
-    wget -P ./dist https://github.com/catppuccin/cursors/releases/download/v0.2.0/Catppuccin-$FLAVOURNAME-$ACCENTNAME-Cursors.zip
-    wget -P ./dist https://github.com/catppuccin/cursors/releases/download/v0.2.0/Catppuccin-$FLAVOURNAME-Dark-Cursors.zip 
-    cd ./dist && unzip Catppuccin-$FLAVOURNAME-$ACCENTNAME-Cursors.zip
-    unzip Catppuccin-$FLAVOURNAME-Dark-Cursors.zip
+    wget -P ./dist https://github.com/catppuccin/cursors/releases/download/v0.2.0/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"-Cursors.zip
+    wget -P ./dist https://github.com/catppuccin/cursors/releases/download/v0.2.0/Catppuccin-"$FLAVOURNAME"-Dark-Cursors.zip 
+    cd ./dist && unzip Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"-Cursors.zip
+    unzip Catppuccin-"$FLAVOURNAME"-Dark-Cursors.zip
     cd ..
 }
 
 function InstallCursor {
     GetCursor
-    mv ./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME-Cursors $CURSORDIR
-    mv ./dist/Catppuccin-$FLAVOURNAME-Dark-Cursors $CURSORDIR
+    mv ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"-Cursors $CURSORDIR
+    mv ./dist/Catppuccin-"$FLAVOURNAME"-Dark-Cursors $CURSORDIR
 }
 
 if [[ $DEBUGMODE == "" ]]; then
@@ -439,8 +439,8 @@ elif [[ $DEBUGMODE == "splash" ]]; then
     # Prepare Global Theme Folder
     GLOBALTHEMENAME="Catppuccin-$FLAVOURNAME-$ACCENTNAME"
 
-    cp -r ./Resources/LookAndFeel/Catppuccin-$FLAVOURNAME-Global ./dist/$GLOBALTHEMENAME
-    mkdir -p ./dist/$GLOBALTHEMENAME/contents/splash/images
+    cp -r ./Resources/LookAndFeel/Catppuccin-"$FLAVOURNAME"-Global ./dist/"$GLOBALTHEMENAME"
+    mkdir -p ./dist/"$GLOBALTHEMENAME"/contents/splash/images
 
     BuildSplashScreen
 elif [[ $DEBUGMODE == "cursor" ]]; then
