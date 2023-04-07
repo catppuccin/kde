@@ -14,7 +14,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 Rectangle {
     id: root
-    color: REPLACE--MANTLE
+    color: "REPLACE--MANTLE"
 
     property int stage
 

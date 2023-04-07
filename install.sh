@@ -287,7 +287,7 @@ function ModifyLightlyPlasma {
 }
 
 function AuroraeInstall {
-    
+
     if [[ $WINDECSTYLE == "1" ]]; then
         cp ./Resources/Aurorae/Catppuccin"$FLAVOURNAME"-Modern $AURORAEDIR -r
         if [[ $FLAVOUR = "4" ]]; then
@@ -336,9 +336,9 @@ function BuildSplashScreen {
     sed -e s/REPLACE--MANTLE/$MANTLECOLOR/g ./Resources/Splash/Splash.qml > ./dist/$GLOBALTHEMENAME/contents/splash/Splash.qml
     # Add CTP Logo
     if [[ $FLAVOUR != "4" ]]; then
-        cp ./Resources/Splash/images/Logo.png ./dist/$GLOBALTHEMENAME/contents/splash/images
+        cp ./Resources/Splash/images/Logo.png ./dist/$GLOBALTHEMENAME/contents/splash//images/Logo.png
     else
-        cp ./Resources/Splash/images/Logo.png ./dist/"$GLOBALTHEMENAME"/contents/splash/images/Logo.png
+        cp ./Resources/Splash/images/Latte_Logo.png ./dist/"$GLOBALTHEMENAME"/contents/splash/images/Logo.png
     fi
 }
 
@@ -350,6 +350,7 @@ function InstallGlobalTheme {
     
     # Hydrate Metadata with Pallet + Accent Info
     sed -e s/--accentName/$ACCENTNAME/g -e s/--flavour/$FLAVOURNAME/g ./Resources/LookAndFeel/metadata.desktop > ./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME/metadata.desktop
+    
     # Modify 'defaults' to set the correct Aurorae Theme
     sed -e s/--accentName/$ACCENTNAME/g -e s/--flavour/$FLAVOURNAME/g -e s/--aurorae/$WINDECSTYLECODE/g ./Resources/LookAndFeel/defaults > ./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME/contents/defaults
 
