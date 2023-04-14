@@ -13,26 +13,26 @@
 
 
 <p align="center">
-  <img src="https://github.com/catppuccin/kde/blob/main/Assets/res.png"/>
+  <img src="./Assets/res.webp"/>
 </p>
 
 ## Previews
 
 <details>
 <summary>🌻 Latte</summary>
-<img src="https://github.com/catppuccin/kde/blob/main/Resources/LookAndFeel/Catppuccin-Latte-Global/contents/previews/fullscreenpreview.jpg"/>
+<img src="./Resources/LookAndFeel/Catppuccin-Latte-Global/contents/previews/fullscreenpreview.jpg"/>
 </details>
 <details>
 <summary>🪴 Frappé</summary>
-<img src="https://github.com/catppuccin/kde/blob/main/Resources/LookAndFeel/Catppuccin-Frappe-Global/contents/previews/fullscreenpreview.jpg"/>
+<img src="./Resources/LookAndFeel/Catppuccin-Frappe-Global/contents/previews/fullscreenpreview.jpg"/>
 </details>
 <details>
 <summary>🌺 Macchiato</summary>
-<img src="https://github.com/catppuccin/kde/blob/main/Resources/LookAndFeel/Catppuccin-Macchiato-Global/contents/previews/fullscreenpreview.jpg"/>
+<img src="./Resources/LookAndFeel/Catppuccin-Macchiato-Global/contents/previews/fullscreenpreview.jpg"/>
 </details>
 <details>
 <summary>🌿 Mocha</summary>
-<img src="https://github.com/catppuccin/kde/blob/main/Resources/LookAndFeel/Catppuccin-Mocha-Global/contents/previews/fullcreenpreview.jpg"/>
+<img src="./Resources/LookAndFeel/Catppuccin-Mocha-Global/contents/previews/fullscreenpreview.jpg"/>
 </details>
 
 ## Installation
@@ -62,6 +62,7 @@ The theme makes modifications to [doncsugar's](https://github.com/doncsugar) [li
 - [Prayag2](https://github.com/Prayag2)
 - [Sourcastic](https://github.com/Sourcastic)  
 - [Cequallium](https://github.com/Cequallium)
+- [justTOBBI](https://github.com/justTOBBI)
 
 
 
