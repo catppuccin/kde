@@ -32,7 +32,7 @@
 </details>
 <details>
 <summary>🌿 Mocha</summary>
-<img src="https://github.com/catppuccin/kde/blob/main/Resources/LookAndFeel/Catppuccin-Mocha-Global/contents/previews/fullcreenpreview.jpg"/>
+<img src="https://github.com/catppuccin/kde/blob/main/Resources/LookAndFeel/Catppuccin-Mocha-Global/contents/previews/fullscreenpreview.jpg"/>
 </details>
 
 ## Installation
