@@ -13,7 +13,7 @@
 
 
 <p align="center">
-  <img src="https://github.com/catppuccin/kde/blob/main/Assets/res.png"/>
+  <img src="./Assets/res.webp"/>
 </p>
 
 ## Previews
@@ -62,6 +62,7 @@ The theme makes modifications to [doncsugar's](https://github.com/doncsugar) [li
 - [Prayag2](https://github.com/Prayag2)
 - [Sourcastic](https://github.com/Sourcastic)  
 - [Cequallium](https://github.com/Cequallium)
+- [justTOBBI](https://github.com/justTOBBI)
 
 
 
