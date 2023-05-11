@@ -38,7 +38,7 @@
 ## Installation
 
 ### For KDE Plasma Desktop:
-1. `git clone https://github.com/catppuccin/kde catppuccin-kde && cd catppuccin-kde --depth=1`
+1. `git clone --depth=1 https://github.com/catppuccin/kde catppuccin-kde && cd catppuccin-kde`
 2. Run the install script using `./install.sh` and follow the instructions.
 
 ### For Krita:
