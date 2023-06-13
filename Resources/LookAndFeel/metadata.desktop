@@ -10,4 +10,4 @@ X-KDE-PluginInfo-Name=Catppuccin---flavour---accentName
 X-KDE-PluginInfo-Version=0.2.4
 X-KDE-PluginInfo-Website=github.com/catppuccin/KDE
 X-KDE-ServiceTypes=Plasma/LookAndFeel
-X-KPackage-Dependencies=kns://plasma-themes.knsrc/api.kde-look.org/1879921
+X-KPackage-Dependencies=kns://plasma-themes.knsrc/api.kde-look.org/1879921,kns://aurorae.knsrc/api.kde-look.org/--StoreNo

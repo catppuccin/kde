@@ -262,14 +262,37 @@ fi
 if [[ $WINDECSTYLE == "1" ]]; then
     WINDECSTYLENAME=Modern
     WINDECSTYLECODE=__aurorae__svg__Catppuccin"$FLAVOURNAME"-Modern
+
+    if [[ $FLAVOUR == "1" ]]; then
+    StoreNo="2023219";
+    elif [[ $FLAVOUR == "2" ]]; then
+    StoreNo="2023220";
+    elif [[ $FLAVOUR == "3" ]]; then
+    StoreNo="2023222";
+    elif [[ $FLAVOUR == "4" ]]; then
+    StoreNo="2023224";
+    fi
+
     echo "Hey! thanks for picking 'Modern', this one has a few rules or else it might break
  1: Use 3 icons on the right, With the 'Close' Button on the Far-Right
  2: If you would like the pin on all desktops button, You need to place it on the left."
     echo "We apologize if you wanted a different configuration :("
     sleep 2
+
 elif [[ $WINDECSTYLE == "2" ]]; then
     WINDECSTYLENAME=Classic
     WINDECSTYLECODE=__aurorae__svg__Catppuccin"$FLAVOURNAME"-Classic
+
+    if [[ $FLAVOUR == "1" ]]; then
+    StoreNo="2023180";
+    elif [[ $FLAVOUR == "2" ]]; then
+    StoreNo="2023202";
+    elif [[ $FLAVOUR == "3" ]]; then
+    StoreNo="2023203";
+    elif [[ $FLAVOUR == "4" ]]; then
+    StoreNo="2023217";
+    fi
+
 else
     echo "Not a valid Window decoration"
 fi
@@ -290,25 +313,6 @@ function ModifyLightlyPlasma {
     # Modify description to state that it has been modified by the KDE Catppuccin Installer
     sed -e s/A\ plasma\ style\ with\ close\ to\ the\ look\ of\ the\ newest\ Lightly./*MODIFIED\ BY\ CATPPUCCIN\ KDE\ INSTALLER*\ A\ plasma\ style\ with\ close\ to\ the\ look\ of\ the\ newest\ Lightly./g $DESKTOPTHEMEDIR/lightly-plasma-git/metadata.desktop >> $DESKTOPTHEMEDIR/lightly-plasma-git/newMetadata.desktop
     cp -f $DESKTOPTHEMEDIR/metadata.desktop $DESKTOPTHEMEDIR/lightly-plasma-git/metadata.desktop && rm $DESKTOPTHEMEDIR/metadata.desktop
-}
-
-function AuroraeInstall {
-
-    if [[ $WINDECSTYLE == "1" ]]; then
-        cp ./Resources/Aurorae/Catppuccin"$FLAVOURNAME"-Modern $AURORAEDIR -r
-        if [[ $FLAVOUR = "4" ]]; then
-            cp ./Resources/Aurorae/Common/CatppuccinLatte-Modernrc $AURORAEDIR/CatppuccinLatte-Modern/CatppuccinLatte-Modernrc
-        else
-            cp ./Resources/Aurorae/Common/Catppuccin-Modernrc $AURORAEDIR/Catppuccin"$FLAVOURNAME"-Modern/Catppuccin"$FLAVOURNAME"-Modernrc
-        fi
-    elif [[ $WINDECSTYLE == "2" ]]; then
-        cp ./Resources/Aurorae/Catppuccin"$FLAVOURNAME"-Classic $AURORAEDIR -r
-        if [[ $FLAVOUR = "4" ]]; then
-            cp ./Resources/Aurorae/Common/CatppuccinLatte-Classicrc $AURORAEDIR/CatppuccinLatte-Classic/CatppuccinLatte-Classicrc
-        else
-            cp ./Resources/Aurorae/Common/Catppuccin-Classicrc $AURORAEDIR/Catppuccin"$FLAVOURNAME"-Classic/Catppuccin"$FLAVOURNAME"-Classicrc
-        fi
-    fi
 }
 
 function BuildColorscheme {
@@ -355,7 +359,7 @@ function InstallGlobalTheme {
     mkdir -p ./dist/"$GLOBALTHEMENAME"/contents/splash/images
 
     # Hydrate Metadata with Pallet + Accent Info
-    sed -e s/--accentName/"$ACCENTNAME"/g -e s/--flavour/"$FLAVOURNAME"/g ./Resources/LookAndFeel/metadata.desktop > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME/metada"ta.desktop
+    sed -e s/--accentName/"$ACCENTNAME"/g -e s/--flavour/"$FLAVOURNAME"/g -e s/--StoreNo/"$StoreNo"/g ./Resources/LookAndFeel/metadata.desktop > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME/metada"ta.desktop
 
     # Modify 'defaults' to set the correct Aurorae Theme
     sed -e s/--accentName/"$ACCENTNAME"/g -e s/--flavour/"$FLAVOURNAME"/g -e s/--aurorae/"$WINDECSTYLECODE"/g ./Resources/LookAndFeel/defaults > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/contents/defaults
