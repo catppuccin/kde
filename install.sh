@@ -351,7 +351,10 @@ function BuildSplashScreen {
     else
         cp ./Resources/splash-screen/contents/images/Latte_Logo.png ./dist/"$SPLASHSCREENNAME"/contents/splash/images/Logo.png
     fi
-    sed -e s/--accentName/"$ACCENTNAME"/g -e s/--flavour/"$FLAVOURNAME"/g ./Resources/splash-screen/metadata.desktop > ./dist/$SPLASHSCREENNAME/metadata.desktop
+    sed -e s/--accentName/"$ACCENTNAME"/g -e s/--flavour/"$FLAVOURNAME"/g ./Resources/splash-screen/metadata.desktop > ./dist/"$SPLASHSCREENNAME"/metadata.desktop
+    mkdir ./dist/"$SPLASHSCREENNAME"/contents/previews
+    cp ./Resources/splash-previews/"$FLAVOURNAME".png ./dist/"$SPLASHSCREENNAME"/contents/previews/splash.png
+    cp ./Resources/splash-previews/"$FLAVOURNAME".png ./dist/"$SPLASHSCREENNAME"/contents/previews/preview.png
     cp -r ./dist/"$SPLASHSCREENNAME" ~/.local/share/plasma/look-and-feel/
 }
 
