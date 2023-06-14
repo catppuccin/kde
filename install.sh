@@ -249,6 +249,7 @@ else echo "Not a valid accent" && exit
 fi
 
 GLOBALTHEMENAME="Catppuccin-$FLAVOURNAME-$ACCENTNAME"
+SPLASHSCREENNAME="Catppuccin-$FLAVOURNAME-$ACCENTNAME-splash"
 
 if [[ "$3" == "" ]]; then
     echo "Choose window decoration style -
@@ -264,13 +265,13 @@ if [[ $WINDECSTYLE == "1" ]]; then
     WINDECSTYLECODE=__aurorae__svg__Catppuccin"$FLAVOURNAME"-Modern
 
     if [[ $FLAVOUR == "1" ]]; then
-    StoreNo="2023219";
+    StoreAuroraeNo="2023219";
     elif [[ $FLAVOUR == "2" ]]; then
-    StoreNo="2023220";
+    StoreAuroraeNo="2023220";
     elif [[ $FLAVOUR == "3" ]]; then
-    StoreNo="2023222";
+    StoreAuroraeNo="2023222";
     elif [[ $FLAVOUR == "4" ]]; then
-    StoreNo="2023224";
+    StoreAuroraeNo="2023224";
     fi
 
     echo "Hey! thanks for picking 'Modern', this one has a few rules or else it might break
@@ -284,13 +285,13 @@ elif [[ $WINDECSTYLE == "2" ]]; then
     WINDECSTYLECODE=__aurorae__svg__Catppuccin"$FLAVOURNAME"-Classic
 
     if [[ $FLAVOUR == "1" ]]; then
-    StoreNo="2023180";
+    StoreAuroraeNo="2023180";
     elif [[ $FLAVOUR == "2" ]]; then
-    StoreNo="2023202";
+    StoreAuroraeNo="2023202";
     elif [[ $FLAVOUR == "3" ]]; then
-    StoreNo="2023203";
+    StoreAuroraeNo="2023203";
     elif [[ $FLAVOUR == "4" ]]; then
-    StoreNo="2023217";
+    StoreAuroraeNo="2023217";
     fi
 
 else
@@ -336,30 +337,32 @@ function BuildSplashScreen {
     fi
 
     # Hydrate Dummy colors according to Pallet
-    FLAVOURNAME=$FLAVOURNAME ./Installer/color-build.sh -s ./Resources/Splash/images/busywidget.svg -o ./dist/$GLOBALTHEMENAME/contents/splash/images/_busywidget.svg
+    FLAVOURNAME=$FLAVOURNAME ./Installer/color-build.sh -s ./Resources/splash-screen/contents/splash/images/busywidget.svg -o ./dist/$SPLASHSCREENNAME/contents/splash/images/_busywidget.svg
     # Replace Accent in colors file
-    sed ./dist/"$GLOBALTHEMENAME"/contents/splash/images/_busywidget.svg -e s/REPLACE--ACCENT/$ACCENTCOLOR/g > ./dist/"$GLOBALTHEMENAME"/contents/splash/images/busywidget.svg
+    sed ./dist/"$SPLASHSCREENNAME"/contents/splash/images/_busywidget.svg -e s/REPLACE--ACCENT/$ACCENTCOLOR/g > ./dist/"$SPLASHSCREENNAME"/contents/splash/images/busywidget.svg
     # Cleanup temporary file
-    rm ./dist/"$GLOBALTHEMENAME"/contents/splash/images/_busywidget.svg
+    rm ./dist/"$SPLASHSCREENNAME"/contents/splash/images/_busywidget.svg
 
     # Hydrate Dummy colors according to Pallet (QML file)
-    sed -e s/REPLACE--MANTLE/"$MANTLECOLOR"/g ./Resources/Splash/Splash.qml > ./dist/"$GLOBALTHEMENAME"/contents/splash/Splash.qml
+    sed -e s/REPLACE--MANTLE/"$MANTLECOLOR"/g ./Resources/splash-screen/contents/splash/Splash.qml > ./dist/"$SPLASHSCREENNAME"/contents/splash/Splash.qml
     # Add CTP Logo
     if [[ $FLAVOUR != "4" ]]; then
-        cp ./Resources/Splash/images/Logo.png ./dist/"$GLOBALTHEMENAME"/contents/splash/images/Logo.png
+        cp ./Resources/splash-screen/contents/splash/images/Logo.png ./dist/"$SPLASHSCREENNAME"/contents/splash/images/Logo.png
     else
-        cp ./Resources/Splash/images/Latte_Logo.png ./dist/"$GLOBALTHEMENAME"/contents/splash/images/Logo.png
+        cp ./Resources/splash-screen/contents/images/Latte_Logo.png ./dist/"$SPLASHSCREENNAME"/contents/splash/images/Logo.png
     fi
+    sed -e s/--accentName/"$ACCENTNAME"/g -e s/--flavour/"$FLAVOURNAME"/g ./Resources/splash-screen/metadata.desktop > ./dist/$SPLASHSCREENNAME/metadata.desktop
+    cp -r ./dist/"$SPLASHSCREENNAME" ~/.local/share/plasma/look-and-feel/
 }
 
 function InstallGlobalTheme {
 
     # Prepare Global Theme Folder
     cp -r ./Resources/LookAndFeel/Catppuccin-"$FLAVOURNAME"-Global ./dist/"$GLOBALTHEMENAME"
-    mkdir -p ./dist/"$GLOBALTHEMENAME"/contents/splash/images
+    mkdir -p ./dist/"$SPLASHSCREENNAME"/contents/splash/images
 
     # Hydrate Metadata with Pallet + Accent Info
-    sed -e s/--accentName/"$ACCENTNAME"/g -e s/--flavour/"$FLAVOURNAME"/g -e s/--StoreNo/"$StoreNo"/g ./Resources/LookAndFeel/metadata.desktop > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME/metada"ta.desktop
+    sed -e s/--accentName/"$ACCENTNAME"/g -e s/--flavour/"$FLAVOURNAME"/g -e s/--StoreAuroraeNo/"$StoreAuroraeNo"/g ./Resources/LookAndFeel/metadata.desktop > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/metadata.desktop
 
     # Modify 'defaults' to set the correct Aurorae Theme
     sed -e s/--accentName/"$ACCENTNAME"/g -e s/--flavour/"$FLAVOURNAME"/g -e s/--aurorae/"$WINDECSTYLECODE"/g ./Resources/LookAndFeel/defaults > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/contents/defaults
@@ -466,9 +469,6 @@ if [[ $CONFIRMATION == "Y" ]] || [[ $CONFIRMATION == "y" ]]; then
 
     # Build Colorscheme
     InstallColorscheme
-
-    echo "Installing aurorae theme.."
-    AuroraeInstall
 
     echo "Installing Catppuccin Cursor theme.."
     InstallCursor
