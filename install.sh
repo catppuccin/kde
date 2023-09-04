@@ -449,7 +449,7 @@ case "$DEBUGMODE" in
     *) echo "Invalid Debug Mode" ;;
 esac
 
-if [ "$CONFIRMATION" = "Y" ]] || [ "$CONFIRMATION" = "y" ]; then
+if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
     # Build and Install Global Theme
     InstallGlobalTheme
 
