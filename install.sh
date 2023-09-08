@@ -359,10 +359,11 @@ InstallGlobalTheme() {
 EOF
     sleep 1
     echo "Installing Global Theme.."
-    cd ./dist
-    tar -cf "$GLOBALTHEMENAME".tar.gz "$GLOBALTHEMENAME"
-    kpackagetool5 -i "$GLOBALTHEMENAME".tar.gz
-    cd ..
+    (
+        cd ./dist
+        tar -cf "$GLOBALTHEMENAME".tar.gz "$GLOBALTHEMENAME"
+        kpackagetool5 -i "$GLOBALTHEMENAME".tar.gz
+    )
 
     if [ ! -d "$DESKTOPTHEMEDIR/lightly-plasma-git/" ]; then
         clear
@@ -378,7 +379,7 @@ Here are some things you can do to try fixing this:
 Would you like to install Catppuccin/KDE without lightly plasma? [Y/n]:
 EOF
         read -r CONFIRMATION
-        if[[ "$CONFIRMATION" = "N" ] || [ "$CONFIRMATION" = "n" ]; then
+        if [ "$CONFIRMATION" = "N" ] || [ "$CONFIRMATION" = "n" ]; then
             echo
             echo "Exiting..."
             exit
@@ -408,10 +409,11 @@ GetCursor() {
     sleep 2
     wget -P ./dist https://github.com/catppuccin/cursors/releases/download/v0.2.0/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"-Cursors.zip
     wget -P ./dist https://github.com/catppuccin/cursors/releases/download/v0.2.0/Catppuccin-"$FLAVOURNAME"-Dark-Cursors.zip
-    cd ./dist
-    unzip Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"-Cursors.zip
-    unzip Catppuccin-"$FLAVOURNAME"-Dark-Cursors.zip
-    cd ..
+    (
+        cd ./dist
+        unzip Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"-Cursors.zip
+        unzip Catppuccin-"$FLAVOURNAME"-Dark-Cursors.zip
+    )
 }
 
 InstallCursor() {
@@ -468,7 +470,7 @@ if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
     echo "Do you want to apply theme? [y/N]:"
     read -r CONFIRMATION
 
-    if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" == "y" ]; then
+    if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
         lookandfeeltool -a "$GLOBALTHEMENAME"
         clear
         # Some legacy apps still look in ~/.icons
