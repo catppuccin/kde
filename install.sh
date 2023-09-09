@@ -29,35 +29,23 @@ Choose flavor out of -
     2. Macchiato
     3. Frappé
     4. Latte
-    (Type the number corresponding to said pallet)
+    (Type the number corresponding to said palette)
 EOF
     read -r FLAVOUR
     clear
 fi
 
 case "$FLAVOUR" in
-    1)
-        echo "The pallet Mocha(1) was selected"
-        FLAVOURNAME="Mocha"
-        ;;
-    2)
-        echo "The pallet Macchiato(2) was selected"
-        FLAVOURNAME="Macchiato"
-        ;;
-    3)
-        echo "The pallet Frappe(3) was selected"
-        FLAVOURNAME="Frappe"
-        ;;
-    4)
-        echo "The pallet Latte(4) was selected"
-        FLAVOURNAME="Latte"
-        ;;
+    1) FLAVOURNAME="Mocha" ;;
+    2) FLAVOURNAME="Macchiato" ;;
+    3) FLAVOURNAME="Frappe" ;;
+    4) FLAVOURNAME="Latte" ;;
     *)
         echo "Not a valid flavour name: $FLAVOUR"
         exit 1
         ;;
 esac
-
+echo "The palette $FLAVOURNAME($FLAVOUR) was selected"
 echo
 
 if [ -z "$2" ]; then
@@ -82,7 +70,7 @@ EOF
     clear
 fi
 
-# Sets accent based on the pallet selected (Best to fold this in your respective editor)
+# Sets accent based on the palette selected (Best to fold this in your respective editor)
 case "$ACCENT" in
     1)
         case "$FLAVOUR" in
@@ -91,7 +79,6 @@ case "$ACCENT" in
             3) ACCENTCOLOR="242,213,207" ;;
             4) ACCENTCOLOR="220,138,120" ;;
         esac
-        echo "Accent Rosewater(1) was selected!"
         ACCENTNAME="Rosewater"
         ;;
     2)
@@ -101,7 +88,6 @@ case "$ACCENT" in
             3) ACCENTCOLOR="238,190,190" ;;
             4) ACCENTCOLOR="221,120,120" ;;
         esac
-        echo "Accent Flamingo(2) was selected!"
         ACCENTNAME="Flamingo"
         ;;
     3)
@@ -111,7 +97,6 @@ case "$ACCENT" in
             3) ACCENTCOLOR="244,184,228" ;;
             4) ACCENTCOLOR="234,118,203" ;;
         esac
-        echo "Accent Pink(3) was selected!"
         ACCENTNAME="Pink"
         ;;
     4)
@@ -121,7 +106,6 @@ case "$ACCENT" in
             3) ACCENTCOLOR="202,158,230" ;;
             4) ACCENTCOLOR="136,57,239" ;;
         esac
-        echo "Accent Mauve(4) was selected!"
         ACCENTNAME="Mauve"
         ;;
     5)
@@ -131,7 +115,6 @@ case "$ACCENT" in
             3) ACCENTCOLOR="231,130,132" ;;
             4) ACCENTCOLOR="210,15,57" ;;
         esac
-        echo "Accent Red(5) was selected!"
         ACCENTNAME="Red"
         ;;
     6)
@@ -141,7 +124,6 @@ case "$ACCENT" in
             3) ACCENTCOLOR="234,153,156" ;;
             4) ACCENTCOLOR="230,69,83" ;;
         esac
-        echo "Accent Maroon(6) was selected!"
         ACCENTNAME="Maroon"
         ;;
     7)
@@ -151,7 +133,6 @@ case "$ACCENT" in
             3) ACCENTCOLOR="239,159,118" ;;
             4) ACCENTCOLOR="254,100,11" ;;
         esac
-        echo "Accent Peach(7) was selected!"
         ACCENTNAME="Peach"
         ;;
     8)
@@ -161,7 +142,6 @@ case "$ACCENT" in
             3) ACCENTCOLOR="229,200,144" ;;
             4) ACCENTCOLOR="223,142,29" ;;
         esac
-        echo "Accent Yellow(8) was selected!"
         ACCENTNAME="Yellow"
         ;;
     9)
@@ -171,7 +151,6 @@ case "$ACCENT" in
             3) ACCENTCOLOR="166,209,137" ;;
             4) ACCENTCOLOR="64,160,43" ;;
         esac
-        echo "Accent Green(9) was selected!"
         ACCENTNAME="Green"
         ;;
     10)
@@ -181,7 +160,6 @@ case "$ACCENT" in
             3) ACCENTCOLOR="129,200,190" ;;
             4) ACCENTCOLOR="23,146,153" ;;
         esac
-        echo "Accent Teal(10) was selected!"
         ACCENTNAME="Teal"
         ;;
     11)
@@ -191,7 +169,6 @@ case "$ACCENT" in
             3) ACCENTCOLOR="153,209,219" ;;
             4) ACCENTCOLOR="4,165,229" ;;
         esac
-        echo "Accent Sky(11) was selected!"
         ACCENTNAME="Sky"
         ;;
     12)
@@ -201,7 +178,6 @@ case "$ACCENT" in
             3) ACCENTCOLOR="133,193,220" ;;
             4) ACCENTCOLOR="32,159,181" ;;
         esac
-        echo "Accent Sapphire(12) was selected!"
         ACCENTNAME="Sapphire"
         ;;
     13)
@@ -211,7 +187,6 @@ case "$ACCENT" in
             3) ACCENTCOLOR="140,170,238" ;;
             4) ACCENTCOLOR="30,102,245" ;;
         esac
-        echo "Accent Blue(13) was selected!"
         ACCENTNAME="Blue"
         ;;
     14)
@@ -221,7 +196,6 @@ case "$ACCENT" in
             3) ACCENTCOLOR="186,187,241" ;;
             4) ACCENTCOLOR="114,135,253" ;;
         esac
-        echo "Accent Lavender(14) was selected!"
         ACCENTNAME="Lavender"
         ;;
     *)
@@ -229,6 +203,7 @@ case "$ACCENT" in
         exit 1
         ;;
 esac
+echo "Accent $ACCENTNAME($ACCENT) was selected!"
 
 GLOBALTHEMENAME="Catppuccin-$FLAVOURNAME-$ACCENTNAME"
 SPLASHSCREENNAME="Catppuccin-$FLAVOURNAME-$ACCENTNAME-splash"
