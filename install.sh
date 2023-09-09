@@ -2,11 +2,11 @@
 
 # Syntax <Flavour = 1-4 > <Accent = 1-14> <WindowDec = 1/2> <Debug = global/color/splash/cursor>
 
-COLORDIR="${XDG_DATA_DIR:-$HOME/.local/share}/color-schemes"
-AURORAEDIR="${XDG_DATA_DIR:-$HOME/.local/share}/aurorae/themes"
-LOOKANDFEELDIR="${XDG_DATA_DIR:-$HOME/.local/share}/plasma/look-and-feel"
-DESKTOPTHEMEDIR="${XDG_DATA_DIR:-$HOME/.local/share}/plasma/desktoptheme"
-CURSORDIR="${XDG_DATA_DIR:-$HOME/.local/share}/icons"
+COLORDIR="${XDG_DATA_HOME:-$HOME/.local/share}/color-schemes"
+AURORAEDIR="${XDG_DATA_HOME:-$HOME/.local/share}/aurorae/themes"
+LOOKANDFEELDIR="${XDG_DATA_HOME:-$HOME/.local/share}/plasma/look-and-feel"
+DESKTOPTHEMEDIR="${XDG_DATA_HOME:-$HOME/.local/share}/plasma/desktoptheme"
+CURSORDIR="${XDG_DATA_HOME:-$HOME/.local/share}/icons"
 
 echo "Creating theme directories.."
 mkdir -p "$COLORDIR" "$AURORAEDIR" "$LOOKANDFEELDIR" "$DESKTOPTHEMEDIR" "$CURSORDIR"
@@ -330,7 +330,7 @@ BuildSplashScreen() {
     mkdir ./dist/"$SPLASHSCREENNAME"/contents/previews
     cp ./Resources/splash-previews/"$FLAVOURNAME".png ./dist/"$SPLASHSCREENNAME"/contents/previews/splash.png
     cp ./Resources/splash-previews/"$FLAVOURNAME".png ./dist/"$SPLASHSCREENNAME"/contents/previews/preview.png
-    cp -r ./dist/"$SPLASHSCREENNAME" "${XDG_DATA_DIR:-$HOME/.local/share}"/plasma/look-and-feel/
+    cp -r ./dist/"$SPLASHSCREENNAME" "${XDG_DATA_HOME:-$HOME/.local/share}"/plasma/look-and-feel/
 }
 
 InstallGlobalTheme() {
