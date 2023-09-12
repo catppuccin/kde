@@ -32,4 +32,4 @@ if echo "$FLAVOURNAME" | grep -Evq 'Mocha|Macchiato|Frappe|Latte'; then
     echo "Invalid palette $FLAVOURNAME"
     exit
 fi
-sed -f "Installer/Pallets/$FLAVOURNAME.sed" < "$SOURCE" > "$OUT"
+sed -f Installer/Pallets/"$FLAVOURNAME".sed "$SOURCE" > "$OUT"
