@@ -10,6 +10,7 @@
         "Dependencies": [
         ],
         "EnabledByDefault": true,
+        "Description": "Soothing Pastel theme for Kwin",
         "Id": "CatppuccinMocha-Classic",
         "License": "MIT",
         "Name": "Catppuccin Mocha Classic",

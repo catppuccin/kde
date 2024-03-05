@@ -10,6 +10,7 @@
         "Dependencies": [
         ],
         "EnabledByDefault": true,
+        "Description": "Soothing Pastel theme for Kwin",
         "Id": "CatppuccinLatte-Modern",
         "License": "MIT",
         "Name": "Catppuccin Latte Modern",
