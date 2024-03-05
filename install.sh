@@ -2,6 +2,21 @@
 
 # Syntax <Flavour = 1-4 > <Accent = 1-14> <WindowDec = 1/2> <Debug = global/color/splash/cursor>
 
+check_command_exists() {
+  command_name="$@"
+
+  if ! command -v "$command_name" &> /dev/null; then
+    echo "Error: Dependency '$command_name' is not met."
+    echo "Exiting.."
+    exit 1
+  fi
+}
+
+check_command_exists "wget"
+check_command_exists "sed"
+check_command_exists "unzip"
+check_command_exists "lookandfeeltool"
+
 COLORDIR="${XDG_DATA_HOME:-$HOME/.local/share}/color-schemes"
 AURORAEDIR="${XDG_DATA_HOME:-$HOME/.local/share}/aurorae/themes"
 LOOKANDFEELDIR="${XDG_DATA_HOME:-$HOME/.local/share}/plasma/look-and-feel"
