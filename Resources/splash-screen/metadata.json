@@ -1,0 +1,18 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "core@catppuccin.com",
+                "Name": "Catppuccin"
+            }
+        ],
+        "Category": "Plasma Look And Feel",
+        "Dependencies": [
+        ],
+        "EnabledByDefault": true,
+        "Id": "Catppuccin---flavour---accentName-splash",
+        "License": "MIT",
+        "Name": "Catppuccin --flavour --accentName",
+        "Version": "0.2.6"
+    }
+}

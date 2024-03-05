@@ -1,0 +1,18 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "core@catppuccin.com",
+                "Name": "Catppuccin"
+            }
+        ],
+        "Category": "",
+        "Dependencies": [
+        ],
+        "EnabledByDefault": true,
+        "Id": "CatppuccinMocha-Classic",
+        "License": "MIT",
+        "Name": "Catppuccin Mocha Classic",
+        "Version": "0.2.6"
+    }
+}

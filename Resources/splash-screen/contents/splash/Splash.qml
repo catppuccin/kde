@@ -7,10 +7,10 @@
     SPDX-License-Identifier: MIT
 */
 
-import QtGraphicalEffects 1.15
+import Qt5Compat.GraphicalEffects 1.15
 import QtQuick 2.5
 import QtQuick.Window 2.2
-import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.core as PlasmaCore
 
 Rectangle {
     id: root

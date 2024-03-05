@@ -1,0 +1,24 @@
+{
+    "KPackageStructure": "Plasma/LookAndFeel",
+
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "core@catppuccin.com",
+                "Name": "Catppuccin"
+            }
+        ],
+        "Category": "Global Themes (Plasma 6)",
+        "Dependencies": [
+        ],
+        "EnabledByDefault": true,
+        "Id": "Catppuccin---flavour---accentName-splash",
+        "License": "MIT",
+        "Name": "Catppuccin --flavour --accentName",
+        "Version": "0.2.6"
+    },
+    "X-KPackage-Dependencies": [
+        "kns://plasma-themes.knsrc/api.kde-look.org/1879921",
+        "kns://aurorae.knsrc/api.kde-look.org/--StoreAuroraeNo"
+    ]
+}
