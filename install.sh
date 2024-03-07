@@ -335,10 +335,10 @@ BuildSplashScreen() {
 InstallAuroraeTheme() {
 	# Prepare Aurorae Theme Folder
 	cp -r ./Resources/Aurorae/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME" ./dist/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME"
-    if [ "$FLAVOUR" -eq 1 ] || [ "$FLAVOUR" -eq 2 ]; then
-		cp ./Resources/Aurorae/Common/Catppuccin-"$WINDECSTYLENAME"rc ./dist/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME"/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME"rc
-	else
+    if [ "$FLAVOUR" -eq 4 ]; then
 		cp ./Resources/Aurorae/Common/CatppuccinLatte-"$WINDECSTYLENAME"rc ./dist/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME"/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME"rc
+	else
+		cp ./Resources/Aurorae/Common/Catppuccin-"$WINDECSTYLENAME"rc ./dist/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME"/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME"rc
 	fi
 
 	echo "Installing Aurorae Theme..."
