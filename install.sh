@@ -240,10 +240,10 @@ case "$WINDECSTYLE" in
         WINDECSTYLECODE=__aurorae__svg__Catppuccin"$FLAVOURNAME"-Modern
     
         case "$FLAVOUR" in
-            1) StoreAuroraeNo="2023219" ;;
-            2) StoreAuroraeNo="2023220" ;;
-            3) StoreAuroraeNo="2023222" ;;
-            4) StoreAuroraeNo="2023224" ;;
+            1) StoreAuroraeNo="2135229" ;;
+            2) StoreAuroraeNo="2135227" ;;
+            3) StoreAuroraeNo="2135225" ;;
+            4) StoreAuroraeNo="2135223" ;;
         esac
 
         cat <<EOF
@@ -261,10 +261,10 @@ EOF
         WINDECSTYLECODE=__aurorae__svg__Catppuccin"$FLAVOURNAME"-Classic
     
         case "$FLAVOUR" in
-            1) StoreAuroraeNo="2023180" ;;
-            2) StoreAuroraeNo="2023202" ;;
-            3) StoreAuroraeNo="2023203" ;;
-            4) StoreAuroraeNo="2023217" ;;
+            1) StoreAuroraeNo="2135228" ;;
+            2) StoreAuroraeNo="2135226" ;;
+            3) StoreAuroraeNo="2135224" ;;
+            4) StoreAuroraeNo="2135222" ;;
         esac
 
 		cat <<EOF
@@ -376,6 +376,7 @@ EOF
         cd ./dist
         tar -cf "$GLOBALTHEMENAME".tar.gz "$GLOBALTHEMENAME"
         kpackagetool6 -i "$GLOBALTHEMENAME".tar.gz
+        cp -r $GLOBALTHEMENAME $LOOKANDFEELDIR
     )
 
     if [ ! -d "$DESKTOPTHEMEDIR/lightly-plasma-git/" ]; then
