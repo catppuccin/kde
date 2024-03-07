@@ -11,7 +11,7 @@
         "Dependencies": [
         ],
         "EnabledByDefault": true,
-        "Id": "Catppuccin---flavour---accentName-splash",
+        "Id": "Catppuccin---flavour---accentName",
         "License": "MIT",
         "Name": "Catppuccin --flavour --accentName",
         "Version": "0.2.6"
