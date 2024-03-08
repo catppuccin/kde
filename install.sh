@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Syntax <Flavour = 1-4 > <Accent = 1-14> <WindowDec = 1/2> <Debug = global/color/splash/cursor>
+# Syntax <Flavour = 1-4 > <Accent = 1-14> <WindowDec = 1/2> <Debug = aurorae/global/color/splash/cursor>
 
 check_command_exists() {
   command_name="$@"
@@ -31,7 +31,6 @@ mkdir ./dist
 FLAVOUR="$1"
 ACCENT="$2"
 WINDECSTYLE="$3"
-
 DEBUGMODE="$4"
 
 clear
@@ -60,7 +59,7 @@ case "$FLAVOUR" in
         exit 1
         ;;
 esac
-echo "The palette $FLAVOURNAME($FLAVOUR) was selected"
+echo "$FLAVOURNAME($FLAVOUR) palette was selected."
 echo
 
 if [ -z "$2" ]; then
@@ -218,13 +217,14 @@ case "$ACCENT" in
         exit 1
         ;;
 esac
-echo "Accent $ACCENTNAME($ACCENT) was selected!"
+echo "$ACCENTNAME($ACCENT) accent color was selected."
 
 GLOBALTHEMENAME="Catppuccin-$FLAVOURNAME-$ACCENTNAME"
 SPLASHSCREENNAME="Catppuccin-$FLAVOURNAME-$ACCENTNAME-splash"
 
 if [ -z "$3" ]; then
     cat <<EOF
+
 Choose window decoration style -
     1. Modern (Mixed)
     2. Classic (MacOS like)
@@ -233,20 +233,23 @@ EOF
     clear
 fi
 
+WINDECSTYLENAME=""
 case "$WINDECSTYLE" in
     1)
         WINDECSTYLENAME=Modern
         WINDECSTYLECODE=__aurorae__svg__Catppuccin"$FLAVOURNAME"-Modern
     
         case "$FLAVOUR" in
-            1) StoreAuroraeNo="2023219" ;;
-            2) StoreAuroraeNo="2023220" ;;
-            3) StoreAuroraeNo="2023222" ;;
-            4) StoreAuroraeNo="2023224" ;;
+            1) StoreAuroraeNo="2135229" ;;
+            2) StoreAuroraeNo="2135227" ;;
+            3) StoreAuroraeNo="2135225" ;;
+            4) StoreAuroraeNo="2135223" ;;
         esac
-    
+
         cat <<EOF
-Hey! thanks for picking 'Modern', this one has a few rules or else it might break
+
+Modern($WINDECSTYLE) decorations were selected.
+These decorations have a few rules that may cause issues.
  1: Use 3 icons on the right, With the 'Close' Button on the Far-Right
  2: If you would like the pin on all desktops button, You need to place it on the left.
 We apologize if you wanted a different configuration :(
@@ -258,17 +261,21 @@ EOF
         WINDECSTYLECODE=__aurorae__svg__Catppuccin"$FLAVOURNAME"-Classic
     
         case "$FLAVOUR" in
-            1) StoreAuroraeNo="2023180" ;;
-            2) StoreAuroraeNo="2023202" ;;
-            3) StoreAuroraeNo="2023203" ;;
-            4) StoreAuroraeNo="2023217" ;;
+            1) StoreAuroraeNo="2135228" ;;
+            2) StoreAuroraeNo="2135226" ;;
+            3) StoreAuroraeNo="2135224" ;;
+            4) StoreAuroraeNo="2135222" ;;
         esac
+
+		cat <<EOF
+
+Classic($WINDECSTYLE) decorations were selected.
+EOF
         ;;
     *) echo "Not a valid Window decoration" ;;
 esac
 
 ModifyLightlyPlasma() {
-
     rm -rf "$DESKTOPTHEMEDIR"/lightly-plasma-git/icons/*
     rm -rf "$DESKTOPTHEMEDIR"/lightly-plasma-git/translucent
     rm "$DESKTOPTHEMEDIR"/lightly-plasma-git/widgets/tabbar.svgz
@@ -317,10 +324,25 @@ BuildSplashScreen() {
         cp ./Resources/splash-screen/contents/splash/images/Latte_Logo.png ./dist/"$SPLASHSCREENNAME"/contents/splash/images/Logo.png
     fi
     sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g" ./Resources/splash-screen/metadata.desktop > ./dist/"$SPLASHSCREENNAME"/metadata.desktop
+	sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g" ./Resources/splash-screen/metadata.json > ./dist/"$SPLASHSCREENNAME"/metadata.json
+	cp ./dist/"$GLOBALTHEMENAME"/contents/defaults ./dist/"$SPLASHSCREENNAME"/contents/defaults
     mkdir ./dist/"$SPLASHSCREENNAME"/contents/previews
     cp ./Resources/splash-previews/"$FLAVOURNAME".png ./dist/"$SPLASHSCREENNAME"/contents/previews/splash.png
     cp ./Resources/splash-previews/"$FLAVOURNAME".png ./dist/"$SPLASHSCREENNAME"/contents/previews/preview.png
-    cp -r ./dist/"$SPLASHSCREENNAME" "${XDG_DATA_HOME:-$HOME/.local/share}"/plasma/look-and-feel/
+    cp -r ./dist/"$SPLASHSCREENNAME" "$LOOKANDFEELDIR"/
+}
+
+InstallAuroraeTheme() {
+	# Prepare Aurorae Theme Folder
+	cp -r ./Resources/Aurorae/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME" ./dist/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME"
+    if [ "$FLAVOUR" -eq 4 ]; then
+		cp ./Resources/Aurorae/Common/CatppuccinLatte-"$WINDECSTYLENAME"rc ./dist/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME"/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME"rc
+	else
+		cp ./Resources/Aurorae/Common/Catppuccin-"$WINDECSTYLENAME"rc ./dist/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME"/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME"rc
+	fi
+
+	echo "Installing Aurorae Theme..."
+	cp -r ./dist/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME"/ "$AURORAEDIR"
 }
 
 InstallGlobalTheme() {
@@ -330,6 +352,7 @@ InstallGlobalTheme() {
 
     # Hydrate Metadata with Pallet + Accent Info
     sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g; s/--StoreAuroraeNo/$StoreAuroraeNo/g" ./Resources/LookAndFeel/metadata.desktop > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/metadata.desktop
+	sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g; s/--StoreAuroraeNo/$StoreAuroraeNo/g" ./Resources/LookAndFeel/metadata.json > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/metadata.json
 
     # Modify 'defaults' to set the correct Aurorae Theme
     sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g; s/--aurorae/$WINDECSTYLECODE/g" ./Resources/LookAndFeel/defaults > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/contents/defaults
@@ -352,7 +375,8 @@ EOF
     (
         cd ./dist
         tar -cf "$GLOBALTHEMENAME".tar.gz "$GLOBALTHEMENAME"
-        kpackagetool5 -i "$GLOBALTHEMENAME".tar.gz
+        kpackagetool6 -i "$GLOBALTHEMENAME".tar.gz
+        cp -r $GLOBALTHEMENAME $LOOKANDFEELDIR
     )
 
     if [ ! -d "$DESKTOPTHEMEDIR/lightly-plasma-git/" ]; then
@@ -397,12 +421,12 @@ GetCursor() {
     # Fetches cursors
     echo "Downloading Catppuccin Cursors from Catppuccin/cursors..."
     sleep 2
-    wget -P ./dist https://github.com/catppuccin/cursors/releases/download/v0.2.0/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"-Cursors.zip
-    wget -P ./dist https://github.com/catppuccin/cursors/releases/download/v0.2.0/Catppuccin-"$FLAVOURNAME"-Dark-Cursors.zip
+    wget -q -P ./dist https://github.com/catppuccin/cursors/releases/download/v0.2.0/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"-Cursors.zip
+    wget -q -P ./dist https://github.com/catppuccin/cursors/releases/download/v0.2.0/Catppuccin-"$FLAVOURNAME"-Dark-Cursors.zip
     (
         cd ./dist
-        unzip Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"-Cursors.zip
-        unzip Catppuccin-"$FLAVOURNAME"-Dark-Cursors.zip
+        unzip -q Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"-Cursors.zip
+        unzip -q Catppuccin-"$FLAVOURNAME"-Dark-Cursors.zip
     )
 }
 
@@ -412,7 +436,7 @@ InstallCursor() {
     mv ./dist/Catppuccin-"$FLAVOURNAME"-Dark-Cursors "$CURSORDIR"
 }
 
-# Syntax <Flavour> <Accent> <WindowDec> <Debug = global/color/splash/cursor>
+# Syntax <Flavour> <Accent> <WindowDec> <Debug = aurorae/global/color/splash/cursor>
 case "$DEBUGMODE" in
     "")
         echo
@@ -420,6 +444,10 @@ case "$DEBUGMODE" in
         read -r CONFIRMATION
         clear
         ;;
+	aurorae)
+		InstallAuroraeTheme
+		exit
+		;;
     global)
         InstallGlobalTheme
         exit
@@ -442,6 +470,9 @@ case "$DEBUGMODE" in
 esac
 
 if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
+	# Build and Install Aurorae Theme
+    InstallAuroraeTheme
+
     # Build and Install Global Theme
     InstallGlobalTheme
 
@@ -453,7 +484,7 @@ if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
 
     # Cleanup
     echo "Cleaning up.."
-    rm -rf ./dist
+	rm -r ./dist
 
     # Apply theme
     echo
