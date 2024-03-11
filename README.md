@@ -57,13 +57,11 @@
 The theme makes modifications to [doncsugar's](https://github.com/doncsugar) [lightly plasma style](https://github.com/doncsugar/lightly-plasma). It is licensed under GPL 3.0 and as such, all the changes to the plasma theme are also licensed under GPL. The MIT License still applies to the color scheme, splash screen and the window decorations theme.
 
 
-## 💝 Thanks to
+## 💝 Current Maintainer
+- [Sourcastic](https://github.com/Sourcastic)
 
+## 💖 Past Maintainers
 - [Prayag2](https://github.com/Prayag2)
-- [Sourcastic](https://github.com/Sourcastic)  
-- [Cequallium](https://github.com/Cequallium)
-- [justTOBBI](https://github.com/justTOBBI)
-
 
 
 &nbsp;
