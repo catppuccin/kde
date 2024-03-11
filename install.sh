@@ -3,9 +3,9 @@
 # Syntax <Flavour = 1-4 > <Accent = 1-14> <WindowDec = 1/2> <Debug = global/color/splash/cursor>
 
 check_command_exists() {
-  command_name="$@"
+  command_name="${*}"
 
-  if ! command -v "$command_name" &> /dev/null; then
+  if ! command -v "$command_name" >/dev/null 2>&1; then
     echo "Error: Dependency '$command_name' is not met."
     echo "Exiting.."
     exit 1
@@ -290,7 +290,7 @@ BuildColorscheme() {
     # Add Metadata & Replace Accent in colors file
     sed "s/--accentColor/$ACCENTCOLOR/g; s/--flavour/$FLAVOURNAME/g; s/--accentName/$ACCENTNAME/g" ./Resources/Base.colors > ./dist/base.colors
     # Hydrate Dummy colors according to Pallet
-    FLAVOURNAME="$FLAVOURNAME" ./Installer/color-build.sh -o ./dist/Catppuccin"$FLAVOURNAME$ACCENTNAME".colors -s ./dist/base.colors
+    ./Installer/color-build.sh -f "$FLAVOURNAME" -o ./dist/Catppuccin"$FLAVOURNAME$ACCENTNAME".colors -s ./dist/base.colors
 }
 
 BuildSplashScreen() {
@@ -350,7 +350,7 @@ EOF
     sleep 1
     echo "Installing Global Theme.."
     (
-        cd ./dist
+        cd ./dist || exit
         tar -cf "$GLOBALTHEMENAME".tar.gz "$GLOBALTHEMENAME"
         kpackagetool5 -i "$GLOBALTHEMENAME".tar.gz
     )
@@ -400,7 +400,7 @@ GetCursor() {
     wget -P ./dist https://github.com/catppuccin/cursors/releases/download/v0.2.0/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"-Cursors.zip
     wget -P ./dist https://github.com/catppuccin/cursors/releases/download/v0.2.0/Catppuccin-"$FLAVOURNAME"-Dark-Cursors.zip
     (
-        cd ./dist
+        cd ./dist || exit
         unzip Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"-Cursors.zip
         unzip Catppuccin-"$FLAVOURNAME"-Dark-Cursors.zip
     )
