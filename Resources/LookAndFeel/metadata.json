@@ -17,7 +17,6 @@
         "Version": "0.2.6"
     },
     "X-KPackage-Dependencies": [
-        "kns://plasma-themes.knsrc/api.kde-look.org/1879921",
         "kns://aurorae.knsrc/api.kde-look.org/--StoreAuroraeNo"
     ]
 }

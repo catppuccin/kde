@@ -20,11 +20,10 @@ check_command_exists "lookandfeeltool"
 COLORDIR="${XDG_DATA_HOME:-$HOME/.local/share}/color-schemes"
 AURORAEDIR="${XDG_DATA_HOME:-$HOME/.local/share}/aurorae/themes"
 LOOKANDFEELDIR="${XDG_DATA_HOME:-$HOME/.local/share}/plasma/look-and-feel"
-DESKTOPTHEMEDIR="${XDG_DATA_HOME:-$HOME/.local/share}/plasma/desktoptheme"
 CURSORDIR="${XDG_DATA_HOME:-$HOME/.local/share}/icons"
 
 echo "Creating theme directories.."
-mkdir -p "$COLORDIR" "$AURORAEDIR" "$LOOKANDFEELDIR" "$DESKTOPTHEMEDIR" "$CURSORDIR"
+mkdir -p "$COLORDIR" "$AURORAEDIR" "$LOOKANDFEELDIR" "$CURSORDIR"
 mkdir ./dist
 
 # Fast install
@@ -238,7 +237,7 @@ case "$WINDECSTYLE" in
     1)
         WINDECSTYLENAME=Modern
         WINDECSTYLECODE=__aurorae__svg__Catppuccin"$FLAVOURNAME"-Modern
-    
+
         case "$FLAVOUR" in
             1) StoreAuroraeNo="2135229" ;;
             2) StoreAuroraeNo="2135227" ;;
@@ -259,7 +258,7 @@ EOF
     2)
         WINDECSTYLENAME=Classic
         WINDECSTYLECODE=__aurorae__svg__Catppuccin"$FLAVOURNAME"-Classic
-    
+
         case "$FLAVOUR" in
             1) StoreAuroraeNo="2135228" ;;
             2) StoreAuroraeNo="2135226" ;;
@@ -274,24 +273,6 @@ EOF
         ;;
     *) echo "Not a valid Window decoration" ;;
 esac
-
-ModifyLightlyPlasma() {
-    rm -rf "$DESKTOPTHEMEDIR"/lightly-plasma-git/icons/*
-    rm -rf "$DESKTOPTHEMEDIR"/lightly-plasma-git/translucent
-    rm "$DESKTOPTHEMEDIR"/lightly-plasma-git/widgets/tabbar.svgz
-    rm "$DESKTOPTHEMEDIR"/lightly-plasma-git/dialogs/background.svgz
-
-    # Copy Patches
-    cp -rf "$DESKTOPTHEMEDIR"/lightly-plasma-git/solid/* "$DESKTOPTHEMEDIR"/lightly-plasma-git
-    cp -rf ./Patches/glowbar.svg "$DESKTOPTHEMEDIR"/lightly-plasma-git/widgets
-    cp -rf ./Patches/background.svg "$DESKTOPTHEMEDIR"/lightly-plasma-git/widgets
-    cp ./Patches/panel-background.svgz "$DESKTOPTHEMEDIR"/lightly-plasma-git/widgets
-
-    # Modify description to state that it has been modified by the KDE Catppuccin Installer
-    sed -i 's/A plasma style with close to the look of the newest Lightly./*MODIFIED BY CATPPUCCIN KDE INSTALLER* &/g' "$DESKTOPTHEMEDIR"/lightly-plasma-git/metadata.desktop
-    cp -f "$DESKTOPTHEMEDIR"/metadata.desktop "$DESKTOPTHEMEDIR"/lightly-plasma-git/metadata.desktop
-    rm "$DESKTOPTHEMEDIR"/metadata.desktop
-}
 
 BuildColorscheme() {
     # Add Metadata & Replace Accent in colors file
@@ -323,13 +304,13 @@ BuildSplashScreen() {
     else
         cp ./Resources/splash-screen/contents/splash/images/Latte_Logo.png ./dist/"$SPLASHSCREENNAME"/contents/splash/images/Logo.png
     fi
-    sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g" ./Resources/splash-screen/metadata.desktop > ./dist/"$SPLASHSCREENNAME"/metadata.desktop
-	sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g" ./Resources/splash-screen/metadata.json > ./dist/"$SPLASHSCREENNAME"/metadata.json
-	cp ./dist/"$GLOBALTHEMENAME"/contents/defaults ./dist/"$SPLASHSCREENNAME"/contents/defaults
+    #sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g" ./Resources/splash-screen/metadata.desktop > ./dist/"$SPLASHSCREENNAME"/metadata.desktop
+	#sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g" ./Resources/splash-screen/metadata.json > ./dist/"$SPLASHSCREENNAME"/metadata.json
     mkdir ./dist/"$SPLASHSCREENNAME"/contents/previews
     cp ./Resources/splash-previews/"$FLAVOURNAME".png ./dist/"$SPLASHSCREENNAME"/contents/previews/splash.png
-    cp ./Resources/splash-previews/"$FLAVOURNAME".png ./dist/"$SPLASHSCREENNAME"/contents/previews/preview.png
-    cp -r ./dist/"$SPLASHSCREENNAME" "$LOOKANDFEELDIR"/
+    # cp ./Resources/splash-previews/"$FLAVOURNAME".png ./dist/"$SPLASHSCREENNAME"/contents/previews/preview.png
+    cp -r ./dist/"$SPLASHSCREENNAME"/contents/splash/ "$LOOKANDFEELDIR"/"$GLOBALTHEMENAME"/contents/
+    cp -r ./dist/"$SPLASHSCREENNAME"/contents/previews/* "$LOOKANDFEELDIR"/"$GLOBALTHEMENAME"/contents/previews/
 }
 
 InstallAuroraeTheme() {
@@ -357,9 +338,7 @@ InstallGlobalTheme() {
     # Modify 'defaults' to set the correct Aurorae Theme
     sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g; s/--aurorae/$WINDECSTYLECODE/g" ./Resources/LookAndFeel/defaults > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/contents/defaults
 
-    # Build SplashScreen
-    echo "Building SplashScreen.."
-    BuildSplashScreen
+
 
     # Install Global Theme.
     # This refers to the QDBusConnection: error: could not send signal to service error
@@ -368,7 +347,7 @@ InstallGlobalTheme() {
     cat <<EOF
 
  WARNING: There might be some errors that might not affect the installer at all during this step, Please advise.
- 
+
 EOF
     sleep 1
     echo "Installing Global Theme.."
@@ -379,31 +358,9 @@ EOF
         cp -r $GLOBALTHEMENAME $LOOKANDFEELDIR
     )
 
-    if [ ! -d "$DESKTOPTHEMEDIR/lightly-plasma-git/" ]; then
-        clear
-        cat <<EOF
-
-Installation failed, could not fetch the lightly plasma theme lightly-plasma-git from store.kde.org
-Here are some things you can do to try fixing this:
- 1: Rerunning the install script
- 2: Check your intenet connection
- 3: See if https://store.kde.org is blocked
- 4: Manually installing Lightly-Plasma from https://pling.com/p/1879921/
-
-Would you like to install Catppuccin/KDE without lightly plasma? [Y/n]:
-EOF
-        read -r CONFIRMATION
-        if [ "$CONFIRMATION" = "N" ] || [ "$CONFIRMATION" = "n" ]; then
-            echo
-            echo "Exiting..."
-            exit
-        fi
-        echo
-        echo "Continuing without lightly plasma.."
-    else
-        echo "Modifying lightly plasma theme.."
-        ModifyLightlyPlasma
-    fi
+    # Build SplashScreen
+    echo "Building SplashScreen.."
+    BuildSplashScreen
 }
 
 InstallColorscheme() {
