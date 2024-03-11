@@ -50,20 +50,14 @@
 
 
 ## Notes
-1. To get a modern, more consistent look, install the [Lightly application style](https://github.com/Luwx/Lightly) and select it from System Settings > Appearance >  Application Style > Lightly.
-2. If you encounter an error similar to 'connection refused' while running the installation script, it may be due to store.kde.org being down or issues with your internet connection.
-
-## Licensing
-The theme makes modifications to [doncsugar's](https://github.com/doncsugar) [lightly plasma style](https://github.com/doncsugar/lightly-plasma). It is licensed under GPL 3.0 and as such, all the changes to the plasma theme are also licensed under GPL. The MIT License still applies to the color scheme, splash screen and the window decorations theme.
+If you encounter an error similar to 'connection refused' while running the installation script, it may be due to store.kde.org being down or issues with your internet connection.
 
 
-## 💝 Thanks to
+## 💝 Current Maintainer
+- [Sourcastic](https://github.com/Sourcastic)
 
+## 💖 Past Maintainers
 - [Prayag2](https://github.com/Prayag2)
-- [Sourcastic](https://github.com/Sourcastic)  
-- [Cequallium](https://github.com/Cequallium)
-- [justTOBBI](https://github.com/justTOBBI)
-
 
 
 &nbsp;
