@@ -11,7 +11,7 @@ library=org.kde.kwin.aurorae
 theme=--aurorae
 
 [plasmarc][Theme]
-name=lightly-plasma-git
+name=default
 
 [KSplash]
 Theme=Catppuccin---flavour---accentName-splash
