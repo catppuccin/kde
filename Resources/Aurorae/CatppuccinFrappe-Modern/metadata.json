@@ -1,0 +1,19 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "core@catppuccin.com",
+                "Name": "Catppuccin"
+            }
+        ],
+        "Category": "",
+        "Dependencies": [
+        ],
+        "EnabledByDefault": true,
+        "Description": "Soothing Pastel theme for Kwin",
+        "Id": "CatppuccinFrappe-Modern",
+        "License": "MIT",
+        "Name": "Catppuccin Frappe Modern",
+        "Version": "0.2.6"
+    }
+}

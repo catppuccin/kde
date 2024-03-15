@@ -50,11 +50,8 @@
 
 
 ## Notes
-1. To get a modern, more consistent look, install the [Lightly application style](https://github.com/Luwx/Lightly) and select it from System Settings > Appearance >  Application Style > Lightly.
+1. If you are using KDE 5.27 or below, you might want to run `git checkout v0.2.5`  before running the install script to avoid running into compatibility issues. Alternatively, the release binaries are available [here](https://github.com/catppuccin/kde/releases/tag/v0.2.5).
 2. If you encounter an error similar to 'connection refused' while running the installation script, it may be due to store.kde.org being down or issues with your internet connection.
-
-## Licensing
-The theme makes modifications to [doncsugar's](https://github.com/doncsugar) [lightly plasma style](https://github.com/doncsugar/lightly-plasma). It is licensed under GPL 3.0 and as such, all the changes to the plasma theme are also licensed under GPL. The MIT License still applies to the color scheme, splash screen and the window decorations theme.
 
 
 ## 💝 Current Maintainer
