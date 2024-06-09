@@ -1,0 +1,3 @@
+{%- macro storeCode(f) -%}
+{{ f.name }}
+{%- endmacro -%}

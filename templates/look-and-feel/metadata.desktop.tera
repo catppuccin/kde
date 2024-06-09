@@ -1,0 +1,22 @@
+---
+whiskers:
+  version: 2.3.0
+  matrix:
+    - flavor
+    - accent
+  filename: "dist/Catppuccin-{{ flavor.identifier | capitalize }}-{{ accent | capitalize }}/metadata.desktop"
+---
+{%- set accent = flavor.colors[accent] -%}
+[Desktop Entry]
+Comment=A theme based on Catppuccin's {{ flavor.name }} flavour
+Name=Catppuccin {{ flavor.name }} {{ accent.name }}
+X-KDE-PluginInfo-Author=KDE-Catppuccin
+X-KDE-PluginInfo-Category=Global Themes (Plasma 6)
+X-KDE-PluginInfo-Email=core@catppuccin.com
+X-KDE-PluginInfo-EnabledByDefault=true
+X-KDE-PluginInfo-License=MIT
+X-KDE-PluginInfo-Name=Catppuccin-{{ flavor.name }}-{{ accent.name }}
+X-KDE-PluginInfo-Version=0.2.6
+X-KDE-PluginInfo-Website=github.com/catppuccin/KDE
+X-KDE-ServiceTypes=Plasma/LookAndFeel
+X-KPackage-Dependencies=kns://aurorae.knsrc/api.kde-look.org/{{ storeCode }}

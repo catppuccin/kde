@@ -1,0 +1,27 @@
+---
+whiskers:
+  version: 2.3.0
+  matrix:
+    - flavor
+    - accent
+    - style: [ "Modern", "Classic" ]
+  filename: "dist/Catppuccin-{{ flavor.identifier | capitalize }}-{{ accent | capitalize }}/contents/defaults"
+---
+{%- set accent = flavor.colors[accent] -%}
+[kdeglobals][General]
+ColorScheme=Catppuccin{{ flavor.name }}{{ accent }}
+
+[kcminputrc][Mouse]
+cursorTheme=Catppuccin{{ flavor.name }}{{ accent }}
+
+[kwinrc][org.kde.kdecoration2]
+ButtonsOnLeft=
+ButtonsOnRight=IAX
+library=org.kde.kwin.aurorae
+theme=__aurorae__svg__Catppuccin{{ flavor.name }}-{{ style }}
+
+[plasmarc][Theme]
+name=default
+
+[KSplash]
+Theme=Catppuccin{{ flavor.name }}{{ accent }}-splash

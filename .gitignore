@@ -3,3 +3,4 @@
 .directory
 .kate-swp
 dist/**
+.direnv/
