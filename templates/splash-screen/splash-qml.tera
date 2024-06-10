@@ -4,7 +4,7 @@ whiskers:
   matrix:
     - flavor
     - accent
-  filename: "dist/Catppuccin-{{ flavor.identifier | capitalize }}-{{ accent | capitalize }}/Splash/contents/splash/Splash.qml"
+  filename: "dist/catppuccin-{{ flavor.identifier }}-{{ accent }}/Splash/contents/splash/Splash.qml"
 ---
 /*
     SPDX-FileCopyrightText:

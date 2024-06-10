@@ -4,7 +4,7 @@ whiskers:
   matrix:
     - flavor
     - accent
-  filename: "dist/catppuccin-{{ flavor.identifier }}-{{ accent }}/metadata.json"
+  filename: "dist/catppuccin-{{ flavor.identifier }}-{{ accent }}/Splash/metadata.json"
 ---
 {%- set accent = flavor.colors[accent] -%}
 {
@@ -20,12 +20,9 @@ whiskers:
         "Dependencies": [
         ],
         "EnabledByDefault": true,
-        "Id": "catppuccin-{{ flavor.identifier }}-{{ accent.identifier }}",
+        "Id": "catppuccin-{{ flavor.identifier }}-{{ accent.identifier }}-splash",
         "License": "MIT",
-        "Name": "Catppuccin {{ flavor.name }} {{ accent.name }}",
+        "Name": "Catppuccin {{ flavor.name }} {{ accent.name }}-splash",
         "Version": "0.2.6"
-    },
-    "X-KPackage-Dependencies": [
-        "kns://aurorae.knsrc/api.kde-look.org/{{ storeCode }}"
-    ]
+    }
 }

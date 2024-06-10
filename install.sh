@@ -15,7 +15,7 @@ check_command_exists() {
 check_command_exists "wget"
 check_command_exists "sed"
 check_command_exists "unzip"
-check_command_exists "lookandfeeltool"
+# check_command_exists "lookandfeeltool"
 
 COLORDIR="${XDG_DATA_HOME:-$HOME/.local/share}/color-schemes"
 AURORAEDIR="${XDG_DATA_HOME:-$HOME/.local/share}/aurorae/themes"
@@ -23,7 +23,7 @@ LOOKANDFEELDIR="${XDG_DATA_HOME:-$HOME/.local/share}/plasma/look-and-feel"
 CURSORDIR="${XDG_DATA_HOME:-$HOME/.local/share}/icons"
 
 echo "Creating theme directories.."
-mkdir -p "$COLORDIR" "$AURORAEDIR" "$LOOKANDFEELDIR" "$CURSORDIR"
+# mkdir -p "$COLORDIR" "$AURORAEDIR" "$LOOKANDFEELDIR" "$CURSORDIR"
 mkdir ./dist
 
 # Fast install
@@ -304,13 +304,14 @@ BuildSplashScreen() {
     else
         cp ./Resources/splash-screen/contents/splash/images/Latte_Logo.png ./dist/"$SPLASHSCREENNAME"/contents/splash/images/Logo.png
     fi
+
     #sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g" ./Resources/splash-screen/metadata.desktop > ./dist/"$SPLASHSCREENNAME"/metadata.desktop
 	#sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g" ./Resources/splash-screen/metadata.json > ./dist/"$SPLASHSCREENNAME"/metadata.json
     mkdir ./dist/"$SPLASHSCREENNAME"/contents/previews
     cp ./Resources/splash-previews/"$FLAVOURNAME".png ./dist/"$SPLASHSCREENNAME"/contents/previews/splash.png
     # cp ./Resources/splash-previews/"$FLAVOURNAME".png ./dist/"$SPLASHSCREENNAME"/contents/previews/preview.png
-    cp -r ./dist/"$SPLASHSCREENNAME"/contents/splash/ "$LOOKANDFEELDIR"/"$GLOBALTHEMENAME"/contents/
-    cp -r ./dist/"$SPLASHSCREENNAME"/contents/previews/* "$LOOKANDFEELDIR"/"$GLOBALTHEMENAME"/contents/previews/
+#    cp -r ./dist/"$SPLASHSCREENNAME"/contents/splash/ "$LOOKANDFEELDIR"/"$GLOBALTHEMENAME"/contents/
+    #cp -r ./dist/"$SPLASHSCREENNAME"/contents/previews/* "$LOOKANDFEELDIR"/"$GLOBALTHEMENAME"/contents/previews/
 }
 
 InstallAuroraeTheme() {
@@ -323,7 +324,7 @@ InstallAuroraeTheme() {
 	fi
 
 	echo "Installing Aurorae Theme..."
-	cp -r ./dist/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME"/ "$AURORAEDIR"
+	#cp -r ./dist/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME"/ "$AURORAEDIR"
 }
 
 InstallGlobalTheme() {
@@ -351,12 +352,12 @@ InstallGlobalTheme() {
 EOF
     sleep 1
     echo "Installing Global Theme.."
-    (
-        cd ./dist || exit
-        tar -cf "$GLOBALTHEMENAME".tar.gz "$GLOBALTHEMENAME"
-        kpackagetool6 -i "$GLOBALTHEMENAME".tar.gz
-        cp -r "$GLOBALTHEMENAME" "$LOOKANDFEELDIR"
-    )
+    # (
+    #     cd ./dist || exit
+    #     tar -cf "$GLOBALTHEMENAME".tar.gz "$GLOBALTHEMENAME"
+    #     kpackagetool6 -i "$GLOBALTHEMENAME".tar.gz
+    #     cp -r "$GLOBALTHEMENAME" "$LOOKANDFEELDIR"
+    # )
 
     # Build SplashScreen
     echo "Building SplashScreen.."
@@ -371,7 +372,7 @@ InstallColorscheme() {
 
     # Install Colorscheme
     echo "Installing Colorscheme.."
-    mv ./dist/Catppuccin"$FLAVOURNAME$ACCENTNAME".colors "$COLORDIR"
+   # mv ./dist/Catppuccin"$FLAVOURNAME$ACCENTNAME".colors "$COLORDIR"
 }
 
 GetCursor() {
@@ -437,30 +438,28 @@ if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
     InstallColorscheme
 
     echo "Installing Catppuccin Cursor theme.."
-    InstallCursor
 
     # Cleanup
     echo "Cleaning up.."
-	rm -r ./dist
 
     # Apply theme
     echo
     echo "Do you want to apply theme? [y/N]:"
-    read -r CONFIRMATION
+    # read -r CONFIRMATION
 
-    if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
-        lookandfeeltool -a "$GLOBALTHEMENAME"
-        clear
-        # Some legacy apps still look in ~/.icons
-        cat <<EOF
-The cursors will fully apply once you log out
-You may want to run the following in your terminal if you notice any inconsistencies for the cursor theme:
-ln -s ~/.local/share/icons/ ~/.icons
-EOF
-    else
-        echo "You can apply theme at any time using system settings"
-        sleep 1
-    fi
+#     if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
+#         lookandfeeltool -a "$GLOBALTHEMENAME"
+#         clear
+#         # Some legacy apps still look in ~/.icons
+#         cat <<EOF
+# The cursors will fully apply once you log out
+# You may want to run the following in your terminal if you notice any inconsistencies for the cursor theme:
+# ln -s ~/.local/share/icons/ ~/.icons
+# EOF
+#     else
+#         echo "You can apply theme at any time using system settings"
+#         sleep 1
+#     fi
 else
     echo "Exiting.."
 fi

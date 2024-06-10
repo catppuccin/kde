@@ -13,26 +13,26 @@
 
 
 <p align="center">
-  <img src="./Assets/res.webp"/>
+  <img src="./assets/res.webp"/>
 </p>
 
 ## Previews
 
 <details>
 <summary>🌻 Latte</summary>
-<img src="./Resources/LookAndFeel/Catppuccin-Latte-Global/contents/previews/fullscreenpreview.jpg"/>
+<img src="./resources/look-and-feel/catppuccin-latte-global/contents/previews/fullscreenpreview.jpg"/>
 </details>
 <details>
 <summary>🪴 Frappé</summary>
-<img src="./Resources/LookAndFeel/Catppuccin-Frappe-Global/contents/previews/fullscreenpreview.jpg"/>
+<img src="./resources/look-and-feel/catppuccin-frappe-global/contents/previews/fullscreenpreview.jpg"/>
 </details>
 <details>
 <summary>🌺 Macchiato</summary>
-<img src="./Resources/LookAndFeel/Catppuccin-Macchiato-Global/contents/previews/fullscreenpreview.jpg"/>
+<img src="./resources/look-and-feel/catppuccin-macchiato-global/contents/previews/fullscreenpreview.jpg"/>
 </details>
 <details>
 <summary>🌿 Mocha</summary>
-<img src="./Resources/LookAndFeel/Catppuccin-Mocha-Global/contents/previews/fullscreenpreview.jpg"/>
+<img src="./resources/look-and-feel/catppuccin-mocha-global/contents/previews/fullscreenpreview.jpg"/>
 </details>
 
 ## Installation

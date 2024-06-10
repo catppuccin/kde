@@ -28,7 +28,7 @@
       devShells = forEachSystem (
         { pkgs, system }:
         {
-          default = pkgs.mkShell { packages = with pkgs; [ whiskers.packages.${system}.default ]; };
+          default = pkgs.mkShell { packages = with pkgs; [ whiskers.packages.${system}.default zip ]; };
         }
       );
 

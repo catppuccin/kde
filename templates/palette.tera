@@ -4,7 +4,7 @@ whiskers:
   matrix:
     - flavor
     - accent
-  filename: "dist/Catppuccin-{{ flavor.identifier | capitalize }}-{{ accent | capitalize }}/theme.colors"
+  filename: "dist/catppuccin-{{ flavor.identifier }}-{{ accent }}/theme.colors"
 ---
 {%- macro rgb(c) -%}
 {{ c.rgb.r }}, {{ c.rgb.g }}, {{ c.rgb.b }}
@@ -137,15 +137,13 @@ ForegroundVisited={{ self::rgb(c=mauve) }}
 
 
 [General]
-ColorScheme=Catppuccin-{{ flavor.name }}-{{ accent.name }}
-Name=Catppuccin -{{ flavor.name }} -{{ accent.name }}
+ColorScheme=catppuccin-{{ flavor.identifier }}-{{ accent.identifier }}
+Name=Catppuccin {{ flavor.name }} {{ accent.name }}
 accentActiveTitlebar=false
 shadeSortColumn=true
 
-
 [KDE]
 contrast=4
-
 
 [WM]
 activeBackground={{ self::rgb(c=base) }}

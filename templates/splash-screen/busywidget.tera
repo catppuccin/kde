@@ -4,7 +4,7 @@ whiskers:
   matrix:
     - flavor
     - accent
-  filename: "dist/Catppuccin-{{ flavor.identifier | capitalize }}-{{ accent | capitalize }}/Splash/contents/splash/images/busywidget.svg"
+  filename: "dist/catppuccin-{{ flavor.identifier }}-{{ accent }}/Splash/contents/splash/images/busywidget.svg"
 ---
 {%- set accent = flavor.colors[accent] -%}
 {%- macro rgb(c) -%}

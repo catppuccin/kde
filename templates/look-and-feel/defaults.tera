@@ -4,24 +4,24 @@ whiskers:
   matrix:
     - flavor
     - accent
-    - style: [ "Modern", "Classic" ]
-  filename: "dist/Catppuccin-{{ flavor.identifier | capitalize }}-{{ accent | capitalize }}/contents/defaults"
+    - style: [ "modern", "classic" ]
+  filename: "dist/catppuccin-{{ flavor.identifier }}-{{ accent }}/contents/defaults.{{ style }}"
 ---
 {%- set accent = flavor.colors[accent] -%}
 [kdeglobals][General]
-ColorScheme=Catppuccin{{ flavor.name }}{{ accent }}
+ColorScheme=catppuccin-{{ flavor.identifier }}-{{ accent.identifier }}
 
 [kcminputrc][Mouse]
-cursorTheme=Catppuccin{{ flavor.name }}{{ accent }}
+cursorTheme=catppuccin-{{ flavor.identifier }}-{{ accent.identifier }}
 
 [kwinrc][org.kde.kdecoration2]
 ButtonsOnLeft=
 ButtonsOnRight=IAX
 library=org.kde.kwin.aurorae
-theme=__aurorae__svg__Catppuccin{{ flavor.name }}-{{ style }}
+theme=__aurorae__svg__catppuccin-{{ flavor.identifier }}-{{ style }}
 
 [plasmarc][Theme]
 name=default
 
 [KSplash]
-Theme=Catppuccin{{ flavor.name }}{{ accent }}-splash
+Theme=catppuccin-{{ flavor.identifier }}-splash
