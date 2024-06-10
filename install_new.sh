@@ -193,7 +193,7 @@ cp "$SRCROOT/contents/defaults.$STYLENAME" "$SRCROOT/contents/defaults"
 echo "Done"
 
 echo "Installing KDE theme..."
-kpackagetool5 -i "theme.tar.gz"
+kpackagetool5 -i "$SRCROOT"
 echo "Done"
 
 echo -n "Moving files to home dir..."

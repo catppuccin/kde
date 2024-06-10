@@ -34,6 +34,8 @@ build_aurorae_theme() {
 
   if [ "$flavor" == "latte" ]; then
     cp ./resources/aurorae/common/catppuccin-latte-"$style".rc "$dist/catppuccin-$flavor-$style/catppuccin-$flavor-$style"rc
+  else
+    cp ./resources/aurorae/common/catppuccin-"$style".rc "$dist/catppuccin-$flavor-$style/catppuccin-$flavor-$style"rc
   fi
 
   case "$style" in
@@ -71,9 +73,9 @@ build_splash_screen() {
 
   # Add CTP Logo
   if [ "$flavour" == "latte" ]; then
-      cp ./resources/splash-screen/contents/splash/images/latte-logo.png "$dist"/contents/splash/images/Logo.png
+      cp ./resources/splash-screen/latte-logo.png "$dist"/contents/splash/images/Logo.png
   else
-      cp ./resources/splash-screen/contents/splash/images/logo.png "$dist"/contents/splash/images/Logo.png
+      cp ./resources/splash-screen/logo.png "$dist"/contents/splash/images/Logo.png
   fi
 
   cp ./resources/splash-previews/"$flavor".png "$dist"/contents/previews/splash.png
