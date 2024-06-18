@@ -41,6 +41,14 @@
 1. `git clone --depth=1 https://github.com/catppuccin/kde catppuccin-kde && cd catppuccin-kde`
 2. Run the install script using `./install.sh` and follow the instructions.
 
+#### Automated Installation
+You can install the KDE theme without interactions by calling the script with the following arguments:
+
+`./install.sh flavour accent window_decoration_mode auto`
+
+Example:
+`./install.sh Mocha Blue Classic auto`
+
 ### For Krita:
 1. Download the colour-scheme zip file for your preffered flavour from the [release](https://github.com/catppuccin/kde/releases/) tab.
 2. Extract the file and move the theme(s) you wish to install into the following folders for your platform:
