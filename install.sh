@@ -401,10 +401,10 @@ case "$DEBUGMODE" in
         read -r CONFIRMATION
         clear
         ;;
-    auto)
-        CONFIRMATION=Y
-        clear
-        ;;
+	auto)
+		CONFIRMATION=Y
+		clear
+		;;
 	aurorae)
 		InstallAuroraeTheme
 		exit
