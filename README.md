@@ -42,7 +42,7 @@
 2. Run the install script using `./install.sh` and follow the instructions.
 
 ### For Krita:
-1. Download the colour-scheme zip file for your preffered flavour from the [release](https://github.com/catppuccin/kde/releases/) tab.
+1. Download the colour-scheme zip file for your preferred flavour from the [release](https://github.com/catppuccin/kde/releases/) tab.
 2. Extract the file and move the theme(s) you wish to install into the following folders for your platform:
    Windows: `%appdata%\krita\color-schemes`  
    Linux: `~/.local/share/krita/color-schemes`
