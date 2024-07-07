@@ -401,6 +401,10 @@ case "$DEBUGMODE" in
         read -r CONFIRMATION
         clear
         ;;
+	auto)
+		CONFIRMATION=Y
+		clear
+		;;
 	aurorae)
 		InstallAuroraeTheme
 		exit
@@ -443,10 +447,12 @@ if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
     echo "Cleaning up.."
 	rm -r ./dist
 
-    # Apply theme
-    echo
-    echo "Do you want to apply theme? [y/N]:"
-    read -r CONFIRMATION
+    if [ "$DEBUGMODE" != "auto" ]; then
+        # Apply theme
+        echo
+        echo "Do you want to apply theme? [y/N]:"
+        read -r CONFIRMATION
+    fi
 
     if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
         lookandfeeltool -a "$GLOBALTHEMENAME"
