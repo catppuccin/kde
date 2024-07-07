@@ -1,0 +1,28 @@
+---
+whiskers:
+  version: 2.3.0
+  matrix:
+    - flavor
+    - accent
+  filename: "dist/catppuccin-{{ flavor.identifier }}-{{ accent }}/Splash/metadata.json"
+---
+{%- set accent = flavor.colors[accent] -%}
+{
+    "KPackageStructure": "Plasma/LookAndFeel",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "core@catppuccin.com",
+                "Name": "Catppuccin"
+            }
+        ],
+        "Category": "Global Themes (Plasma 6)",
+        "Dependencies": [
+        ],
+        "EnabledByDefault": true,
+        "Id": "catppuccin-{{ flavor.identifier }}-{{ accent.identifier }}-splash",
+        "License": "MIT",
+        "Name": "Catppuccin {{ flavor.name }} {{ accent.name }}-splash",
+        "Version": "0.2.6"
+    }
+}

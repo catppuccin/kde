@@ -1,0 +1,154 @@
+---
+whiskers:
+  version: 2.3.0
+  matrix:
+    - flavor
+    - accent
+  filename: "dist/catppuccin-{{ flavor.identifier }}-{{ accent }}/theme.colors"
+---
+{%- macro rgb(c) -%}
+{{ c.rgb.r }}, {{ c.rgb.g }}, {{ c.rgb.b }}
+{%- endmacro -%}
+{%- set accent = flavor.colors[accent] -%}
+[ColorEffects:Disabled]
+Color={{ self::rgb(c=base) }}
+ColorAmount=0.30000000000000004
+ColorEffect=2
+ContrastAmount=0.1
+ContrastEffect=0
+IntensityAmount=-1
+IntensityEffect=0
+
+[ColorEffects:Inactive]
+ChangeSelectionColor=true
+Color={{ self::rgb(c=base) }}
+ColorAmount=0.5
+ColorEffect=3
+ContrastAmount=0
+ContrastEffect=0
+Enable=true
+IntensityAmount=0
+IntensityEffect=0
+
+[Colors:Button]
+BackgroundAlternate={{ self::rgb(c=accent) }}
+BackgroundNormal={{ self::rgb(c=surface0) }}
+DecorationFocus={{ self::rgb(c=accent) }}
+DecorationHover={{ self::rgb(c=surface0) }}
+ForegroundActive={{ self::rgb(c=peach) }}
+ForegroundInactive={{ self::rgb(c=subtext0) }}
+ForegroundLink={{ self::rgb(c=accent) }}
+ForegroundNegative={{ self::rgb(c=red) }}
+ForegroundNeutral={{ self::rgb(c=yellow) }}
+ForegroundNormal={{ self::rgb(c=text) }}
+ForegroundPositive={{ self::rgb(c=green) }}
+ForegroundVisited={{ self::rgb(c=mauve) }}
+
+
+[Colors:Complementary]
+BackgroundAlternate={{ self::rgb(c=crust) }}
+BackgroundNormal={{ self::rgb(c=mantle) }}
+DecorationFocus={{ self::rgb(c=accent) }}
+DecorationHover={{ self::rgb(c=surface0) }}
+ForegroundActive={{ self::rgb(c=peach) }}
+ForegroundInactive={{ self::rgb(c=subtext0) }}
+ForegroundLink={{ self::rgb(c=accent) }}
+ForegroundNegative={{ self::rgb(c=red) }}
+ForegroundNeutral={{ self::rgb(c=yellow) }}
+ForegroundNormal={{ self::rgb(c=text) }}
+ForegroundPositive={{ self::rgb(c=green) }}
+ForegroundVisited={{ self::rgb(c=mauve) }}
+
+
+[Colors:Header]
+BackgroundAlternate={{ self::rgb(c=crust) }}
+BackgroundNormal={{ self::rgb(c=mantle) }}
+DecorationFocus={{ self::rgb(c=accent) }}
+DecorationHover={{ self::rgb(c=surface0) }}
+ForegroundActive={{ self::rgb(c=peach) }}
+ForegroundInactive={{ self::rgb(c=subtext0) }}
+ForegroundLink={{ self::rgb(c=accent) }}
+ForegroundNegative={{ self::rgb(c=red) }}
+ForegroundNeutral={{ self::rgb(c=yellow) }}
+ForegroundNormal={{ self::rgb(c=text) }}
+ForegroundPositive={{ self::rgb(c=green) }}
+ForegroundVisited={{ self::rgb(c=mauve) }}
+
+
+[Colors:Selection]
+BackgroundAlternate={{ self::rgb(c=accent) }}
+BackgroundNormal={{ self::rgb(c=accent) }}
+DecorationFocus={{ self::rgb(c=accent) }}
+DecorationHover={{ self::rgb(c=surface0) }}
+ForegroundLink={{ self::rgb(c=accent) }}
+ForegroundInactive={{ self::rgb(c=mantle) }}
+ForegroundActive={{ self::rgb(c=peach) }}
+ForegroundLink={{ self::rgb(c=accent) }}
+ForegroundNegative={{ self::rgb(c=red) }}
+ForegroundNeutral={{ self::rgb(c=yellow) }}
+ForegroundNormal={{ self::rgb(c=crust) }}
+ForegroundPositive={{ self::rgb(c=green) }}
+ForegroundVisited={{ self::rgb(c=mauve) }}
+
+
+[Colors:Tooltip]
+BackgroundAlternate=27,25,35
+BackgroundNormal={{ self::rgb(c=base) }}
+DecorationFocus={{ self::rgb(c=accent) }}
+DecorationHover={{ self::rgb(c=surface0) }}
+ForegroundActive={{ self::rgb(c=peach) }}
+ForegroundInactive={{ self::rgb(c=subtext0) }}
+ForegroundLink={{ self::rgb(c=accent) }}
+ForegroundNegative={{ self::rgb(c=red) }}
+ForegroundNeutral={{ self::rgb(c=yellow) }}
+ForegroundNormal={{ self::rgb(c=text) }}
+ForegroundPositive={{ self::rgb(c=green) }}
+ForegroundVisited={{ self::rgb(c=mauve) }}
+
+
+[Colors:View]
+BackgroundAlternate={{ self::rgb(c=mantle) }}
+BackgroundNormal={{ self::rgb(c=base) }}
+DecorationFocus={{ self::rgb(c=accent) }}
+DecorationHover={{ self::rgb(c=surface0) }}
+ForegroundActive={{ self::rgb(c=peach) }}
+ForegroundInactive={{ self::rgb(c=subtext0) }}
+ForegroundLink={{ self::rgb(c=accent) }}
+ForegroundNegative={{ self::rgb(c=red) }}
+ForegroundNeutral={{ self::rgb(c=yellow) }}
+ForegroundNormal={{ self::rgb(c=text) }}
+ForegroundPositive={{ self::rgb(c=green) }}
+ForegroundVisited={{ self::rgb(c=mauve) }}
+
+
+[Colors:Window]
+BackgroundAlternate={{ self::rgb(c=crust) }}
+BackgroundNormal={{ self::rgb(c=mantle) }}
+DecorationFocus={{ self::rgb(c=accent) }}
+DecorationHover={{ self::rgb(c=surface0) }}
+ForegroundActive={{ self::rgb(c=peach) }}
+ForegroundInactive={{ self::rgb(c=subtext0) }}
+ForegroundLink={{ self::rgb(c=accent) }}
+ForegroundNegative={{ self::rgb(c=red) }}
+ForegroundNeutral={{ self::rgb(c=yellow) }}
+ForegroundNormal={{ self::rgb(c=text) }}
+ForegroundPositive={{ self::rgb(c=green) }}
+ForegroundVisited={{ self::rgb(c=mauve) }}
+
+
+[General]
+ColorScheme=catppuccin-{{ flavor.identifier }}-{{ accent.identifier }}
+Name=Catppuccin {{ flavor.name }} {{ accent.name }}
+accentActiveTitlebar=false
+shadeSortColumn=true
+
+[KDE]
+contrast=4
+
+[WM]
+activeBackground={{ self::rgb(c=base) }}
+activeBlend={{ self::rgb(c=text) }}
+activeForeground={{ self::rgb(c=text) }}
+inactiveBackground={{ self::rgb(c=crust) }}
+inactiveBlend={{ self::rgb(c=subtext0) }}
+inactiveForeground={{ self::rgb(c=subtext0) }}

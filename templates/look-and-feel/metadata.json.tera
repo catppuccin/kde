@@ -1,0 +1,31 @@
+---
+whiskers:
+  version: 2.3.0
+  matrix:
+    - flavor
+    - accent
+  filename: "dist/catppuccin-{{ flavor.identifier }}-{{ accent }}/metadata.json"
+---
+{%- set accent = flavor.colors[accent] -%}
+{
+    "KPackageStructure": "Plasma/LookAndFeel",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "core@catppuccin.com",
+                "Name": "Catppuccin"
+            }
+        ],
+        "Category": "Global Themes (Plasma 6)",
+        "Dependencies": [
+        ],
+        "EnabledByDefault": true,
+        "Id": "catppuccin-{{ flavor.identifier }}-{{ accent.identifier }}",
+        "License": "MIT",
+        "Name": "Catppuccin {{ flavor.name }} {{ accent.name }}",
+        "Version": "0.2.6"
+    },
+    "X-KPackage-Dependencies": [
+        "kns://aurorae.knsrc/api.kde-look.org/{{ storeCode }}"
+    ]
+}
