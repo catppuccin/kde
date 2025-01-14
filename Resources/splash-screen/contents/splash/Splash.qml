@@ -53,7 +53,7 @@ Rectangle {
             source: "images/Logo.png"
 
             sourceSize.width: size
-            sourceSize.height: sizes
+            sourceSize.height: size
             smooth: true
             visible: true
         }
