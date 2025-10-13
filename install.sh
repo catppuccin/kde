@@ -2,13 +2,29 @@
 
 # Syntax <Flavour = 1-4 > <Accent = 1-14> <WindowDec = 1/2> <Debug = aurorae/global/color/splash/cursor>
 
+detect_package_manager() {
+  if command -v apt >/dev/null 2>&1; then
+    package_manager="apt"
+    install_command="sudo apt install"
+  elif command -v dnf >/dev/null 2>&1; then
+    package_manager="dnf"
+    install_command="sudo dnf install -y"
+  elif command -v pacman >/dev/null 2>&1; then
+    package_manager="pacman"
+    install_command="sudo pacman -S"
+  elif command -v zypper >/dev/null 2>&1; then
+    package_manager="zypper"
+    install_command="sudo zypper in"
+  fi
+}
+
 check_command_exists() {
   command_name="${*}"
 
   if ! command -v "$command_name" >/dev/null 2>&1; then
     echo "Error: Dependency '$command_name' is not met."
-    echo "Exiting.."
-    exit 1
+    echo "Installing using $package_manager..."
+    $install_command "$command_name"
   fi
 }
 
