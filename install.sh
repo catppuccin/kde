@@ -2,21 +2,18 @@
 
 # Syntax <Flavour = 1-4 > <Accent = 1-14> <WindowDec = 1/2> <Debug = aurorae/global/color/splash/cursor>
 
-detect_package_manager() {
+detect_package_manager(command) {
   if command -v apt >/dev/null 2>&1; then
-    package_manager="apt"
-    install_command="sudo apt install"
+    sudo apt install "$command"
   elif command -v dnf >/dev/null 2>&1; then
-    package_manager="dnf"
-    install_command="sudo dnf install -y"
+    sudo dnf install "$command"
   elif command -v pacman >/dev/null 2>&1; then
-    package_manager="pacman"
-    install_command="sudo pacman -S"
+    sudo pacman -S "$command"
   elif command -v zypper >/dev/null 2>&1; then
-    package_manager="zypper"
-    install_command="sudo zypper in"
+    sudo zypper in "$command"
   fi
 }
+
 
 check_command_exists() {
   command_name="${*}"
@@ -24,7 +21,7 @@ check_command_exists() {
   if ! command -v "$command_name" >/dev/null 2>&1; then
     echo "Error: Dependency '$command_name' is not met."
     echo "Installing using $package_manager..."
-    $install_command "$command_name"
+    detect_package_manager "$command_name"
   fi
 }
 
