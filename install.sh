@@ -2,26 +2,42 @@
 
 # Syntax <Flavour = 1-4 > <Accent = 1-14> <WindowDec = 1/2> <Debug = aurorae/global/color/splash/cursor>
 
-detect_package_manager(command) {
-  if command -v apt >/dev/null 2>&1; then
-    sudo apt install "$command"
-  elif command -v dnf >/dev/null 2>&1; then
-    sudo dnf install "$command"
-  elif command -v pacman >/dev/null 2>&1; then
-    sudo pacman -S "$command"
-  elif command -v zypper >/dev/null 2>&1; then
-    sudo zypper in "$command"
-  fi
+install_dependencies(command_name) {
+    declare -A osInfo;
+    osInfo[/etc/arch-release]=pacman
+    osInfo[/etc/debian_version]=apt
+    osInfo[/etc/fedora-release]=dnf
+    
+    for f in ${!osInfo[@]}
+    do
+        if [[ -f $f ]];then
+            echo Package manager detected: ${osInfo[$f]}
+            package_manager=${osInfo[$f]}
+            
+            case $package_manager in
+                pacman)
+                    sudo pacman -S  "$1"
+                    ;;
+                apt)
+                    sudo apt install -y "$1"
+                    ;;
+                dnf)
+                    sudo dnf install -y "$1"
+                    ;;
+                *)
+                    echo "Unsupported package manager: $package_manager"
+                    exit 1
+                    ;;
+            esac
+        fi
+    done
 }
-
 
 check_command_exists() {
   command_name="${*}"
 
   if ! command -v "$command_name" >/dev/null 2>&1; then
-    echo "Error: Dependency '$command_name' is not met."
-    echo "Installing using $package_manager..."
-    detect_package_manager "$command_name"
+    install_dependencies($command_name)
   fi
 }
 
