@@ -1,44 +1,48 @@
 #!/bin/sh
 
 # Syntax <Flavour = 1-4 > <Accent = 1-14> <WindowDec = 1/2> <Debug = aurorae/global/color/splash/cursor>
-
-install_dependencies($1) {
-    declare -A osInfo;
+install_dependencies() {
+    local package_name="$1"
+    declare -A osInfo
     osInfo[/etc/arch-release]=pacman
     osInfo[/etc/debian_version]=apt
     osInfo[/etc/fedora-release]=dnf
     
-    for f in ${!osInfo[@]}
+    for f in "${!osInfo[@]}"
     do
-        if [[ -f $f ]];then
-            echo Package manager detected: ${osInfo[$f]}
-            package_manager=${osInfo[$f]}
+        if [[ -f "$f" ]]; then
+            echo "Package manager detected: ${osInfo[$f]}"
+            package_manager="${osInfo[$f]}"
             
             case $package_manager in
                 pacman)
-                    sudo pacman -S  "$1"
+                    sudo pacman -S --noconfirm "$package_name"
                     ;;
                 apt)
-                    sudo apt install -y "$1"
+                    sudo apt install -y "$package_name"
                     ;;
                 dnf)
-                    sudo dnf install -y "$1"
+                    sudo dnf install -y "$package_name"
                     ;;
                 *)
                     echo "Unsupported package manager: $package_manager"
                     exit 1
                     ;;
             esac
+            return 0
         fi
     done
+    
+    echo "No supported package manager found"
+    exit 1
 }
 
 check_command_exists() {
-  command_name="${*}"
+    local command_name="$1"
 
-  if ! command -v "$command_name" >/dev/null 2>&1; then
-    install_dependencies($command_name)
-  fi
+    if ! command -v "$command_name" >/dev/null 2>&1; then
+        install_dependencies "$command_name"
+    fi
 }
 
 check_command_exists "wget"
