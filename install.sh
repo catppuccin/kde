@@ -2,7 +2,7 @@
 
 # Syntax <Flavour = 1-4 > <Accent = 1-14> <WindowDec = 1/2> <Debug = aurorae/global/color/splash/cursor>
 
-install_dependencies(command_name) {
+install_dependencies($1) {
     declare -A osInfo;
     osInfo[/etc/arch-release]=pacman
     osInfo[/etc/debian_version]=apt
