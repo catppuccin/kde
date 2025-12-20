@@ -2,20 +2,12 @@
 
 # Syntax <Flavour = 1-4 > <Accent = 1-14> <WindowDec = 1/2> <Debug = aurorae/global/color/splash/cursor>
 
-check_command_exists() {
-  command_name="${*}"
-
-  if ! command -v "$command_name" >/dev/null 2>&1; then
-    echo "Error: Dependency '$command_name' is not met."
-    echo "Exiting.."
+for cmd in wget sed unzip lookandfeeltool; do
+  command -v "$cmd" >/dev/null 2>&1 || {
+    echo "Error: Dependency '$cmd' is not met."
     exit 1
-  fi
-}
-
-check_command_exists "wget"
-check_command_exists "sed"
-check_command_exists "unzip"
-check_command_exists "lookandfeeltool"
+  }
+done
 
 COLORDIR="${XDG_DATA_HOME:-$HOME/.local/share}/color-schemes"
 AURORAEDIR="${XDG_DATA_HOME:-$HOME/.local/share}/aurorae/themes"
