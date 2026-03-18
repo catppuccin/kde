@@ -3,7 +3,7 @@
 # Syntax <Flavour = 1-4 > <Accent = 1-14> <WindowDec = 1/2> <Debug = aurorae/global/color/splash/cursor>
 
 check_command_exists() {
-  command_name="${*}"
+  command_name="$1"
 
   if ! command -v "$command_name" >/dev/null 2>&1; then
     echo "Error: Dependency '$command_name' is not met."
@@ -16,6 +16,8 @@ check_command_exists "wget"
 check_command_exists "sed"
 check_command_exists "unzip"
 check_command_exists "lookandfeeltool"
+check_command_exists "kpackagetool6"
+check_command_exists "tar"
 
 COLORDIR="${XDG_DATA_HOME:-$HOME/.local/share}/color-schemes"
 AURORAEDIR="${XDG_DATA_HOME:-$HOME/.local/share}/aurorae/themes"
@@ -24,7 +26,7 @@ CURSORDIR="${XDG_DATA_HOME:-$HOME/.local/share}/icons"
 
 echo "Creating theme directories.."
 mkdir -p "$COLORDIR" "$AURORAEDIR" "$LOOKANDFEELDIR" "$CURSORDIR"
-mkdir ./dist
+mkdir -p ./dist
 
 # Fast install
 FLAVOUR="$1"
@@ -34,7 +36,7 @@ DEBUGMODE="$4"
 
 clear
 
-if [ -z "$1" ]; then
+if [ -z "$FLAVOUR" ]; then
     cat <<EOF
 
 Choose flavor out of -
@@ -61,7 +63,7 @@ esac
 echo "$FLAVOURNAME($FLAVOUR) palette was selected."
 echo
 
-if [ -z "$2" ]; then
+if [ -z "$ACCENT" ]; then
     cat <<EOF
 Choose an accent -
     1. Rosewater
@@ -87,127 +89,127 @@ fi
 case "$ACCENT" in
     1)
         case "$FLAVOUR" in
-            1) ACCENTCOLOR="245,224,220" ;;
-            2) ACCENTCOLOR="244,219,214" ;;
-            3) ACCENTCOLOR="242,213,207" ;;
-            4) ACCENTCOLOR="220,138,120" ;;
+            1) ACCENTCOLOR="245, 224, 220" ;;
+            2) ACCENTCOLOR="244, 219, 214" ;;
+            3) ACCENTCOLOR="242, 213, 207" ;;
+            4) ACCENTCOLOR="220, 138, 120" ;;
         esac
         ACCENTNAME="Rosewater"
         ;;
     2)
         case "$FLAVOUR" in
-            1) ACCENTCOLOR="242,205,205" ;;
-            2) ACCENTCOLOR="240,198,198" ;;
-            3) ACCENTCOLOR="238,190,190" ;;
-            4) ACCENTCOLOR="221,120,120" ;;
+            1) ACCENTCOLOR="242, 205, 205" ;;
+            2) ACCENTCOLOR="240, 198, 198" ;;
+            3) ACCENTCOLOR="238, 190, 190" ;;
+            4) ACCENTCOLOR="221, 120, 120" ;;
         esac
         ACCENTNAME="Flamingo"
         ;;
     3)
         case "$FLAVOUR" in
-            1) ACCENTCOLOR="245,194,231" ;;
-            2) ACCENTCOLOR="245,189,230" ;;
-            3) ACCENTCOLOR="244,184,228" ;;
-            4) ACCENTCOLOR="234,118,203" ;;
+            1) ACCENTCOLOR="245, 194, 231" ;;
+            2) ACCENTCOLOR="245, 189, 230" ;;
+            3) ACCENTCOLOR="244, 184, 228" ;;
+            4) ACCENTCOLOR="234, 118, 203" ;;
         esac
         ACCENTNAME="Pink"
         ;;
     4)
         case "$FLAVOUR" in
-            1) ACCENTCOLOR="203,166,247" ;;
-            2) ACCENTCOLOR="198,160,246" ;;
-            3) ACCENTCOLOR="202,158,230" ;;
-            4) ACCENTCOLOR="136,57,239" ;;
+            1) ACCENTCOLOR="203, 166, 247" ;;
+            2) ACCENTCOLOR="198, 160, 246" ;;
+            3) ACCENTCOLOR="202, 158, 230" ;;
+            4) ACCENTCOLOR="136, 57, 239" ;;
         esac
         ACCENTNAME="Mauve"
         ;;
     5)
         case "$FLAVOUR" in
-            1) ACCENTCOLOR="243,139,168" ;;
-            2) ACCENTCOLOR="237,135,150" ;;
-            3) ACCENTCOLOR="231,130,132" ;;
-            4) ACCENTCOLOR="210,15,57" ;;
+            1) ACCENTCOLOR="243, 139, 168" ;;
+            2) ACCENTCOLOR="237, 135, 150" ;;
+            3) ACCENTCOLOR="231, 130, 132" ;;
+            4) ACCENTCOLOR="210, 15, 57" ;;
         esac
         ACCENTNAME="Red"
         ;;
     6)
         case "$FLAVOUR" in
-            1) ACCENTCOLOR="235,160,172" ;;
-            2) ACCENTCOLOR="238,153,160" ;;
-            3) ACCENTCOLOR="234,153,156" ;;
-            4) ACCENTCOLOR="230,69,83" ;;
+            1) ACCENTCOLOR="235, 160, 172" ;;
+            2) ACCENTCOLOR="238, 153, 160" ;;
+            3) ACCENTCOLOR="234, 153, 156" ;;
+            4) ACCENTCOLOR="230, 69, 83" ;;
         esac
         ACCENTNAME="Maroon"
         ;;
     7)
         case "$FLAVOUR" in
-            1) ACCENTCOLOR="250,179,135" ;;
-            2) ACCENTCOLOR="245,169,127" ;;
-            3) ACCENTCOLOR="239,159,118" ;;
-            4) ACCENTCOLOR="254,100,11" ;;
+            1) ACCENTCOLOR="250, 179, 135" ;;
+            2) ACCENTCOLOR="245, 169, 127" ;;
+            3) ACCENTCOLOR="239, 159, 118" ;;
+            4) ACCENTCOLOR="254, 100, 11" ;;
         esac
         ACCENTNAME="Peach"
         ;;
     8)
         case "$FLAVOUR" in
-            1) ACCENTCOLOR="249,226,175" ;;
-            2) ACCENTCOLOR="238,212,159" ;;
-            3) ACCENTCOLOR="229,200,144" ;;
-            4) ACCENTCOLOR="223,142,29" ;;
+            1) ACCENTCOLOR="249, 226, 175" ;;
+            2) ACCENTCOLOR="238, 212, 159" ;;
+            3) ACCENTCOLOR="229, 200, 144" ;;
+            4) ACCENTCOLOR="223, 142, 29" ;;
         esac
         ACCENTNAME="Yellow"
         ;;
     9)
         case "$FLAVOUR" in
-            1) ACCENTCOLOR="166,227,161" ;;
-            2) ACCENTCOLOR="166,218,149" ;;
-            3) ACCENTCOLOR="166,209,137" ;;
-            4) ACCENTCOLOR="64,160,43" ;;
+            1) ACCENTCOLOR="166, 227, 161" ;;
+            2) ACCENTCOLOR="166, 218, 149" ;;
+            3) ACCENTCOLOR="166, 209, 137" ;;
+            4) ACCENTCOLOR="64, 160, 43" ;;
         esac
         ACCENTNAME="Green"
         ;;
     10)
         case "$FLAVOUR" in
-            1) ACCENTCOLOR="148,226,213" ;;
-            2) ACCENTCOLOR="139,213,202" ;;
-            3) ACCENTCOLOR="129,200,190" ;;
-            4) ACCENTCOLOR="23,146,153" ;;
+            1) ACCENTCOLOR="148, 226, 213" ;;
+            2) ACCENTCOLOR="139, 213, 202" ;;
+            3) ACCENTCOLOR="129, 200, 190" ;;
+            4) ACCENTCOLOR="23, 146, 153" ;;
         esac
         ACCENTNAME="Teal"
         ;;
     11)
         case "$FLAVOUR" in
-            1) ACCENTCOLOR="137,220,235" ;;
-            2) ACCENTCOLOR="145,215,227" ;;
-            3) ACCENTCOLOR="153,209,219" ;;
-            4) ACCENTCOLOR="4,165,229" ;;
+            1) ACCENTCOLOR="137, 220, 235" ;;
+            2) ACCENTCOLOR="145, 215, 227" ;;
+            3) ACCENTCOLOR="153, 209, 219" ;;
+            4) ACCENTCOLOR="4, 165, 229" ;;
         esac
         ACCENTNAME="Sky"
         ;;
     12)
         case "$FLAVOUR" in
-            1) ACCENTCOLOR="116,199,236" ;;
-            2) ACCENTCOLOR="125,196,228" ;;
-            3) ACCENTCOLOR="133,193,220" ;;
-            4) ACCENTCOLOR="32,159,181" ;;
+            1) ACCENTCOLOR="116, 199, 236" ;;
+            2) ACCENTCOLOR="125, 196, 228" ;;
+            3) ACCENTCOLOR="133, 193, 220" ;;
+            4) ACCENTCOLOR="32, 159, 181" ;;
         esac
         ACCENTNAME="Sapphire"
         ;;
     13)
         case "$FLAVOUR" in
-            1) ACCENTCOLOR="137,180,250" ;;
-            2) ACCENTCOLOR="138,173,244" ;;
-            3) ACCENTCOLOR="140,170,238" ;;
-            4) ACCENTCOLOR="30,102,245" ;;
+            1) ACCENTCOLOR="137, 180, 250" ;;
+            2) ACCENTCOLOR="138, 173, 244" ;;
+            3) ACCENTCOLOR="140, 170, 238" ;;
+            4) ACCENTCOLOR="30, 102, 245" ;;
         esac
         ACCENTNAME="Blue"
         ;;
     14)
         case "$FLAVOUR" in
-            1) ACCENTCOLOR="180,190,254" ;;
-            2) ACCENTCOLOR="183,189,248" ;;
-            3) ACCENTCOLOR="186,187,241" ;;
-            4) ACCENTCOLOR="114,135,253" ;;
+            1) ACCENTCOLOR="180, 190, 254" ;;
+            2) ACCENTCOLOR="183, 189, 248" ;;
+            3) ACCENTCOLOR="186, 187, 241" ;;
+            4) ACCENTCOLOR="114, 135, 253" ;;
         esac
         ACCENTNAME="Lavender"
         ;;
@@ -221,7 +223,7 @@ echo "$ACCENTNAME($ACCENT) accent color was selected."
 GLOBALTHEMENAME="Catppuccin-$FLAVOURNAME-$ACCENTNAME"
 SPLASHSCREENNAME="Catppuccin-$FLAVOURNAME-$ACCENTNAME-splash"
 
-if [ -z "$3" ]; then
+if [ -z "$WINDECSTYLE" ]; then
     cat <<EOF
 
 Choose window decoration style -
@@ -271,7 +273,10 @@ EOF
 Classic($WINDECSTYLE) decorations were selected.
 EOF
         ;;
-    *) echo "Not a valid Window decoration" ;;
+    *)
+        echo "Not a valid Window decoration"
+        exit 1
+        ;;
 esac
 
 BuildColorscheme() {
@@ -290,22 +295,22 @@ BuildSplashScreen() {
     esac
 
     # Hydrate Dummy colors according to Pallet
-    FLAVOURNAME="$FLAVOURNAME" ./Installer/color-build.sh -s ./Resources/splash-screen/contents/splash/images/busywidget.svg -o ./dist/"$SPLASHSCREENNAME"/contents/splash/images/_busywidget.svg
+    ./Installer/color-build.sh -f "$FLAVOURNAME" -s ./Resources/splash-screen/contents/splash/images/busywidget.svg -o ./dist/"$SPLASHSCREENNAME"/contents/splash/images/_busywidget.svg
     # Replace Accent in colors file
     sed "s/REPLACE--ACCENT/$ACCENTCOLOR/g" ./dist/"$SPLASHSCREENNAME"/contents/splash/images/_busywidget.svg > ./dist/"$SPLASHSCREENNAME"/contents/splash/images/busywidget.svg
     # Cleanup temporary file
     rm ./dist/"$SPLASHSCREENNAME"/contents/splash/images/_busywidget.svg
 
     # Hydrate Dummy colors according to Pallet (QML file)
-    sed -e s/REPLACE--MANTLE/"$MANTLECOLOR"/g ./Resources/splash-screen/contents/splash/Splash.qml > ./dist/"$SPLASHSCREENNAME"/contents/splash/Splash.qml
+    sed -e "s/REPLACE--MANTLE/$MANTLECOLOR/g" ./Resources/splash-screen/contents/splash/Splash.qml > ./dist/"$SPLASHSCREENNAME"/contents/splash/Splash.qml
     # Add CTP Logo
     if [ "$FLAVOUR" -ne 4 ]; then
         cp ./Resources/splash-screen/contents/splash/images/Logo.png ./dist/"$SPLASHSCREENNAME"/contents/splash/images/Logo.png
     else
         cp ./Resources/splash-screen/contents/splash/images/Latte_Logo.png ./dist/"$SPLASHSCREENNAME"/contents/splash/images/Logo.png
     fi
-    #sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g" ./Resources/splash-screen/metadata.desktop > ./dist/"$SPLASHSCREENNAME"/metadata.desktop
-	#sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g" ./Resources/splash-screen/metadata.json > ./dist/"$SPLASHSCREENNAME"/metadata.json
+    sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g" ./Resources/splash-screen/metadata.desktop > ./dist/"$SPLASHSCREENNAME"/metadata.desktop
+	sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g" ./Resources/splash-screen/metadata.json > ./dist/"$SPLASHSCREENNAME"/metadata.json
     mkdir ./dist/"$SPLASHSCREENNAME"/contents/previews
     cp ./Resources/splash-previews/"$FLAVOURNAME".png ./dist/"$SPLASHSCREENNAME"/contents/previews/splash.png
     # cp ./Resources/splash-previews/"$FLAVOURNAME".png ./dist/"$SPLASHSCREENNAME"/contents/previews/preview.png
@@ -353,7 +358,7 @@ EOF
     echo "Installing Global Theme.."
     (
         cd ./dist || exit
-        tar -cf "$GLOBALTHEMENAME".tar.gz "$GLOBALTHEMENAME"
+        tar -czf "$GLOBALTHEMENAME".tar.gz "$GLOBALTHEMENAME"
         kpackagetool6 -i "$GLOBALTHEMENAME".tar.gz
         cp -r "$GLOBALTHEMENAME" "$LOOKANDFEELDIR"
     )
@@ -415,10 +420,9 @@ case "$DEBUGMODE" in
         ;;
     splash)
         # Prepare Global Theme Folder
-        GLOBALTHEMENAME="Catppuccin-$FLAVOURNAME-$ACCENTNAME"
-
         cp -r ./Resources/LookAndFeel/Catppuccin-"$FLAVOURNAME"-Global ./dist/"$GLOBALTHEMENAME"
-        mkdir -p ./dist/"$GLOBALTHEMENAME"/contents/splash/images
+        mkdir -p ./dist/"$SPLASHSCREENNAME"/contents/splash/images
+        mkdir -p "$LOOKANDFEELDIR"/"$GLOBALTHEMENAME"/contents/previews
 
         BuildSplashScreen
         ;;

@@ -68,7 +68,6 @@ BackgroundAlternate=--accentColor
 BackgroundNormal=--accentColor
 DecorationFocus=--accentColor
 DecorationHover=$surface0
-ForegroundLink=--accentColor
 ForegroundInactive=$mantle
 ForegroundActive=$peach
 ForegroundLink=--accentColor
@@ -80,7 +79,7 @@ ForegroundVisited=$mauve
 
 
 [Colors:Tooltip]
-BackgroundAlternate=27,25,35
+BackgroundAlternate=$crust
 BackgroundNormal=$base
 DecorationFocus=--accentColor
 DecorationHover=$surface0
