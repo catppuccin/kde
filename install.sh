@@ -15,7 +15,7 @@ check_command_exists() {
 check_command_exists "wget"
 check_command_exists "sed"
 check_command_exists "unzip"
-check_command_exists "lookandfeeltool"
+check_command_exists "plasma-apply-lookandfeel"
 check_command_exists "kpackagetool6"
 check_command_exists "tar"
 
@@ -359,8 +359,8 @@ EOF
     (
         cd ./dist || exit
         tar -czf "$GLOBALTHEMENAME".tar.gz "$GLOBALTHEMENAME"
-        kpackagetool6 -i "$GLOBALTHEMENAME".tar.gz
-        cp -r "$GLOBALTHEMENAME" "$LOOKANDFEELDIR"
+        kpackagetool6 -t Plasma/LookAndFeel -i "$GLOBALTHEMENAME".tar.gz ||
+            kpackagetool6 -t Plasma/LookAndFeel -u "$GLOBALTHEMENAME".tar.gz
     )
 
     # Build SplashScreen
@@ -394,6 +394,8 @@ GetCursor() {
 
 InstallCursor() {
     GetCursor
+    rm -rf "$CURSORDIR"/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"-Cursors
+    rm -rf "$CURSORDIR"/Catppuccin-"$FLAVOURNAME"-Dark-Cursors
     mv ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"-Cursors "$CURSORDIR"
     mv ./dist/Catppuccin-"$FLAVOURNAME"-Dark-Cursors "$CURSORDIR"
 }
@@ -453,7 +455,7 @@ if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
     read -r CONFIRMATION
 
     if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
-        lookandfeeltool -a "$GLOBALTHEMENAME"
+        plasma-apply-lookandfeel -a "$GLOBALTHEMENAME"
         clear
         # Some legacy apps still look in ~/.icons
         cat <<EOF
