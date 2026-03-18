@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Syntax <Flavour = 1-4 > <Accent = 1-14> <WindowDec = 1/2> <Debug = aurorae/global/color/splash/cursor>
+# Syntax <Flavour = 1-4 > <Accent = 1-14> <WindowDec = 1/2> <Debug = aurorae/global/color/plasmastyle/splash/cursor>
 
 check_command_exists() {
   command_name="${*}"
@@ -20,10 +20,11 @@ check_command_exists "lookandfeeltool"
 COLORDIR="${XDG_DATA_HOME:-$HOME/.local/share}/color-schemes"
 AURORAEDIR="${XDG_DATA_HOME:-$HOME/.local/share}/aurorae/themes"
 LOOKANDFEELDIR="${XDG_DATA_HOME:-$HOME/.local/share}/plasma/look-and-feel"
+PLASMASTYLEDIR="${XDG_DATA_HOME:-$HOME/.local/share}/plasma/desktoptheme"
 CURSORDIR="${XDG_DATA_HOME:-$HOME/.local/share}/icons"
 
 echo "Creating theme directories.."
-mkdir -p "$COLORDIR" "$AURORAEDIR" "$LOOKANDFEELDIR" "$CURSORDIR"
+mkdir -p "$COLORDIR" "$AURORAEDIR" "$LOOKANDFEELDIR" "$PLASMASTYLEDIR" "$CURSORDIR"
 mkdir ./dist
 
 # Fast install
@@ -220,6 +221,7 @@ echo "$ACCENTNAME($ACCENT) accent color was selected."
 
 GLOBALTHEMENAME="Catppuccin-$FLAVOURNAME-$ACCENTNAME"
 SPLASHSCREENNAME="Catppuccin-$FLAVOURNAME-$ACCENTNAME-splash"
+PLASMASTYLENAME="Catppuccin-$FLAVOURNAME-$ACCENTNAME"
 
 if [ -z "$3" ]; then
     cat <<EOF
@@ -374,6 +376,29 @@ InstallColorscheme() {
     mv ./dist/Catppuccin"$FLAVOURNAME$ACCENTNAME".colors "$COLORDIR"
 }
 
+BuildPlasmaStyle() {
+    mkdir -p ./dist/"$PLASMASTYLENAME"-style
+
+    # Hydrate metadata
+    sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g" ./Resources/plasma-style/metadata.json > ./dist/"$PLASMASTYLENAME"-style/metadata.json
+
+    # Copy plasmarc
+    cp ./Resources/plasma-style/plasmarc ./dist/"$PLASMASTYLENAME"-style/plasmarc
+
+    # Build colors file (two-step: accent substitution then palette hydration)
+    sed "s/--accentColor/$ACCENTCOLOR/g; s/--flavour/$FLAVOURNAME/g; s/--accentName/$ACCENTNAME/g" ./Resources/plasma-style/colors > ./dist/"$PLASMASTYLENAME"-style/_colors
+    ./Installer/color-build.sh -f "$FLAVOURNAME" -s ./dist/"$PLASMASTYLENAME"-style/_colors -o ./dist/"$PLASMASTYLENAME"-style/colors
+    rm ./dist/"$PLASMASTYLENAME"-style/_colors
+}
+
+InstallPlasmaStyle() {
+    echo "Building Plasma Style.."
+    BuildPlasmaStyle
+
+    echo "Installing Plasma Style.."
+    cp -r ./dist/"$PLASMASTYLENAME"-style/ "$PLASMASTYLEDIR"/"$PLASMASTYLENAME"
+}
+
 GetCursor() {
     # Fetches cursors
     echo "Downloading Catppuccin Cursors from Catppuccin/cursors..."
@@ -413,6 +438,10 @@ case "$DEBUGMODE" in
         BuildColorscheme
         exit
         ;;
+    plasmastyle)
+        BuildPlasmaStyle
+        exit
+        ;;
     splash)
         # Prepare Global Theme Folder
         GLOBALTHEMENAME="Catppuccin-$FLAVOURNAME-$ACCENTNAME"
@@ -435,6 +464,9 @@ if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
 
     # Build Colorscheme
     InstallColorscheme
+
+    # Build and Install Plasma Style
+    InstallPlasmaStyle
 
     echo "Installing Catppuccin Cursor theme.."
     InstallCursor
