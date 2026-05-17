@@ -448,7 +448,7 @@ if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
     echo "Do you want to apply theme? [y/N]:"
     read -r CONFIRMATION
 
-    if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
+    if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ] || [ "$CONFIRMATION" = "" ]; then
         lookandfeeltool -a "$GLOBALTHEMENAME"
         clear
         # Some legacy apps still look in ~/.icons
