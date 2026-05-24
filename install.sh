@@ -102,13 +102,15 @@ EOF
         exit 0
     fi
 
-    echo
-    echo "Combine selected components into a global theme (Plasma look-and-feel)?"
-    echo "This wraps them together so they can be applied at once. [y/N]:"
-    read -r MAKE_GLOBAL
+    if [ -n "$INSTALL_COLOR" ]; then
+        echo
+        echo "Combine selected components into a global theme (Plasma look-and-feel)?"
+        echo "This wraps them together so they can be applied at once. [y/N]:"
+        read -r MAKE_GLOBAL
 
-    if [ "$MAKE_GLOBAL" = "Y" ] || [ "$MAKE_GLOBAL" = "y" ]; then
-        INSTALL_GLOBAL="y"
+        if [ "$MAKE_GLOBAL" = "Y" ] || [ "$MAKE_GLOBAL" = "y" ]; then
+            INSTALL_GLOBAL="y"
+        fi
     fi
     clear
 fi
@@ -126,7 +128,7 @@ elif [ -z "$DEBUGMODE" ]; then
        [ -n "$INSTALL_SPLASH" ] || [ -n "$INSTALL_CURSOR" ]; then
         NEEDS_ACCENT="y"
     fi
-    if [ -n "$INSTALL_AURORAE" ] || [ -n "$INSTALL_GLOBAL" ]; then
+    if [ -n "$INSTALL_AURORAE" ]; then
         NEEDS_WINDEC="y"
     fi
 fi
@@ -437,11 +439,15 @@ InstallGlobalTheme() {
     mkdir -p ./dist/"$SPLASHSCREENNAME"/contents/splash/images
 
     # Hydrate Metadata with Pallet + Accent Info
-    sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g; s/--StoreAuroraeNo/$StoreAuroraeNo/g" ./Resources/LookAndFeel/metadata.desktop > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/metadata.desktop
-	sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g; s/--StoreAuroraeNo/$StoreAuroraeNo/g" ./Resources/LookAndFeel/metadata.json > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/metadata.json
-
-    # Modify 'defaults' to set the correct Aurorae Theme
-    sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g; s/--aurorae/$WINDECSTYLECODE/g" ./Resources/LookAndFeel/defaults > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/contents/defaults
+    if [ -n "$INSTALL_AURORAE" ] || [ "$DEBUGMODE" = "global" ]; then
+        sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g; s/--StoreAuroraeNo/$StoreAuroraeNo/g" ./Resources/LookAndFeel/metadata.desktop > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/metadata.desktop
+        sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g; s/--StoreAuroraeNo/$StoreAuroraeNo/g" ./Resources/LookAndFeel/metadata.json > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/metadata.json
+        sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g; s/--aurorae/$WINDECSTYLECODE/g" ./Resources/LookAndFeel/defaults > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/contents/defaults
+    else
+        sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g" ./Resources/LookAndFeel/metadata.desktop | sed '/StoreAurorae/d' > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/metadata.desktop
+        sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g" ./Resources/LookAndFeel/metadata.json | sed '/StoreAurorae/d' > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/metadata.json
+        sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g" ./Resources/LookAndFeel/defaults | sed '/--aurorae/d' > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/contents/defaults
+    fi
 
 
 
