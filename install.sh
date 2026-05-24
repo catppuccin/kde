@@ -34,6 +34,77 @@ DEBUGMODE="$4"
 
 clear
 
+if [ -z "$DEBUGMODE" ]; then
+    cat <<EOF
+
+Available components:
+  1. Color scheme
+  2. Window decoration (Aurorae)
+  3. Splash screen
+  4. Cursors
+
+Enter numbers of components to install (e.g. "1 3 4") or "all":
+EOF
+    read -r COMPONENTS
+
+    if [ -z "$COMPONENTS" ]; then
+        echo "Nothing selected. Exiting.."
+        exit 0
+    fi
+
+    if [ "$COMPONENTS" = "all" ] || [ "$COMPONENTS" = "ALL" ]; then
+        INSTALL_COLOR="y"
+        INSTALL_AURORAE="y"
+        INSTALL_SPLASH="y"
+        INSTALL_CURSOR="y"
+    else
+        for COMP in $COMPONENTS; do
+            case "$COMP" in
+                1) INSTALL_COLOR="y" ;;
+                2) INSTALL_AURORAE="y" ;;
+                3) INSTALL_SPLASH="y" ;;
+                4) INSTALL_CURSOR="y" ;;
+                *) echo "Ignoring invalid component: $COMP" ;;
+            esac
+        done
+    fi
+
+    if [ -z "$INSTALL_COLOR" ] && [ -z "$INSTALL_AURORAE" ] && \
+       [ -z "$INSTALL_SPLASH" ] && [ -z "$INSTALL_CURSOR" ]; then
+        echo "No valid components selected. Exiting.."
+        exit 0
+    fi
+
+    echo
+    echo "Combine selected components into a global theme (Plasma look-and-feel)?"
+    echo "This wraps them together so they can be applied at once. [y/N]:"
+    read -r MAKE_GLOBAL
+
+    if [ "$MAKE_GLOBAL" = "Y" ] || [ "$MAKE_GLOBAL" = "y" ]; then
+        INSTALL_GLOBAL="y"
+    fi
+    clear
+fi
+
+# Determine which details are needed
+if [ "$DEBUGMODE" = "aurorae" ]; then
+    NEEDS_WINDEC="y"
+elif [ "$DEBUGMODE" = "global" ]; then
+    NEEDS_ACCENT="y"
+    NEEDS_WINDEC="y"
+elif [ "$DEBUGMODE" = "color" ] || [ "$DEBUGMODE" = "splash" ] || [ "$DEBUGMODE" = "cursor" ]; then
+    NEEDS_ACCENT="y"
+elif [ -z "$DEBUGMODE" ]; then
+    if [ -n "$INSTALL_COLOR" ] || [ -n "$INSTALL_GLOBAL" ] || \
+       [ -n "$INSTALL_SPLASH" ] || [ -n "$INSTALL_CURSOR" ]; then
+        NEEDS_ACCENT="y"
+    fi
+    if [ -n "$INSTALL_AURORAE" ] || [ -n "$INSTALL_GLOBAL" ]; then
+        NEEDS_WINDEC="y"
+    fi
+fi
+
+# --- Flavour ---
 if [ -z "$1" ]; then
     cat <<EOF
 
@@ -61,8 +132,10 @@ esac
 echo "$FLAVOURNAME($FLAVOUR) palette was selected."
 echo
 
-if [ -z "$2" ]; then
-    cat <<EOF
+# --- Accent ---
+if [ -n "$NEEDS_ACCENT" ]; then
+    if [ -z "$2" ]; then
+        cat <<EOF
 Choose an accent -
     1. Rosewater
     2. Flamingo
@@ -79,9 +152,9 @@ Choose an accent -
     13. Blue
     14. Lavender
 EOF
-    read -r ACCENT
-    clear
-fi
+        read -r ACCENT
+        clear
+    fi
 
 # Sets accent based on the palette selected (Best to fold this in your respective editor)
 case "$ACCENT" in
@@ -218,19 +291,22 @@ case "$ACCENT" in
 esac
 echo "$ACCENTNAME($ACCENT) accent color was selected."
 
-GLOBALTHEMENAME="Catppuccin-$FLAVOURNAME-$ACCENTNAME"
-SPLASHSCREENNAME="Catppuccin-$FLAVOURNAME-$ACCENTNAME-splash"
+    GLOBALTHEMENAME="Catppuccin-$FLAVOURNAME-$ACCENTNAME"
+    SPLASHSCREENNAME="Catppuccin-$FLAVOURNAME-$ACCENTNAME-splash"
+fi
 
-if [ -z "$3" ]; then
-    cat <<EOF
+# --- Window decoration ---
+if [ -n "$NEEDS_WINDEC" ]; then
+    if [ -z "$3" ]; then
+        cat <<EOF
 
 Choose window decoration style -
     1. Modern (Mixed)
     2. Classic (MacOS like)
 EOF
-    read -r WINDECSTYLE
-    clear
-fi
+        read -r WINDECSTYLE
+        clear
+    fi
 
 WINDECSTYLENAME=""
 case "$WINDECSTYLE" in
@@ -273,6 +349,7 @@ EOF
         ;;
     *) echo "Not a valid Window decoration" ;;
 esac
+fi
 
 BuildColorscheme() {
     # Add Metadata & Replace Accent in colors file
@@ -309,6 +386,7 @@ BuildSplashScreen() {
     mkdir ./dist/"$SPLASHSCREENNAME"/contents/previews
     cp ./Resources/splash-previews/"$FLAVOURNAME".png ./dist/"$SPLASHSCREENNAME"/contents/previews/splash.png
     # cp ./Resources/splash-previews/"$FLAVOURNAME".png ./dist/"$SPLASHSCREENNAME"/contents/previews/preview.png
+    mkdir -p "$LOOKANDFEELDIR"/"$GLOBALTHEMENAME"/contents/previews
     cp -r ./dist/"$SPLASHSCREENNAME"/contents/splash/ "$LOOKANDFEELDIR"/"$GLOBALTHEMENAME"/contents/
     cp -r ./dist/"$SPLASHSCREENNAME"/contents/previews/* "$LOOKANDFEELDIR"/"$GLOBALTHEMENAME"/contents/previews/
 }
@@ -393,18 +471,58 @@ InstallCursor() {
     mv ./dist/Catppuccin-"$FLAVOURNAME"-Dark-Cursors "$CURSORDIR"
 }
 
-# Syntax <Flavour> <Accent> <WindowDec> <Debug = aurorae/global/color/splash/cursor>
 case "$DEBUGMODE" in
     "")
-        echo
-        echo "Install $FLAVOURNAME $ACCENTNAME? with the $WINDECSTYLENAME window Decorations? [y/N]:"
-        read -r CONFIRMATION
-        clear
+        if [ -n "$INSTALL_COLOR" ]; then
+            InstallColorscheme
+        fi
+
+        if [ -n "$INSTALL_AURORAE" ]; then
+            InstallAuroraeTheme
+        fi
+
+        if [ -n "$INSTALL_GLOBAL" ]; then
+            InstallGlobalTheme
+        elif [ -n "$INSTALL_SPLASH" ]; then
+            cp -r ./Resources/LookAndFeel/Catppuccin-"$FLAVOURNAME"-Global ./dist/"$GLOBALTHEMENAME"
+            mkdir -p ./dist/"$GLOBALTHEMENAME"/contents/splash/images
+            mkdir -p ./dist/"$SPLASHSCREENNAME"/contents/splash/images
+            BuildSplashScreen
+        fi
+
+        if [ -n "$INSTALL_CURSOR" ]; then
+            echo "Installing Catppuccin Cursor theme.."
+            InstallCursor
+        fi
+
+        # Cleanup
+        echo "Cleaning up.."
+        rm -rf ./dist
+
+        # Apply theme if global theme was installed
+        if [ -n "$INSTALL_GLOBAL" ]; then
+            echo
+            echo "Do you want to apply theme? [y/N]:"
+            read -r APPLY_THEME
+
+            if [ "$APPLY_THEME" = "Y" ] || [ "$APPLY_THEME" = "y" ]; then
+                lookandfeeltool -a "$GLOBALTHEMENAME"
+                clear
+                cat <<EOF
+The cursors will fully apply once you log out
+You may want to run the following in your terminal if you notice any inconsistencies for the cursor theme:
+ln -s ~/.local/share/icons/ ~/.icons
+EOF
+            else
+                echo "You can apply theme at any time using system settings"
+                sleep 1
+            fi
+        fi
         ;;
-	aurorae)
-		InstallAuroraeTheme
-		exit
-		;;
+    aurorae)
+        InstallAuroraeTheme
+        exit
+        ;;
     global)
         InstallGlobalTheme
         exit
@@ -414,53 +532,14 @@ case "$DEBUGMODE" in
         exit
         ;;
     splash)
-        # Prepare Global Theme Folder
-        GLOBALTHEMENAME="Catppuccin-$FLAVOURNAME-$ACCENTNAME"
-
         cp -r ./Resources/LookAndFeel/Catppuccin-"$FLAVOURNAME"-Global ./dist/"$GLOBALTHEMENAME"
         mkdir -p ./dist/"$GLOBALTHEMENAME"/contents/splash/images
-
         BuildSplashScreen
         ;;
-    cursor) GetCursor ;;
-    *) echo "Invalid Debug Mode" ;;
+    cursor)
+        GetCursor
+        ;;
+    *)
+        echo "Invalid Debug Mode"
+        ;;
 esac
-
-if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
-	# Build and Install Aurorae Theme
-    InstallAuroraeTheme
-
-    # Build and Install Global Theme
-    InstallGlobalTheme
-
-    # Build Colorscheme
-    InstallColorscheme
-
-    echo "Installing Catppuccin Cursor theme.."
-    InstallCursor
-
-    # Cleanup
-    echo "Cleaning up.."
-	rm -r ./dist
-
-    # Apply theme
-    echo
-    echo "Do you want to apply theme? [y/N]:"
-    read -r CONFIRMATION
-
-    if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
-        lookandfeeltool -a "$GLOBALTHEMENAME"
-        clear
-        # Some legacy apps still look in ~/.icons
-        cat <<EOF
-The cursors will fully apply once you log out
-You may want to run the following in your terminal if you notice any inconsistencies for the cursor theme:
-ln -s ~/.local/share/icons/ ~/.icons
-EOF
-    else
-        echo "You can apply theme at any time using system settings"
-        sleep 1
-    fi
-else
-    echo "Exiting.."
-fi
