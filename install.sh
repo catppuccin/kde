@@ -43,9 +43,36 @@ Available components:
   3. Splash screen
   4. Cursors
 
-Enter numbers of components to install (e.g. "1 3 4") or "all":
+Enter numbers of components to install (e.g. "1 3 4"), "all", or "del" to uninstall:
 EOF
     read -r COMPONENTS
+
+    if [ "$COMPONENTS" = "del" ] || [ "$COMPONENTS" = "DEL" ]; then
+        echo
+        echo "Searching for Catppuccin themes to remove..."
+        echo
+        echo "Color schemes:"
+        ls -d "$COLORDIR"/Catppuccin*.colors 2>/dev/null || echo "  (none)"
+        echo "Window decorations:"
+        ls -d "$AURORAEDIR"/Catppuccin* 2>/dev/null || echo "  (none)"
+        echo "Global themes / splash:"
+        ls -d "$LOOKANDFEELDIR"/Catppuccin* 2>/dev/null || echo "  (none)"
+        echo "Cursors:"
+        ls -d "$CURSORDIR"/Catppuccin* 2>/dev/null || echo "  (none)"
+        echo
+        echo "Delete all listed items? [y/N]:"
+        read -r CONFIRM
+        if [ "$CONFIRM" = "Y" ] || [ "$CONFIRM" = "y" ]; then
+            rm -f "$COLORDIR"/Catppuccin*.colors 2>/dev/null
+            rm -rf "$AURORAEDIR"/Catppuccin* 2>/dev/null
+            rm -rf "$LOOKANDFEELDIR"/Catppuccin* 2>/dev/null
+            rm -rf "$CURSORDIR"/Catppuccin* 2>/dev/null
+            echo "All Catppuccin themes removed."
+        else
+            echo "Aborted."
+        fi
+        exit 0
+    fi
 
     if [ -z "$COMPONENTS" ]; then
         echo "Nothing selected. Exiting.."
