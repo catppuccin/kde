@@ -34,7 +34,9 @@ ACCENT="$2"
 WINDECSTYLE="$3"
 DEBUGMODE="$4"
 
-clear
+if [ "$DEBUGMODE" != "auto" ]; then
+    clear
+fi
 
 if [ -z "$FLAVOUR" ]; then
     cat <<EOF
@@ -415,6 +417,9 @@ case "$DEBUGMODE" in
         read -r CONFIRMATION
         clear
         ;;
+    auto)
+        CONFIRMATION=Y
+        ;;
 	aurorae)
 		InstallAuroraeTheme
 		exit
@@ -456,14 +461,18 @@ if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
     echo "Cleaning up.."
 	rm -r ./dist
 
-    # Apply theme
-    echo
-    echo "Do you want to apply theme? [Y/n]:"
-    read -r CONFIRMATION
+    if [ "$DEBUGMODE" != "auto" ]; then
+        # Apply theme
+        echo
+        echo "Do you want to apply theme? [Y/n]:"
+        read -r CONFIRMATION
+    fi
 
     if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ] || [ "$CONFIRMATION" = "" ]; then
         plasma-apply-lookandfeel -a "$GLOBALTHEMENAME"
-        clear
+        if [ "$DEBUGMODE" != "auto" ]; then
+            clear
+        fi
         # Some legacy apps still look in ~/.icons
         cat <<EOF
 The cursors will fully apply once you log out
