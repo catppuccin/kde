@@ -458,10 +458,10 @@ if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
 
     # Apply theme
     echo
-    echo "Do you want to apply theme? [y/N]:"
+    echo "Do you want to apply theme? [Y/n]:"
     read -r CONFIRMATION
 
-    if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
+    if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ] || [ "$CONFIRMATION" = "" ]; then
         plasma-apply-lookandfeel -a "$GLOBALTHEMENAME"
         clear
         # Some legacy apps still look in ~/.icons
