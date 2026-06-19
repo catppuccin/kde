@@ -220,6 +220,13 @@ case "$ACCENT" in
 esac
 echo "$ACCENTNAME($ACCENT) accent color was selected."
 
+# v2 cursors install to lowercase dirs and KDE keys the cursor theme off the dir name
+LCFLAVOUR=$(printf '%s' "$FLAVOURNAME" | tr '[:upper:]' '[:lower:]')
+LCACCENT=$(printf '%s' "$ACCENTNAME" | tr '[:upper:]' '[:lower:]')
+CURSORVERSION="v2.0.0"
+CURSORACCENT="catppuccin-$LCFLAVOUR-$LCACCENT-cursors"
+CURSORDARK="catppuccin-$LCFLAVOUR-dark-cursors"
+
 GLOBALTHEMENAME="Catppuccin-$FLAVOURNAME-$ACCENTNAME"
 SPLASHSCREENNAME="Catppuccin-$FLAVOURNAME-$ACCENTNAME-splash"
 
@@ -341,7 +348,7 @@ InstallGlobalTheme() {
 	sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g; s/--StoreAuroraeNo/$StoreAuroraeNo/g" ./Resources/LookAndFeel/metadata.json > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/metadata.json
 
     # Modify 'defaults' to set the correct Aurorae Theme
-    sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g; s/--aurorae/$WINDECSTYLECODE/g" ./Resources/LookAndFeel/defaults > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/contents/defaults
+    sed "s/--lcflavour/$LCFLAVOUR/g; s/--lcaccentName/$LCACCENT/g; s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g; s/--aurorae/$WINDECSTYLECODE/g" ./Resources/LookAndFeel/defaults > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/contents/defaults
 
 
 
@@ -383,21 +390,21 @@ GetCursor() {
     # Fetches cursors
     echo "Downloading Catppuccin Cursors from Catppuccin/cursors..."
     sleep 2
-    wget -q -P ./dist https://github.com/catppuccin/cursors/releases/download/v0.2.0/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"-Cursors.zip
-    wget -q -P ./dist https://github.com/catppuccin/cursors/releases/download/v0.2.0/Catppuccin-"$FLAVOURNAME"-Dark-Cursors.zip
+    wget -q -P ./dist https://github.com/catppuccin/cursors/releases/download/"$CURSORVERSION"/"$CURSORACCENT".zip
+    wget -q -P ./dist https://github.com/catppuccin/cursors/releases/download/"$CURSORVERSION"/"$CURSORDARK".zip
     (
         cd ./dist || exit
-        unzip -q Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"-Cursors.zip
-        unzip -q Catppuccin-"$FLAVOURNAME"-Dark-Cursors.zip
+        unzip -q "$CURSORACCENT".zip
+        unzip -q "$CURSORDARK".zip
     )
 }
 
 InstallCursor() {
     GetCursor
-    rm -rf "$CURSORDIR"/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"-Cursors
-    rm -rf "$CURSORDIR"/Catppuccin-"$FLAVOURNAME"-Dark-Cursors
-    mv ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"-Cursors "$CURSORDIR"
-    mv ./dist/Catppuccin-"$FLAVOURNAME"-Dark-Cursors "$CURSORDIR"
+    rm -rf "${CURSORDIR:?}/$CURSORACCENT"
+    rm -rf "${CURSORDIR:?}/$CURSORDARK"
+    mv ./dist/"$CURSORACCENT" "$CURSORDIR"
+    mv ./dist/"$CURSORDARK" "$CURSORDIR"
 }
 
 # Syntax <Flavour> <Accent> <WindowDec> <Debug = aurorae/global/color/splash/cursor>
