@@ -32,8 +32,9 @@ fi
 if echo "$FLAVOURNAME" | grep -Evq 'Mocha|Macchiato|Frappe|Latte'; then
   clear
   echo "Invalid palette $FLAVOURNAME"
-  exit
+  exit 1
 fi
 
-FLAVOUR_SED="Installer/Pallets/${FLAVOURNAME}.sed"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+FLAVOUR_SED="$SCRIPT_DIR/Pallets/${FLAVOURNAME}.sed"
 sed -f "$FLAVOUR_SED" "$SOURCE" > "$OUT"
