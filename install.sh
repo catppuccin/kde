@@ -17,6 +17,7 @@ check_command_exists "sed"
 check_command_exists "unzip"
 check_command_exists "plasma-apply-lookandfeel"
 check_command_exists "kpackagetool6"
+check_command_exists "kwriteconfig6"
 check_command_exists "tar"
 
 COLORDIR="${XDG_DATA_HOME:-$HOME/.local/share}/color-schemes"
@@ -477,6 +478,9 @@ if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
     fi
 
     if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ] || [ "$CONFIRMATION" = "" ]; then
+        # KWin's BorderSizeAuto=true overrides the look-and-feel BorderSize=None, so the
+        # global theme alone can't set it. Write it directly for borderless windows.
+        kwriteconfig6 --file kwinrc --group org.kde.kdecoration2 --key BorderSizeAuto false
         plasma-apply-lookandfeel -a "$GLOBALTHEMENAME"
         if [ "$DEBUGMODE" != "auto" ]; then
             clear
