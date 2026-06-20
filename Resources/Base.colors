@@ -8,7 +8,7 @@ IntensityAmount=-1
 IntensityEffect=0
 
 [ColorEffects:Inactive]
-ChangeSelectionColor=true
+ChangeSelectionColor=false
 Color=$base
 ColorAmount=0.5
 ColorEffect=3
