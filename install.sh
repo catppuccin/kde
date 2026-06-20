@@ -1,13 +1,32 @@
 #!/bin/sh
 
-# Syntax <Flavour = 1-4 > <Accent = 1-14> <WindowDec = 1/2> <Debug = aurorae/global/color/splash/cursor>
+# Syntax [-q|--quiet] <Flavour = 1-4 > <Accent = 1-14> <WindowDec = 1/2> <Debug = aurorae/global/color/splash/cursor>
+
+QUIET=0
+case "$1" in
+    -q | --quiet)
+        QUIET=1
+        shift
+        ;;
+esac
+
+log() {
+    if [ "$QUIET" -ne 1 ]; then
+        echo "$@"
+    fi
+}
+
+missing_arg() {
+    echo "Error: Missing $1." >&2
+    exit 1
+}
 
 check_command_exists() {
   command_name="$1"
 
   if ! command -v "$command_name" >/dev/null 2>&1; then
-    echo "Error: Dependency '$command_name' is not met."
-    echo "Exiting.."
+    echo "Error: Dependency '$command_name' is not met." >&2
+    echo "Exiting.." >&2
     exit 1
   fi
 }
@@ -25,7 +44,7 @@ AURORAEDIR="${XDG_DATA_HOME:-$HOME/.local/share}/aurorae/themes"
 LOOKANDFEELDIR="${XDG_DATA_HOME:-$HOME/.local/share}/plasma/look-and-feel"
 CURSORDIR="${XDG_DATA_HOME:-$HOME/.local/share}/icons"
 
-echo "Creating theme directories.."
+log "Creating theme directories.."
 mkdir -p "$COLORDIR" "$AURORAEDIR" "$LOOKANDFEELDIR" "$CURSORDIR"
 mkdir -p ./dist
 
@@ -35,11 +54,14 @@ ACCENT="$2"
 WINDECSTYLE="$3"
 DEBUGMODE="$4"
 
-if [ "$DEBUGMODE" != "auto" ]; then
+if [ "$DEBUGMODE" != "auto" ] && [ "$QUIET" -ne 1 ]; then
     clear
 fi
 
 if [ -z "$FLAVOUR" ]; then
+    if [ "$QUIET" -eq 1 ]; then
+        missing_arg "flavour"
+    fi
     cat <<EOF
 
 Choose flavor out of -
@@ -59,14 +81,17 @@ case "$FLAVOUR" in
     3) FLAVOURNAME="Frappe" ;;
     4) FLAVOURNAME="Latte" ;;
     *)
-        echo "Not a valid flavour name: $FLAVOUR"
+        echo "Not a valid flavour name: $FLAVOUR" >&2
         exit 1
         ;;
 esac
-echo "$FLAVOURNAME($FLAVOUR) palette was selected."
-echo
+log "$FLAVOURNAME($FLAVOUR) palette was selected."
+log ""
 
 if [ -z "$ACCENT" ]; then
+    if [ "$QUIET" -eq 1 ]; then
+        missing_arg "accent"
+    fi
     cat <<EOF
 Choose an accent -
     1. Rosewater
@@ -217,11 +242,11 @@ case "$ACCENT" in
         ACCENTNAME="Lavender"
         ;;
     *)
-        echo "Not a valid accent: $ACCENT"
+        echo "Not a valid accent: $ACCENT" >&2
         exit 1
         ;;
 esac
-echo "$ACCENTNAME($ACCENT) accent color was selected."
+log "$ACCENTNAME($ACCENT) accent color was selected."
 
 # v2 cursors install to lowercase dirs and KDE keys the cursor theme off the dir name
 LCFLAVOUR=$(printf '%s' "$FLAVOURNAME" | tr '[:upper:]' '[:lower:]')
@@ -234,6 +259,9 @@ GLOBALTHEMENAME="Catppuccin-$FLAVOURNAME-$ACCENTNAME"
 SPLASHSCREENNAME="Catppuccin-$FLAVOURNAME-$ACCENTNAME-splash"
 
 if [ -z "$WINDECSTYLE" ]; then
+    if [ "$QUIET" -eq 1 ]; then
+        missing_arg "window decoration"
+    fi
     cat <<EOF
 
 Choose window decoration style -
@@ -257,7 +285,8 @@ case "$WINDECSTYLE" in
             4) StoreAuroraeNo="2135223" ;;
         esac
 
-        cat <<EOF
+        if [ "$QUIET" -ne 1 ]; then
+            cat <<EOF
 
 Modern($WINDECSTYLE) decorations were selected.
 These decorations have a few rules that may cause issues.
@@ -265,7 +294,8 @@ These decorations have a few rules that may cause issues.
  2: If you would like the pin on all desktops button, You need to place it on the left.
 We apologize if you wanted a different configuration :(
 EOF
-        sleep 2
+            sleep 2
+        fi
         ;;
     2)
         WINDECSTYLENAME=Classic
@@ -278,10 +308,12 @@ EOF
             4) StoreAuroraeNo="2135222" ;;
         esac
 
-		cat <<EOF
+        if [ "$QUIET" -ne 1 ]; then
+		    cat <<EOF
 
 Classic($WINDECSTYLE) decorations were selected.
 EOF
+        fi
         ;;
     *)
         echo "Not a valid Window decoration"
@@ -345,7 +377,7 @@ InstallAuroraeTheme() {
 		cp ./Resources/Aurorae/Common/Catppuccin-"$WINDECSTYLENAME"rc ./dist/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME"/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME"rc
 	fi
 
-	echo "Installing Aurorae Theme..."
+	log "Installing Aurorae Theme..."
 	cp -r ./dist/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME"/ "$AURORAEDIR"
 }
 
@@ -367,40 +399,47 @@ InstallGlobalTheme() {
     # This refers to the QDBusConnection: error: could not send signal to service error
     # Which has had no effect in our testing on the working of this Installer.
 
-    cat <<EOF
+    if [ "$QUIET" -ne 1 ]; then
+        cat <<EOF
 
  WARNING: There might be some errors that might not affect the installer at all during this step, Please advise.
 
 EOF
-    sleep 1
-    echo "Installing Global Theme.."
+        sleep 1
+    fi
+    log "Installing Global Theme.."
     (
         cd ./dist || exit
         tar -czf "$GLOBALTHEMENAME".tar.gz "$GLOBALTHEMENAME"
-        kpackagetool6 -t Plasma/LookAndFeel -i "$GLOBALTHEMENAME".tar.gz ||
-            kpackagetool6 -t Plasma/LookAndFeel -u "$GLOBALTHEMENAME".tar.gz
+        if [ "$QUIET" -eq 1 ]; then
+            kpackagetool6 -t Plasma/LookAndFeel -i "$GLOBALTHEMENAME".tar.gz >/dev/null 2>&1 ||
+                kpackagetool6 -t Plasma/LookAndFeel -u "$GLOBALTHEMENAME".tar.gz >/dev/null 2>&1
+        else
+            kpackagetool6 -t Plasma/LookAndFeel -i "$GLOBALTHEMENAME".tar.gz ||
+                kpackagetool6 -t Plasma/LookAndFeel -u "$GLOBALTHEMENAME".tar.gz
+        fi
     )
 
     # Build SplashScreen
-    echo "Building SplashScreen.."
+    log "Building SplashScreen.."
     BuildSplashScreen
 }
 
 InstallColorscheme() {
-    echo "Building Colorscheme.."
+    log "Building Colorscheme.."
 
     # Generate Color scheme
     BuildColorscheme
 
     # Install Colorscheme
-    echo "Installing Colorscheme.."
+    log "Installing Colorscheme.."
     mv ./dist/Catppuccin"$FLAVOURNAME$ACCENTNAME".colors "$COLORDIR"
 }
 
 GetCursor() {
     # Fetches cursors
-    echo "Downloading Catppuccin Cursors from Catppuccin/cursors..."
-    sleep 2
+    log "Downloading Catppuccin Cursors from Catppuccin/cursors..."
+    [ "$QUIET" -eq 1 ] || sleep 2
     wget -q -P ./dist https://github.com/catppuccin/cursors/releases/download/"$CURSORVERSION"/"$CURSORACCENT".zip
     wget -q -P ./dist https://github.com/catppuccin/cursors/releases/download/"$CURSORVERSION"/"$CURSORDARK".zip
     (
@@ -418,13 +457,17 @@ InstallCursor() {
     mv ./dist/"$CURSORDARK" "$CURSORDIR"
 }
 
-# Syntax <Flavour> <Accent> <WindowDec> <Debug = aurorae/global/color/splash/cursor>
+# Syntax [-q|--quiet] <Flavour> <Accent> <WindowDec> <Debug = aurorae/global/color/splash/cursor>
 case "$DEBUGMODE" in
     "")
-        echo
-        echo "Install $FLAVOURNAME $ACCENTNAME? with the $WINDECSTYLENAME window Decorations? [y/N]:"
-        read -r CONFIRMATION
-        clear
+        if [ "$QUIET" -eq 1 ]; then
+            CONFIRMATION=Y
+        else
+            echo
+            echo "Install $FLAVOURNAME $ACCENTNAME? with the $WINDECSTYLENAME window Decorations? [y/N]:"
+            read -r CONFIRMATION
+            clear
+        fi
         ;;
     auto)
         CONFIRMATION=Y
@@ -450,7 +493,7 @@ case "$DEBUGMODE" in
         BuildSplashScreen
         ;;
     cursor) GetCursor ;;
-    *) echo "Invalid Debug Mode" ;;
+    *) echo "Invalid Debug Mode" >&2 ;;
 esac
 
 if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
@@ -463,17 +506,17 @@ if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
     # Build Colorscheme
     InstallColorscheme
 
-    echo "Installing Catppuccin Cursor theme.."
+    log "Installing Catppuccin Cursor theme.."
     InstallCursor
 
     # Cleanup
-    echo "Cleaning up.."
+    log "Cleaning up.."
 	rm -r ./dist
 
-    if [ "$DEBUGMODE" != "auto" ]; then
+    if [ "$DEBUGMODE" != "auto" ] && [ "$QUIET" -ne 1 ]; then
         # Apply theme
-        echo
-        echo "Do you want to apply theme? [Y/n]:"
+        log ""
+        log "Do you want to apply theme? [Y/n]:"
         read -r CONFIRMATION
     fi
 
@@ -483,18 +526,20 @@ if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
         kwriteconfig6 --file kwinrc --group org.kde.kdecoration2 --key BorderSizeAuto false
         plasma-apply-lookandfeel -a "$GLOBALTHEMENAME"
         if [ "$DEBUGMODE" != "auto" ]; then
-            clear
+            [ "$QUIET" -eq 1 ] || clear
         fi
         # Some legacy apps still look in ~/.icons
-        cat <<EOF
+        if [ "$QUIET" -ne 1 ]; then
+            cat <<EOF
 The cursors will fully apply once you log out
 You may want to run the following in your terminal if you notice any inconsistencies for the cursor theme:
 ln -s ~/.local/share/icons/ ~/.icons
 EOF
+        fi
     else
-        echo "You can apply theme at any time using system settings"
-        sleep 1
+        log "You can apply theme at any time using system settings"
+        [ "$QUIET" -eq 1 ] || sleep 1
     fi
 else
-    echo "Exiting.."
+    log "Exiting.."
 fi
