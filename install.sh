@@ -290,7 +290,15 @@ esac
 
 BuildColorscheme() {
     # Add Metadata & Replace Accent in colors file
-    sed "s/--accentColor/$ACCENTCOLOR/g; s/--flavour/$FLAVOURNAME/g; s/--accentName/$ACCENTNAME/g" ./Resources/Base.colors > ./dist/base.colors
+    # Selection text is dark (crust) on the accent. Latte's darkest accents
+    # (red/mauve/blue) need white instead, crust is too low-contrast there.
+    SELFG="17, 17, 27"
+    if [ "$FLAVOURNAME" = "Latte" ]; then
+        case "$ACCENTNAME" in
+        Red | Mauve | Blue) SELFG="255, 255, 255" ;;
+        esac
+    fi
+    sed "s/--accentColor/$ACCENTCOLOR/g; s/--selFg/$SELFG/g; s/--flavour/$FLAVOURNAME/g; s/--accentName/$ACCENTNAME/g" ./Resources/Base.colors > ./dist/base.colors
     # Hydrate Dummy colors according to Pallet
     ./Installer/color-build.sh -f "$FLAVOURNAME" -o ./dist/Catppuccin"$FLAVOURNAME$ACCENTNAME".colors -s ./dist/base.colors
 }

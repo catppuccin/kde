@@ -68,14 +68,14 @@ BackgroundAlternate=--accentColor
 BackgroundNormal=--accentColor
 DecorationFocus=--accentColor
 DecorationHover=--accentColor
-ForegroundInactive=$mantle
-ForegroundActive=$peach
-ForegroundLink=--accentColor
-ForegroundNegative=$red
-ForegroundNeutral=$yellow
-ForegroundNormal=$crust
-ForegroundPositive=$green
-ForegroundVisited=$mauve
+ForegroundInactive=--selFg
+ForegroundActive=--selFg
+ForegroundLink=--selFg
+ForegroundNegative=--selFg
+ForegroundNeutral=--selFg
+ForegroundNormal=--selFg
+ForegroundPositive=--selFg
+ForegroundVisited=--selFg
 
 
 [Colors:Tooltip]
