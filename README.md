@@ -62,8 +62,9 @@ Example (Mocha, Blue, Classic):
 2. If you encounter an error similar to 'connection refused' while running the installation script, it may be due to store.kde.org being down or issues with your internet connection.
 
 
-## 💝 Current Maintainer
+## 💝 Current Maintainers
 - [Sourcastic](https://github.com/Sourcastic)
+- [soleynn](https://github.com/soleynn)
 
 ## 💖 Past Maintainers
 - [Prayag2](https://github.com/Prayag2)
