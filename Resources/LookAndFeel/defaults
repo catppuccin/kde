@@ -2,7 +2,7 @@
 ColorScheme=Catppuccin--flavour--accentName
 
 [kcminputrc][Mouse]
-cursorTheme=catppuccin---lcflavour---lcaccentName-cursors
+cursorTheme=--cursorTheme
 
 [kwinrc][org.kde.kdecoration2]
 ButtonsOnLeft=
