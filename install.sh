@@ -1,14 +1,41 @@
 #!/bin/sh
 
-# Syntax [-q|--quiet] <Flavour = 1-4 > <Accent = 1-14> <WindowDec = 1/2> <Debug = aurorae/global/color/splash/cursor>
+# Syntax [-q|--quiet] [-c|--local-cursor <path>] <Flavour = 1-4 > <Accent = 1-14> <WindowDec = 1/2> <Debug = aurorae/global/color/splash/cursor>
 
 QUIET=0
-case "$1" in
-    -q | --quiet)
-        QUIET=1
-        shift
-        ;;
-esac
+
+LOCAL_CURSOR=0
+LOCAL_CURSOR_PATH=""
+LOCAL_CURSOR_NAME=""
+
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        -q | --quiet)
+            QUIET=1
+            shift
+            ;;
+        -c | --local-cursor)
+            shift
+            if [ -z "$1" ]; then
+                echo "Error: Missing local cursor path." >&2
+                exit 1
+            fi
+            LOCAL_CURSOR=1
+            LOCAL_CURSOR_PATH=$1
+            LOCAL_CURSOR_NAME=$(basename "$LOCAL_CURSOR_PATH")
+            shift
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
+# Fast install
+FLAVOUR="$1"
+ACCENT="$2"
+WINDECSTYLE="$3"
+DEBUGMODE="$4"
 
 log() {
     if [ "$QUIET" -ne 1 ]; then
@@ -18,6 +45,11 @@ log() {
 
 missing_arg() {
     echo "Error: Missing $1." >&2
+    exit 1
+}
+
+invalid_arg() {
+    echo "Error: $1" >&2
     exit 1
 }
 
@@ -31,9 +63,14 @@ check_command_exists() {
   fi
 }
 
-check_command_exists "wget"
+if [ "$LOCAL_CURSOR" -eq 1 ] && [ "$DEBUGMODE" = "cursor" ]; then
+    invalid_arg "Debug mode 'cursor' does not support --local-cursor."
+fi
+
+[ "$LOCAL_CURSOR" -eq 1 ] || check_command_exists "wget"
+[ "$LOCAL_CURSOR" -eq 1 ] || check_command_exists "unzip"
+
 check_command_exists "sed"
-check_command_exists "unzip"
 check_command_exists "plasma-apply-lookandfeel"
 check_command_exists "kpackagetool6"
 check_command_exists "kwriteconfig6"
@@ -47,12 +84,6 @@ CURSORDIR="${XDG_DATA_HOME:-$HOME/.local/share}/icons"
 log "Creating theme directories.."
 mkdir -p "$COLORDIR" "$AURORAEDIR" "$LOOKANDFEELDIR" "$CURSORDIR"
 mkdir -p ./dist
-
-# Fast install
-FLAVOUR="$1"
-ACCENT="$2"
-WINDECSTYLE="$3"
-DEBUGMODE="$4"
 
 if [ "$DEBUGMODE" != "auto" ] && [ "$QUIET" -ne 1 ]; then
     clear
@@ -254,6 +285,17 @@ LCACCENT=$(printf '%s' "$ACCENTNAME" | tr '[:upper:]' '[:lower:]')
 CURSORVERSION="v2.0.0"
 CURSORACCENT="catppuccin-$LCFLAVOUR-$LCACCENT-cursors"
 CURSORDARK="catppuccin-$LCFLAVOUR-dark-cursors"
+CURSORTHEME=$CURSORACCENT
+
+if [ "$LOCAL_CURSOR" -eq 1 ]; then
+    if [ ! -d "$LOCAL_CURSOR_PATH" ]; then
+        invalid_arg "Local cursor path must be a cursor theme directory: $LOCAL_CURSOR_PATH"
+    fi
+    if [ ! -f "$LOCAL_CURSOR_PATH/index.theme" ] && [ ! -f "$LOCAL_CURSOR_PATH/cursor.theme" ]; then
+        invalid_arg "Local cursor directory must contain index.theme or cursor.theme: $LOCAL_CURSOR_PATH"
+    fi
+    CURSORTHEME=$LOCAL_CURSOR_NAME
+fi
 
 GLOBALTHEMENAME="Catppuccin-$FLAVOURNAME-$ACCENTNAME"
 SPLASHSCREENNAME="Catppuccin-$FLAVOURNAME-$ACCENTNAME-splash"
@@ -391,7 +433,7 @@ InstallGlobalTheme() {
 	sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g; s/--StoreAuroraeNo/$StoreAuroraeNo/g" ./Resources/LookAndFeel/metadata.json > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/metadata.json
 
     # Modify 'defaults' to set the correct Aurorae Theme
-    sed "s/--lcflavour/$LCFLAVOUR/g; s/--lcaccentName/$LCACCENT/g; s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g; s/--aurorae/$WINDECSTYLECODE/g" ./Resources/LookAndFeel/defaults > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/contents/defaults
+    sed "s/--cursorTheme/$CURSORTHEME/g; s/--lcflavour/$LCFLAVOUR/g; s/--lcaccentName/$LCACCENT/g; s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g; s/--aurorae/$WINDECSTYLECODE/g" ./Resources/LookAndFeel/defaults > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/contents/defaults
 
 
 
@@ -450,11 +492,20 @@ GetCursor() {
 }
 
 InstallCursor() {
-    GetCursor
-    rm -rf "${CURSORDIR:?}/$CURSORACCENT"
-    rm -rf "${CURSORDIR:?}/$CURSORDARK"
-    mv ./dist/"$CURSORACCENT" "$CURSORDIR"
-    mv ./dist/"$CURSORDARK" "$CURSORDIR"
+    if [ "$LOCAL_CURSOR" -eq 1 ]; then
+        LOCAL_CURSOR_SOURCE=$(cd "$LOCAL_CURSOR_PATH" && pwd -P)
+        LOCAL_CURSOR_TARGET=$(cd "$CURSORDIR" && pwd -P)/$CURSORTHEME
+        if [ "$LOCAL_CURSOR_SOURCE" != "$LOCAL_CURSOR_TARGET" ]; then
+            rm -rf "${CURSORDIR:?}/$CURSORTHEME"
+            cp -R "$LOCAL_CURSOR_PATH" "$CURSORDIR/$CURSORTHEME"
+        fi
+    else
+        GetCursor
+        rm -rf "${CURSORDIR:?}/$CURSORACCENT"
+        rm -rf "${CURSORDIR:?}/$CURSORDARK"
+        mv ./dist/"$CURSORACCENT" "$CURSORDIR"
+        mv ./dist/"$CURSORDARK" "$CURSORDIR"
+    fi
 }
 
 # Syntax [-q|--quiet] <Flavour> <Accent> <WindowDec> <Debug = aurorae/global/color/splash/cursor>
