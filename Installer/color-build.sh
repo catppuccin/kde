@@ -2,6 +2,8 @@
 
 # From github.com/skinatro/theme-tool
 
+set -eu
+
 help() {
     cat <<EOF
 
@@ -13,12 +15,15 @@ EOF
     exit 1 # Exit script after printing help
 }
 
+OUT=""
+SOURCE=""
+FLAVOURNAME=""
 while getopts o:s:f: opt; do
     case "$opt" in
         o) OUT="$OPTARG" ;;
         s) SOURCE="$OPTARG" ;;
         f) FLAVOURNAME="$OPTARG" ;; # New case for -f
-        ?) help ;;
+        *) help ;;
     esac
 done
 
@@ -28,12 +33,13 @@ if [ -z "$OUT" ] || [ -z "$SOURCE" ] || [ -z "$FLAVOURNAME" ]; then
     help
 fi
 
-# no arrays due to posix compliancy
-if echo "$FLAVOURNAME" | grep -Evq 'Mocha|Macchiato|Frappe|Latte'; then
-    clear
-    echo "Invalid palette $FLAVOURNAME"
-    exit 1
-fi
+case "$FLAVOURNAME" in
+    Mocha | Macchiato | Frappe | Latte) ;;
+    *)
+        echo "Invalid palette $FLAVOURNAME"
+        exit 1
+        ;;
+esac
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 FLAVOUR_SED="$SCRIPT_DIR/Pallets/${FLAVOURNAME}.sed"

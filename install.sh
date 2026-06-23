@@ -2,6 +2,8 @@
 
 # Syntax [-q|--quiet] [-c|--local-cursor <path>] <Flavour = 1-4 > <Accent = 1-14> <WindowDec = 1/2> <Debug = aurorae/global/color/splash/cursor>
 
+set -eu
+
 QUIET=0
 
 LOCAL_CURSOR=0
@@ -16,7 +18,7 @@ while [ "$#" -gt 0 ]; do
             ;;
         -c | --local-cursor)
             shift
-            if [ -z "$1" ]; then
+            if [ -z "${1:-}" ]; then
                 echo "Error: Missing local cursor path." >&2
                 exit 1
             fi
@@ -32,10 +34,10 @@ while [ "$#" -gt 0 ]; do
 done
 
 # Fast install
-FLAVOUR="$1"
-ACCENT="$2"
-WINDECSTYLE="$3"
-DEBUGMODE="$4"
+FLAVOUR="${1:-}"
+ACCENT="${2:-}"
+WINDECSTYLE="${3:-}"
+DEBUGMODE="${4:-}"
 
 log() {
     if [ "$QUIET" -ne 1 ]; then
@@ -63,18 +65,17 @@ check_command_exists() {
     fi
 }
 
+# clear blanks the screen between prompts but errors under set -e on a dumb
+# terminal and wipes diagnostics in ci, so only run it on a real tty.
+clear_screen() {
+    if [ -t 1 ]; then
+        clear || true
+    fi
+}
+
 if [ "$LOCAL_CURSOR" -eq 1 ] && [ "$DEBUGMODE" = "cursor" ]; then
     invalid_arg "Debug mode 'cursor' does not support --local-cursor."
 fi
-
-[ "$LOCAL_CURSOR" -eq 1 ] || check_command_exists "wget"
-[ "$LOCAL_CURSOR" -eq 1 ] || check_command_exists "unzip"
-
-check_command_exists "sed"
-check_command_exists "plasma-apply-lookandfeel"
-check_command_exists "kpackagetool6"
-check_command_exists "kwriteconfig6"
-check_command_exists "tar"
 
 COLORDIR="${XDG_DATA_HOME:-$HOME/.local/share}/color-schemes"
 AURORAEDIR="${XDG_DATA_HOME:-$HOME/.local/share}/aurorae/themes"
@@ -86,7 +87,7 @@ mkdir -p "$COLORDIR" "$AURORAEDIR" "$LOOKANDFEELDIR" "$CURSORDIR"
 mkdir -p ./dist
 
 if [ "$DEBUGMODE" != "auto" ] && [ "$QUIET" -ne 1 ]; then
-    clear
+    clear_screen
 fi
 
 if [ -z "$FLAVOUR" ]; then
@@ -102,8 +103,8 @@ Choose flavor out of -
     4. Latte
     (Type the number corresponding to said palette)
 EOF
-    read -r FLAVOUR
-    clear
+    read -r FLAVOUR || true
+    clear_screen
 fi
 
 case "$FLAVOUR" in
@@ -140,8 +141,8 @@ Choose an accent -
     13. Blue
     14. Lavender
 EOF
-    read -r ACCENT
-    clear
+    read -r ACCENT || true
+    clear_screen
 fi
 
 # Sets accent based on the palette selected (Best to fold this in your respective editor)
@@ -152,6 +153,7 @@ case "$ACCENT" in
             2) ACCENTCOLOR="244, 219, 214" ;;
             3) ACCENTCOLOR="242, 213, 207" ;;
             4) ACCENTCOLOR="220, 138, 120" ;;
+            *) ;;
         esac
         ACCENTNAME="Rosewater"
         ;;
@@ -161,6 +163,7 @@ case "$ACCENT" in
             2) ACCENTCOLOR="240, 198, 198" ;;
             3) ACCENTCOLOR="238, 190, 190" ;;
             4) ACCENTCOLOR="221, 120, 120" ;;
+            *) ;;
         esac
         ACCENTNAME="Flamingo"
         ;;
@@ -170,6 +173,7 @@ case "$ACCENT" in
             2) ACCENTCOLOR="245, 189, 230" ;;
             3) ACCENTCOLOR="244, 184, 228" ;;
             4) ACCENTCOLOR="234, 118, 203" ;;
+            *) ;;
         esac
         ACCENTNAME="Pink"
         ;;
@@ -179,6 +183,7 @@ case "$ACCENT" in
             2) ACCENTCOLOR="198, 160, 246" ;;
             3) ACCENTCOLOR="202, 158, 230" ;;
             4) ACCENTCOLOR="136, 57, 239" ;;
+            *) ;;
         esac
         ACCENTNAME="Mauve"
         ;;
@@ -188,6 +193,7 @@ case "$ACCENT" in
             2) ACCENTCOLOR="237, 135, 150" ;;
             3) ACCENTCOLOR="231, 130, 132" ;;
             4) ACCENTCOLOR="210, 15, 57" ;;
+            *) ;;
         esac
         ACCENTNAME="Red"
         ;;
@@ -197,6 +203,7 @@ case "$ACCENT" in
             2) ACCENTCOLOR="238, 153, 160" ;;
             3) ACCENTCOLOR="234, 153, 156" ;;
             4) ACCENTCOLOR="230, 69, 83" ;;
+            *) ;;
         esac
         ACCENTNAME="Maroon"
         ;;
@@ -206,6 +213,7 @@ case "$ACCENT" in
             2) ACCENTCOLOR="245, 169, 127" ;;
             3) ACCENTCOLOR="239, 159, 118" ;;
             4) ACCENTCOLOR="254, 100, 11" ;;
+            *) ;;
         esac
         ACCENTNAME="Peach"
         ;;
@@ -215,6 +223,7 @@ case "$ACCENT" in
             2) ACCENTCOLOR="238, 212, 159" ;;
             3) ACCENTCOLOR="229, 200, 144" ;;
             4) ACCENTCOLOR="223, 142, 29" ;;
+            *) ;;
         esac
         ACCENTNAME="Yellow"
         ;;
@@ -224,6 +233,7 @@ case "$ACCENT" in
             2) ACCENTCOLOR="166, 218, 149" ;;
             3) ACCENTCOLOR="166, 209, 137" ;;
             4) ACCENTCOLOR="64, 160, 43" ;;
+            *) ;;
         esac
         ACCENTNAME="Green"
         ;;
@@ -233,6 +243,7 @@ case "$ACCENT" in
             2) ACCENTCOLOR="139, 213, 202" ;;
             3) ACCENTCOLOR="129, 200, 190" ;;
             4) ACCENTCOLOR="23, 146, 153" ;;
+            *) ;;
         esac
         ACCENTNAME="Teal"
         ;;
@@ -242,6 +253,7 @@ case "$ACCENT" in
             2) ACCENTCOLOR="145, 215, 227" ;;
             3) ACCENTCOLOR="153, 209, 219" ;;
             4) ACCENTCOLOR="4, 165, 229" ;;
+            *) ;;
         esac
         ACCENTNAME="Sky"
         ;;
@@ -251,6 +263,7 @@ case "$ACCENT" in
             2) ACCENTCOLOR="125, 196, 228" ;;
             3) ACCENTCOLOR="133, 193, 220" ;;
             4) ACCENTCOLOR="32, 159, 181" ;;
+            *) ;;
         esac
         ACCENTNAME="Sapphire"
         ;;
@@ -260,6 +273,7 @@ case "$ACCENT" in
             2) ACCENTCOLOR="138, 173, 244" ;;
             3) ACCENTCOLOR="140, 170, 238" ;;
             4) ACCENTCOLOR="30, 102, 245" ;;
+            *) ;;
         esac
         ACCENTNAME="Blue"
         ;;
@@ -269,6 +283,7 @@ case "$ACCENT" in
             2) ACCENTCOLOR="183, 189, 248" ;;
             3) ACCENTCOLOR="186, 187, 241" ;;
             4) ACCENTCOLOR="114, 135, 253" ;;
+            *) ;;
         esac
         ACCENTNAME="Lavender"
         ;;
@@ -310,8 +325,8 @@ Choose window decoration style -
     1. Modern (Mixed)
     2. Classic (MacOS like)
 EOF
-    read -r WINDECSTYLE
-    clear
+    read -r WINDECSTYLE || true
+    clear_screen
 fi
 
 WINDECSTYLENAME=""
@@ -325,6 +340,7 @@ case "$WINDECSTYLE" in
             2) StoreAuroraeNo="2135227" ;;
             3) StoreAuroraeNo="2135225" ;;
             4) StoreAuroraeNo="2135223" ;;
+            *) ;;
         esac
 
         if [ "$QUIET" -ne 1 ]; then
@@ -348,6 +364,7 @@ EOF
             2) StoreAuroraeNo="2135226" ;;
             3) StoreAuroraeNo="2135224" ;;
             4) StoreAuroraeNo="2135222" ;;
+            *) ;;
         esac
 
         if [ "$QUIET" -ne 1 ]; then
@@ -363,6 +380,23 @@ EOF
         ;;
 esac
 
+# dependency checks run after the flavour/accent/decoration validation so a bad
+# argument reports the right error even headless. only the full install needs the
+# plasma tools; the build-only debug modes (color/aurorae/splash/cursor) don't.
+[ "$LOCAL_CURSOR" -eq 1 ] || check_command_exists "wget"
+[ "$LOCAL_CURSOR" -eq 1 ] || check_command_exists "unzip"
+check_command_exists "sed"
+check_command_exists "tar"
+case "$DEBUGMODE" in
+    global) check_command_exists "kpackagetool6" ;;
+    "" | auto)
+        check_command_exists "kpackagetool6"
+        check_command_exists "kwriteconfig6"
+        check_command_exists "plasma-apply-lookandfeel"
+        ;;
+    *) ;;
+esac
+
 BuildColorscheme() {
     # Add Metadata & Replace Accent in colors file
     # Selection text is dark (crust) on the accent. Latte's darkest accents
@@ -371,6 +405,7 @@ BuildColorscheme() {
     if [ "$FLAVOURNAME" = "Latte" ]; then
         case "$ACCENTNAME" in
             Red | Mauve | Blue) SELFG="255, 255, 255" ;;
+            *) ;;
         esac
     fi
     sed "s/--accentColor/$ACCENTCOLOR/g; s/--selFg/$SELFG/g; s/--flavour/$FLAVOURNAME/g; s/--accentName/$ACCENTNAME/g" ./Resources/Base.colors >./dist/base.colors
@@ -384,6 +419,7 @@ BuildSplashScreen() {
         2) MANTLECOLOR="#1e2030" ;;
         3) MANTLECOLOR="#292c3c" ;;
         4) MANTLECOLOR="#e6e9ef" ;;
+        *) ;;
     esac
 
     # Hydrate Dummy colors according to Pallet
@@ -403,7 +439,7 @@ BuildSplashScreen() {
     fi
     sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g" ./Resources/splash-screen/metadata.desktop >./dist/"$SPLASHSCREENNAME"/metadata.desktop
     sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g" ./Resources/splash-screen/metadata.json >./dist/"$SPLASHSCREENNAME"/metadata.json
-    mkdir ./dist/"$SPLASHSCREENNAME"/contents/previews
+    mkdir -p ./dist/"$SPLASHSCREENNAME"/contents/previews
     cp ./Resources/splash-previews/"$FLAVOURNAME".png ./dist/"$SPLASHSCREENNAME"/contents/previews/splash.png
     # cp ./Resources/splash-previews/"$FLAVOURNAME".png ./dist/"$SPLASHSCREENNAME"/contents/previews/preview.png
     cp -r ./dist/"$SPLASHSCREENNAME"/contents/splash/ "$LOOKANDFEELDIR"/"$GLOBALTHEMENAME"/contents/
@@ -480,8 +516,14 @@ GetCursor() {
     # Fetches cursors
     log "Downloading Catppuccin Cursors from Catppuccin/cursors..."
     [ "$QUIET" -eq 1 ] || sleep 2
-    wget -q -P ./dist https://github.com/catppuccin/cursors/releases/download/"$CURSORVERSION"/"$CURSORACCENT".zip
-    wget -q -P ./dist https://github.com/catppuccin/cursors/releases/download/"$CURSORVERSION"/"$CURSORDARK".zip
+    for cursor_zip in "$CURSORACCENT" "$CURSORDARK"; do
+        if ! wget -q -P ./dist "https://github.com/catppuccin/cursors/releases/download/$CURSORVERSION/$cursor_zip.zip"; then
+            invalid_arg "Could not download $cursor_zip.zip from catppuccin/cursors $CURSORVERSION. Check your connection or the cursors release page."
+        fi
+        if [ ! -s "./dist/$cursor_zip.zip" ]; then
+            invalid_arg "Downloaded $cursor_zip.zip is empty; the cursors release $CURSORVERSION may have changed. Check the catppuccin/cursors store page."
+        fi
+    done
     (
         cd ./dist || exit
         unzip -q "$CURSORACCENT".zip
@@ -507,6 +549,9 @@ InstallCursor() {
 }
 
 # Syntax [-q|--quiet] <Flavour> <Accent> <WindowDec> <Debug = aurorae/global/color/splash/cursor>
+# splash and cursor debug modes fall through to the confirmation check below
+# without setting this, so default it for set -u.
+CONFIRMATION=""
 case "$DEBUGMODE" in
     "")
         if [ "$QUIET" -eq 1 ]; then
@@ -514,8 +559,8 @@ case "$DEBUGMODE" in
         else
             echo
             echo "Install $FLAVOURNAME $ACCENTNAME? with the $WINDECSTYLENAME window Decorations? [y/N]:"
-            read -r CONFIRMATION
-            clear
+            read -r CONFIRMATION || true
+            clear_screen
         fi
         ;;
     auto)
@@ -566,7 +611,7 @@ if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
         # Apply theme
         log ""
         log "Do you want to apply theme? [Y/n]:"
-        read -r CONFIRMATION
+        read -r CONFIRMATION || true
     fi
 
     if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ] || [ "$CONFIRMATION" = "" ]; then
@@ -575,7 +620,7 @@ if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
         kwriteconfig6 --file kwinrc --group org.kde.kdecoration2 --key BorderSizeAuto false
         plasma-apply-lookandfeel -a "$GLOBALTHEMENAME"
         if [ "$DEBUGMODE" != "auto" ]; then
-            [ "$QUIET" -eq 1 ] || clear
+            [ "$QUIET" -eq 1 ] || clear_screen
         fi
         # Some legacy apps still look in ~/.icons
         if [ "$QUIET" -ne 1 ]; then
