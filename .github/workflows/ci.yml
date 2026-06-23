@@ -1,0 +1,94 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: shellcheck
+        uses: ludeeus/action-shellcheck@00cae500b08a931fb5698e11e79bfbd38e612a38 # 2.0.0
+      - name: install lint tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shfmt devscripts
+          curl -fsSL https://github.com/editorconfig-checker/editorconfig-checker/releases/download/v3.0.3/ec-linux-amd64.tar.gz | tar -xz
+          sudo install bin/ec-linux-amd64 /usr/local/bin/editorconfig-checker
+          curl -fsSL https://github.com/rhysd/actionlint/releases/download/v1.7.7/actionlint_1.7.7_linux_amd64.tar.gz | tar -xz actionlint
+          sudo install actionlint /usr/local/bin/actionlint
+      - name: shfmt
+        run: for f in $(git ls-files '*.sh'); do shfmt -d -ln posix -i 4 -ci "$f"; done
+      - name: posix syntax (dash + checkbashisms)
+        run: |
+          for f in $(git ls-files '*.sh'); do
+            dash -n "$f"
+            checkbashisms "$f"
+          done
+      - name: editorconfig
+        run: editorconfig-checker
+      - name: actionlint
+        run: actionlint
+
+  assets:
+    name: assets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: install libxml2-utils
+        run: sudo apt-get update && sudo apt-get install -y libxml2-utils
+      - name: validate json
+        run: for f in $(git ls-files '*.json'); do jq empty "$f"; done
+      - name: validate svg
+        run: for f in $(git ls-files '*.svg'); do xmllint --noout "$f"; done
+      - name: validate svgz
+        run: |
+          for f in $(git ls-files '*.svgz'); do
+            gzip -t "$f"
+            gzip -dc "$f" | xmllint --noout -
+          done
+
+  completeness:
+    name: completeness
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: run completeness matrix
+        run: tests/completeness.sh
+
+  tests:
+    name: tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: run test suite
+        run: tests/run.sh
+
+  ci:
+    name: ci
+    if: always()
+    needs: [lint, assets, completeness, tests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: verify all jobs passed
+        run: |
+          results="${{ join(needs.*.result, ' ') }}"
+          echo "dependency results: $results"
+          for r in $results; do
+            if [ "$r" != "success" ]; then
+              echo "::error::a required job did not succeed ($r)"
+              exit 1
+            fi
+          done
+          echo "all required jobs passed"
