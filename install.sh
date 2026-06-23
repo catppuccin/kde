@@ -54,13 +54,13 @@ invalid_arg() {
 }
 
 check_command_exists() {
-  command_name="$1"
+    command_name="$1"
 
-  if ! command -v "$command_name" >/dev/null 2>&1; then
-    echo "Error: Dependency '$command_name' is not met." >&2
-    echo "Exiting.." >&2
-    exit 1
-  fi
+    if ! command -v "$command_name" >/dev/null 2>&1; then
+        echo "Error: Dependency '$command_name' is not met." >&2
+        echo "Exiting.." >&2
+        exit 1
+    fi
 }
 
 if [ "$LOCAL_CURSOR" -eq 1 ] && [ "$DEBUGMODE" = "cursor" ]; then
@@ -351,7 +351,7 @@ EOF
         esac
 
         if [ "$QUIET" -ne 1 ]; then
-		    cat <<EOF
+            cat <<EOF
 
 Classic($WINDECSTYLE) decorations were selected.
 EOF
@@ -370,10 +370,10 @@ BuildColorscheme() {
     SELFG="17, 17, 27"
     if [ "$FLAVOURNAME" = "Latte" ]; then
         case "$ACCENTNAME" in
-        Red | Mauve | Blue) SELFG="255, 255, 255" ;;
+            Red | Mauve | Blue) SELFG="255, 255, 255" ;;
         esac
     fi
-    sed "s/--accentColor/$ACCENTCOLOR/g; s/--selFg/$SELFG/g; s/--flavour/$FLAVOURNAME/g; s/--accentName/$ACCENTNAME/g" ./Resources/Base.colors > ./dist/base.colors
+    sed "s/--accentColor/$ACCENTCOLOR/g; s/--selFg/$SELFG/g; s/--flavour/$FLAVOURNAME/g; s/--accentName/$ACCENTNAME/g" ./Resources/Base.colors >./dist/base.colors
     # Hydrate Dummy colors according to Pallet
     ./Installer/color-build.sh -f "$FLAVOURNAME" -o ./dist/Catppuccin"$FLAVOURNAME$ACCENTNAME".colors -s ./dist/base.colors
 }
@@ -389,20 +389,20 @@ BuildSplashScreen() {
     # Hydrate Dummy colors according to Pallet
     ./Installer/color-build.sh -f "$FLAVOURNAME" -s ./Resources/splash-screen/contents/splash/images/busywidget.svg -o ./dist/"$SPLASHSCREENNAME"/contents/splash/images/_busywidget.svg
     # Replace Accent in colors file
-    sed "s/REPLACE--ACCENT/$ACCENTCOLOR/g" ./dist/"$SPLASHSCREENNAME"/contents/splash/images/_busywidget.svg > ./dist/"$SPLASHSCREENNAME"/contents/splash/images/busywidget.svg
+    sed "s/REPLACE--ACCENT/$ACCENTCOLOR/g" ./dist/"$SPLASHSCREENNAME"/contents/splash/images/_busywidget.svg >./dist/"$SPLASHSCREENNAME"/contents/splash/images/busywidget.svg
     # Cleanup temporary file
     rm ./dist/"$SPLASHSCREENNAME"/contents/splash/images/_busywidget.svg
 
     # Hydrate Dummy colors according to Pallet (QML file)
-    sed -e "s/REPLACE--MANTLE/$MANTLECOLOR/g" ./Resources/splash-screen/contents/splash/Splash.qml > ./dist/"$SPLASHSCREENNAME"/contents/splash/Splash.qml
+    sed -e "s/REPLACE--MANTLE/$MANTLECOLOR/g" ./Resources/splash-screen/contents/splash/Splash.qml >./dist/"$SPLASHSCREENNAME"/contents/splash/Splash.qml
     # Add CTP Logo
     if [ "$FLAVOUR" -ne 4 ]; then
         cp ./Resources/splash-screen/contents/splash/images/Logo.png ./dist/"$SPLASHSCREENNAME"/contents/splash/images/Logo.png
     else
         cp ./Resources/splash-screen/contents/splash/images/Latte_Logo.png ./dist/"$SPLASHSCREENNAME"/contents/splash/images/Logo.png
     fi
-    sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g" ./Resources/splash-screen/metadata.desktop > ./dist/"$SPLASHSCREENNAME"/metadata.desktop
-	sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g" ./Resources/splash-screen/metadata.json > ./dist/"$SPLASHSCREENNAME"/metadata.json
+    sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g" ./Resources/splash-screen/metadata.desktop >./dist/"$SPLASHSCREENNAME"/metadata.desktop
+    sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g" ./Resources/splash-screen/metadata.json >./dist/"$SPLASHSCREENNAME"/metadata.json
     mkdir ./dist/"$SPLASHSCREENNAME"/contents/previews
     cp ./Resources/splash-previews/"$FLAVOURNAME".png ./dist/"$SPLASHSCREENNAME"/contents/previews/splash.png
     # cp ./Resources/splash-previews/"$FLAVOURNAME".png ./dist/"$SPLASHSCREENNAME"/contents/previews/preview.png
@@ -411,16 +411,16 @@ BuildSplashScreen() {
 }
 
 InstallAuroraeTheme() {
-	# Prepare Aurorae Theme Folder
-	cp -r ./Resources/Aurorae/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME" ./dist/
+    # Prepare Aurorae Theme Folder
+    cp -r ./Resources/Aurorae/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME" ./dist/
     if [ "$FLAVOUR" -eq 4 ]; then
-		cp ./Resources/Aurorae/Common/CatppuccinLatte-"$WINDECSTYLENAME"rc ./dist/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME"/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME"rc
-	else
-		cp ./Resources/Aurorae/Common/Catppuccin-"$WINDECSTYLENAME"rc ./dist/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME"/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME"rc
-	fi
+        cp ./Resources/Aurorae/Common/CatppuccinLatte-"$WINDECSTYLENAME"rc ./dist/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME"/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME"rc
+    else
+        cp ./Resources/Aurorae/Common/Catppuccin-"$WINDECSTYLENAME"rc ./dist/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME"/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME"rc
+    fi
 
-	log "Installing Aurorae Theme..."
-	cp -r ./dist/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME"/ "$AURORAEDIR"
+    log "Installing Aurorae Theme..."
+    cp -r ./dist/Catppuccin"$FLAVOURNAME"-"$WINDECSTYLENAME"/ "$AURORAEDIR"
 }
 
 InstallGlobalTheme() {
@@ -429,13 +429,11 @@ InstallGlobalTheme() {
     mkdir -p ./dist/"$SPLASHSCREENNAME"/contents/splash/images
 
     # Hydrate Metadata with Pallet + Accent Info
-    sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g; s/--StoreAuroraeNo/$StoreAuroraeNo/g" ./Resources/LookAndFeel/metadata.desktop > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/metadata.desktop
-	sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g; s/--StoreAuroraeNo/$StoreAuroraeNo/g" ./Resources/LookAndFeel/metadata.json > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/metadata.json
+    sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g; s/--StoreAuroraeNo/$StoreAuroraeNo/g" ./Resources/LookAndFeel/metadata.desktop >./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/metadata.desktop
+    sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g; s/--StoreAuroraeNo/$StoreAuroraeNo/g" ./Resources/LookAndFeel/metadata.json >./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/metadata.json
 
     # Modify 'defaults' to set the correct Aurorae Theme
-    sed "s/--cursorTheme/$CURSORTHEME/g; s/--lcflavour/$LCFLAVOUR/g; s/--lcaccentName/$LCACCENT/g; s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g; s/--aurorae/$WINDECSTYLECODE/g" ./Resources/LookAndFeel/defaults > ./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/contents/defaults
-
-
+    sed "s/--cursorTheme/$CURSORTHEME/g; s/--lcflavour/$LCFLAVOUR/g; s/--lcaccentName/$LCACCENT/g; s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g; s/--aurorae/$WINDECSTYLECODE/g" ./Resources/LookAndFeel/defaults >./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/contents/defaults
 
     # Install Global Theme.
     # This refers to the QDBusConnection: error: could not send signal to service error
@@ -523,10 +521,10 @@ case "$DEBUGMODE" in
     auto)
         CONFIRMATION=Y
         ;;
-	aurorae)
-		InstallAuroraeTheme
-		exit
-		;;
+    aurorae)
+        InstallAuroraeTheme
+        exit
+        ;;
     global)
         InstallGlobalTheme
         exit
@@ -548,7 +546,7 @@ case "$DEBUGMODE" in
 esac
 
 if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
-	# Build and Install Aurorae Theme
+    # Build and Install Aurorae Theme
     InstallAuroraeTheme
 
     # Build and Install Global Theme
@@ -562,7 +560,7 @@ if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
 
     # Cleanup
     log "Cleaning up.."
-	rm -r ./dist
+    rm -r ./dist
 
     if [ "$DEBUGMODE" != "auto" ] && [ "$QUIET" -ne 1 ]; then
         # Apply theme
