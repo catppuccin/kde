@@ -1,0 +1,181 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0
+
+      - name: Verify version consistency
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          echo "Verifying consistency for version: $version"
+
+          # 1. Check CHANGELOG.md
+          if ! grep -q "^## \[$version\]" CHANGELOG.md; then
+            echo "::error::CHANGELOG.md does not contain heading '## [$version]'"
+            exit 1
+          fi
+
+          # 2. Check metadata.json files (10 files)
+          while IFS= read -r f; do
+            file_ver=$(jq -r '.KPlugin.Version' "$f")
+            if [ "$file_ver" != "$version" ]; then
+              echo "::error::$f version ($file_ver) does not match tag version ($version)"
+              exit 1
+            fi
+          done < <(find Resources -name "metadata.json")
+
+          # 3. Check metadata.desktop files (10 files)
+          while IFS= read -r f; do
+            file_ver=$(grep "^X-KDE-PluginInfo-Version=" "$f" | cut -d'=' -f2)
+            if [ "$file_ver" != "$version" ]; then
+              echo "::error::$f version ($file_ver) does not match tag version ($version)"
+              exit 1
+            fi
+          done < <(find Resources -name "metadata.desktop")
+
+          echo "All version checks passed!"
+
+      - name: Extract Release Notes and Contributors
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          
+          # Extract changelog section
+          awk '/^## \['"$version"'\]/{flag=1; next} /^## \[/ || /^\[/{flag=0} flag' CHANGELOG.md > release_notes.md
+          
+          # Deriving contributors function
+          resolve_github_username() {
+            local name="$1"
+            local email="$2"
+            local username=""
+
+            # Check if noreply
+            if echo "$email" | grep -q "@users\.noreply\.github\.com"; then
+              username=$(echo "$email" | sed -E 's/[0-9]+\+([^@]+)@users\.noreply\.github\.com/\1/')
+              if [ -n "$username" ]; then
+                echo "@$username"
+                return 0
+              fi
+            fi
+
+            # Check email search
+            if [ -n "$email" ]; then
+              username=$(gh api "search/users?q=${email}" --jq '.items[0].login' 2>/dev/null || true)
+              if [ -n "$username" ] && [ "$username" != "null" ]; then
+                echo "@$username"
+                return 0
+              fi
+            fi
+
+            # Check name search
+            if [ -n "$name" ]; then
+              local query_name
+              query_name=$(echo "$name" | tr ' ' '+')
+              username=$(gh api "search/users?q=${query_name}" --jq '.items[0].login' 2>/dev/null || true)
+              if [ -n "$username" ] && [ "$username" != "null" ]; then
+                echo "@$username"
+                return 0
+              fi
+            fi
+
+            # Fallback to name
+            if [[ "$name" =~ [[:space:]] ]]; then
+              echo "$name"
+            else
+              echo "@$name"
+            fi
+          }
+
+          contributors=""
+          add_contributor() {
+            local contrib="$1"
+            if [ -n "$contrib" ]; then
+              if [ -z "$contributors" ]; then
+                contributors="$contrib"
+              else
+                contributors="$contributors"$'\n'"$contrib"
+              fi
+            fi
+          }
+
+          if prev_tag=$(git describe --tags --abbrev=0 "${GITHUB_REF_NAME}^" 2>/dev/null); then
+            echo "Previous tag found: $prev_tag"
+            
+            # Primary authors
+            for sha in $(git log "${prev_tag}..${GITHUB_REF_NAME}" --format='%H'); do
+              login=$(gh api "repos/${{ github.repository }}/commits/$sha" --jq '.author.login' 2>/dev/null || true)
+              if [ -n "$login" ] && [ "$login" != "null" ]; then
+                add_contributor "@$login"
+              else
+                author_info=$(git log -n 1 --format='%aN <%aE>' "$sha")
+                name=$(echo "$author_info" | sed -E 's/ <.*>//')
+                email=$(echo "$author_info" | sed -E 's/.*<(.*)>/\1/')
+                resolved=$(resolve_github_username "$name" "$email")
+                add_contributor "$resolved"
+              fi
+            done
+
+            # Co-authors
+            co_authors=$(git log "${prev_tag}..${GITHUB_REF_NAME}" | grep -i 'Co-authored-by:' | sed -E 's/.*Co-authored-by:[[:space:]]*//I' || true)
+            if [ -n "$co_authors" ]; then
+              while IFS= read -r line; do
+                [ -z "$line" ] && continue
+                name=$(echo "$line" | sed -E 's/ <.*>//')
+                email=$(echo "$line" | sed -E 's/.*<(.*)>/\1/')
+                resolved=$(resolve_github_username "$name" "$email")
+                add_contributor "$resolved"
+              done <<< "$co_authors"
+            fi
+          fi
+
+          if [ -n "$contributors" ]; then
+            # Filter bots & uniq
+            mapfile -t contrib_lines <<< "$(echo "$contributors" | grep -v "^$" | sort -f -u)"
+            clean_contribs=()
+            for c in "${contrib_lines[@]}"; do
+              [ -z "$c" ] && continue
+              if [[ "$c" =~ (github-actions|dependabot|renovate|copilot|snyk|codecov|lgtm|sonar) ]]; then
+                continue
+              fi
+              clean_contribs+=("$c")
+            done
+
+            count=${#clean_contribs[@]}
+            contrib_list=""
+            if [ "$count" -eq 1 ]; then
+              contrib_list="Thanks to ${clean_contribs[0]} for their contributions!"
+            elif [ "$count" -eq 2 ]; then
+              contrib_list="Thanks to ${clean_contribs[0]} and ${clean_contribs[1]} for their contributions!"
+            elif [ "$count" -gt 2 ]; then
+              contrib_list="Thanks to "
+              for ((i=0; i<count-1; i++)); do
+                contrib_list="${contrib_list}${clean_contribs[i]}, "
+              done
+              contrib_list="${contrib_list}and ${clean_contribs[count-1]} for their contributions!"
+            fi
+
+            if [ -n "$contrib_list" ]; then
+              echo -e "\n## Contributors\n\n$contrib_list" >> release_notes.md
+            fi
+          fi
+
+      - name: Create Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" --notes-file release_notes.md
