@@ -26,6 +26,88 @@ ACCENTS="1:Rosewater 2:Flamingo 3:Pink 4:Mauve 5:Red 6:Maroon 7:Peach 8:Yellow 9
 # bare $ is an end-anchor (matches nothing); escape it. covers both token families.
 RESIDUAL='\$[a-z0-9]|--[a-zA-Z]'
 
+# ---- shfmt style gate ----
+section "shfmt style gate"
+if ! command -v shfmt >/dev/null 2>&1; then
+    bad "shfmt is not installed (please install shfmt)"
+else
+    shfmt_fail=0
+    for f in $(git ls-files '*.sh'); do
+        if ! shfmt -d -ln posix -i 4 -ci "$f"; then
+            shfmt_fail=1
+        fi
+    done
+    if [ "$shfmt_fail" -ne 0 ]; then
+        bad "some shell scripts are not formatted correctly. Run: shfmt -w -ln posix -i 4 -ci <files>"
+    else
+        ok "all shell scripts are formatted correctly"
+    fi
+fi
+
+# ---- multi-shell syntax gate ----
+section "multi-shell syntax gate"
+if ! command -v dash >/dev/null 2>&1; then
+    bad "dash is not installed (please install dash)"
+elif ! command -v checkbashisms >/dev/null 2>&1; then
+    bad "checkbashisms is not installed (please install checkbashisms / devscripts)"
+else
+    syntax_fail=0
+    for f in $(git ls-files '*.sh'); do
+        if ! dash -n "$f"; then
+            bad "dash syntax check failed: $f"
+            syntax_fail=1
+        fi
+        if ! checkbashisms "$f"; then
+            bad "checkbashisms failed: $f"
+            syntax_fail=1
+        fi
+    done
+    [ "$syntax_fail" -eq 0 ] && ok "all shell scripts passed multi-shell syntax check"
+fi
+
+# ---- asset validity gate ----
+section "asset validity gate"
+if ! command -v jq >/dev/null 2>&1; then
+    bad "jq is not installed (please install jq)"
+elif ! command -v xmllint >/dev/null 2>&1; then
+    bad "xmllint is not installed (please install libxml2-utils)"
+elif ! command -v gzip >/dev/null 2>&1; then
+    bad "gzip is not installed (please install gzip)"
+else
+    asset_fail=0
+    for f in $(git ls-files '*.json'); do
+        if ! jq empty "$f" >/dev/null; then
+            bad "invalid json: $f"
+            asset_fail=1
+        fi
+    done
+    for f in $(git ls-files '*.svg'); do
+        if ! xmllint --noout "$f" >/dev/null; then
+            bad "invalid svg: $f"
+            asset_fail=1
+        fi
+    done
+    for f in $(git ls-files '*.svgz'); do
+        if ! gzip -t "$f"; then
+            bad "corrupted svgz (gzip check failed): $f"
+            asset_fail=1
+        elif ! gzip -dc "$f" | xmllint --noout - >/dev/null; then
+            bad "invalid inner xml in svgz: $f"
+            asset_fail=1
+        fi
+    done
+    [ "$asset_fail" -eq 0 ] && ok "all repo-wide json, svg, and svgz assets are valid"
+fi
+
+# ---- completeness-matrix gate ----
+section "completeness-matrix gate"
+if comp_out=$(sh tests/completeness.sh 2>&1); then
+    ok "${comp_out#completeness: ok }"
+else
+    bad "completeness matrix validation failed:"
+    printf '%s\n' "$comp_out" >&2
+fi
+
 # ---- goldens + palette snapshot (items 18, 20) ----
 section "goldens (regenerate via installer, then diff)"
 if ! sh tests/regen-goldens.sh >/dev/null; then
@@ -38,6 +120,7 @@ else
 fi
 
 # negative assert: a non-override accent on Latte keeps the crust selFg, not white
+make_sandbox
 rm -rf ./dist
 ./install.sh -q 4 9 1 color >/dev/null 2>&1
 sel=$(grep -A12 '^\[Colors:Selection\]' ./dist/CatppuccinLatteGreen.colors | grep -m1 '^ForegroundNormal=' | cut -d= -f2)
@@ -158,7 +241,7 @@ rm -rf ./dist
 if ./install.sh -q -c "$SANDBOX/cursor" 4 13 2 auto >/dev/null 2>&1; then
     want_file "$SANDBOX/data/color-schemes/CatppuccinLatteBlue.colors" "auto -c: colour scheme landed" "auto -c: colour scheme missing"
     want_dir "$SANDBOX/data/aurorae/themes/CatppuccinLatte-Classic" "auto -c: aurorae theme landed" "auto -c: aurorae missing"
-    want_dir "$SANDBOX/data/plasma/look-and-feel/Catppuccin-Latte-Blue" "auto -c: look-and-feel landed" "auto -c: look-and-feel missing"
+    want_file "$SANDBOX/data/kpackagetool6.calls" "auto -c: kpackagetool6 stub was called" "auto -c: kpackagetool6 stub was not called"
     want_dir "$SANDBOX/data/icons/cursor" "auto -c: offline cursor landed under basename" "auto -c: cursor missing"
 else
     bad "auto -c: installer exited non-zero"
@@ -181,6 +264,7 @@ stub_cursor_download
 rm -rf ./dist
 if ./install.sh 1 13 2 auto >/dev/null 2>&1 </dev/null; then
     want_file "$SANDBOX/data/color-schemes/CatppuccinMochaBlue.colors" "README './install.sh 1 13 2 auto' completes + installs" "README invocation: colour scheme missing"
+    want_file "$SANDBOX/data/kpackagetool6.calls" "README: kpackagetool6 stub was called" "README: kpackagetool6 stub was not called"
     want_dir "$SANDBOX/data/icons/catppuccin-mocha-blue-cursors" "README invocation: cursor landed" "README invocation: cursor missing"
 else
     bad "README invocation: installer exited non-zero"

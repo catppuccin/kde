@@ -20,6 +20,10 @@ for d in Resources/Aurorae/Catppuccin*-*/; do
         fail=1
     fi
 done
+[ "$themes" -eq 8 ] || {
+    echo "completeness: expected 8 Aurorae themes, found $themes" >&2
+    fail=1
+}
 
 n=0
 for d in Resources/LookAndFeel/Catppuccin-*-Global; do

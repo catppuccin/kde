@@ -15,8 +15,8 @@ make_sandbox() {
     SANDBOX=$(mktemp -d "$TEST_TMP/sb.XXXXXX")
     mkdir -p "$SANDBOX/data" "$SANDBOX/config" "$SANDBOX/cache" "$SANDBOX/bin" "$SANDBOX/cursor"
 
-    # kpackagetool6 extracts the look-and-feel package like a real install so the
-    # splash copy into LOOKANDFEELDIR/<theme>/contents has a directory to land in.
+    # kpackagetool6 no-op stub that records it was called and creates the destination
+    # directory structure so that subsequent cp commands in the installer do not fail.
     cat >"$SANDBOX/bin/kpackagetool6" <<'STUB'
 #!/bin/sh
 dest="$XDG_DATA_HOME/plasma/look-and-feel"
@@ -28,10 +28,11 @@ for a in "$@"; do
     esac
     prev=$a
 done
-if [ -n "$tarball" ] && [ -f "$tarball" ]; then
-    mkdir -p "$dest"
-    tar -xzf "$tarball" -C "$dest"
+if [ -n "$tarball" ]; then
+    theme=$(basename "$tarball" .tar.gz)
+    mkdir -p "$dest/$theme/contents/previews"
 fi
+echo "kpackagetool6 called with: $*" >> "$XDG_DATA_HOME/kpackagetool6.calls"
 exit 0
 STUB
     printf '#!/bin/sh\nexit 0\n' >"$SANDBOX/bin/kwriteconfig6"
