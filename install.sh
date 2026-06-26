@@ -375,7 +375,7 @@ EOF
         fi
         ;;
     *)
-        echo "Not a valid Window decoration"
+        echo "Not a valid Window decoration" >&2
         exit 1
         ;;
 esac

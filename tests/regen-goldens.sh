@@ -10,6 +10,9 @@ libdir=$(dirname "$0")
 GOLD=tests/goldens
 mkdir -p "$GOLD" "$GOLD/global"
 
+# ensure sandbox is active so installer steps do not touch user's home
+make_sandbox
+
 # 7 path-distinct colour schemes: 4 flavour reps (crust selFg) + 3 Latte white-selFg overrides
 gen_colors() {
     rm -rf ./dist
@@ -40,6 +43,8 @@ cp "./dist/Catppuccin-Mocha-Blue/contents/defaults" "$GOLD/global/defaults"
 cp "./dist/Catppuccin-Mocha-Blue/metadata.json" "$GOLD/global/metadata.json"
 cp "./dist/Catppuccin-Mocha-Blue/metadata.desktop" "$GOLD/global/metadata.desktop"
 
+# this reads the .sed internals directly. if the sed pipeline gets replaced or
+# refactored, this parsing breaks. known coupling point.
 # canonical palette: 104 rgbs (26 tokens x 4 flavours) parsed from the .sed pallets.
 # verified against catppuccin upstream by hand at release time.
 : >tests/canonical-palette.txt

@@ -38,6 +38,7 @@ else
 fi
 
 # negative assert: a non-override accent on Latte keeps the crust selFg, not white
+make_sandbox
 rm -rf ./dist
 ./install.sh -q 4 9 1 color >/dev/null 2>&1
 sel=$(grep -A12 '^\[Colors:Selection\]' ./dist/CatppuccinLatteGreen.colors | grep -m1 '^ForegroundNormal=' | cut -d= -f2)
@@ -158,7 +159,7 @@ rm -rf ./dist
 if ./install.sh -q -c "$SANDBOX/cursor" 4 13 2 auto >/dev/null 2>&1; then
     want_file "$SANDBOX/data/color-schemes/CatppuccinLatteBlue.colors" "auto -c: colour scheme landed" "auto -c: colour scheme missing"
     want_dir "$SANDBOX/data/aurorae/themes/CatppuccinLatte-Classic" "auto -c: aurorae theme landed" "auto -c: aurorae missing"
-    want_dir "$SANDBOX/data/plasma/look-and-feel/Catppuccin-Latte-Blue" "auto -c: look-and-feel landed" "auto -c: look-and-feel missing"
+    want_file "$SANDBOX/data/kpackagetool6.calls" "auto -c: kpackagetool6 stub was called" "auto -c: kpackagetool6 stub was not called"
     want_dir "$SANDBOX/data/icons/cursor" "auto -c: offline cursor landed under basename" "auto -c: cursor missing"
 else
     bad "auto -c: installer exited non-zero"
@@ -181,6 +182,7 @@ stub_cursor_download
 rm -rf ./dist
 if ./install.sh 1 13 2 auto >/dev/null 2>&1 </dev/null; then
     want_file "$SANDBOX/data/color-schemes/CatppuccinMochaBlue.colors" "README './install.sh 1 13 2 auto' completes + installs" "README invocation: colour scheme missing"
+    want_file "$SANDBOX/data/kpackagetool6.calls" "README: kpackagetool6 stub was called" "README: kpackagetool6 stub was not called"
     want_dir "$SANDBOX/data/icons/catppuccin-mocha-blue-cursors" "README invocation: cursor landed" "README invocation: cursor missing"
 else
     bad "README invocation: installer exited non-zero"
