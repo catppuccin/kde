@@ -1,0 +1,30 @@
+"area: installer":
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'install.sh'
+          - 'Installer/**/*'
+
+"area: assets":
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'Assets/**/*'
+
+"area: resources":
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'Resources/**/*'
+
+"area: ci":
+  - changed-files:
+      - any-glob-to-any-file:
+          - '.github/**/*'
+
+"area: tests":
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'tests/**/*'
+
+"area: patches":
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'Patches/**/*'
