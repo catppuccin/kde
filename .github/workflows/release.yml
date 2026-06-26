@@ -174,8 +174,35 @@ jobs:
             fi
           fi
 
+      - name: Build release assets
+        run: |
+          set -eu
+          mkdir -p release-assets stage
+          for fe in 1:Mocha 2:Macchiato 3:Frappe 4:Latte; do
+            fnum=${fe%%:*}
+            fname=${fe#*:}
+            mkdir -p "stage/${fname}-color-schemes" "stage/Catppuccin-${fname}-Splash"
+            a=1
+            while [ "$a" -le 14 ]; do
+              rm -rf ./dist
+              ./install.sh -q "$fnum" "$a" 1 color >/dev/null
+              cp ./dist/Catppuccin*.colors "stage/${fname}-color-schemes/"
+              rm -rf ./dist
+              ./install.sh -q "$fnum" "$a" 1 splash >/dev/null
+              cp -r ./dist/Catppuccin-"${fname}"-*-splash "stage/Catppuccin-${fname}-Splash/"
+              a=$((a + 1))
+            done
+            tar -C stage -czf "release-assets/${fname}-color-schemes.tar.gz" "${fname}-color-schemes"
+            tar -C stage -czf "release-assets/Catppuccin-${fname}-Splash.tar.gz" "Catppuccin-${fname}-Splash"
+          done
+          tar -C Resources/Aurorae -czf release-assets/Classic-Aurorae-Theme.tar.gz \
+            CatppuccinMocha-Classic CatppuccinMacchiato-Classic CatppuccinFrappe-Classic CatppuccinLatte-Classic
+          tar -C Resources/Aurorae -czf release-assets/Modern-Aurorae-Theme.tar.gz \
+            CatppuccinMocha-Modern CatppuccinMacchiato-Modern CatppuccinFrappe-Modern CatppuccinLatte-Modern
+          rm -rf ./dist stage
+
       - name: Create Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create "${GITHUB_REF_NAME}" --notes-file release_notes.md
+          gh release create "${GITHUB_REF_NAME}" --notes-file release_notes.md release-assets/*.tar.gz
