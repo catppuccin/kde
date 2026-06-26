@@ -1,5 +1,4 @@
 # Ignore text editor files
-.editorconfig
 .directory
 .kate-swp
 dist/**
