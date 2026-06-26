@@ -19,20 +19,31 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          # types are regex (auto-wrapped in ^ $); the case-class first letter
-          # accepts a capitalized type like dependabot's "Chore(deps)"
+          # list both cases so the gate stays case-insensitive (e.g.
+          # dependabot's "Chore"); the action matches types literally
           types: |
-            [Ff]eat
-            [Ff]ix
-            [Dd]ocs
-            [Ss]tyle
-            [Rr]efactor
-            [Pp]erf
-            [Tt]est
-            [Bb]uild
-            [Cc]i
-            [Cc]hore
-            [Rr]evert
+            feat
+            Feat
+            fix
+            Fix
+            docs
+            Docs
+            style
+            Style
+            refactor
+            Refactor
+            perf
+            Perf
+            test
+            Test
+            build
+            Build
+            ci
+            Ci
+            chore
+            Chore
+            revert
+            Revert
           scopes: |
             assets
             installer
