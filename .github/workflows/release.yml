@@ -54,10 +54,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           version="${GITHUB_REF_NAME#v}"
-          
+
           # Extract changelog section
           awk '/^## \['"$version"'\]/{flag=1; next} /^## \[/ || /^\[/{flag=0} flag' CHANGELOG.md > release_notes.md
-          
+
           # Deriving contributors function
           resolve_github_username() {
             local name="$1"
@@ -115,7 +115,7 @@ jobs:
 
           if prev_tag=$(git describe --tags --abbrev=0 "${GITHUB_REF_NAME}^" 2>/dev/null); then
             echo "Previous tag found: $prev_tag"
-            
+
             # Primary authors
             for sha in $(git log "${prev_tag}..${GITHUB_REF_NAME}" --format='%H'); do
               login=$(gh api "repos/${{ github.repository }}/commits/$sha" --jq '.author.login' 2>/dev/null || true)
