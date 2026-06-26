@@ -6,7 +6,6 @@
 </h3>
 
 <p align="center">
-    <a href="https://github.com/catppuccin/kde/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/catppuccin/kde/ci.yml?branch=main&colorA=363a4f&label=CI&style=for-the-badge"></a>
     <a href="https://github.com/catppuccin/kde/stargazers"><img src="https://img.shields.io/github/stars/catppuccin/kde?colorA=363a4f&colorB=b7bdf8&style=for-the-badge"></a>
     <a href="https://github.com/catppuccin/kde/issues"><img src="https://img.shields.io/github/issues/catppuccin/kde?colorA=363a4f&colorB=f5a97f&style=for-the-badge"></a>
     <a href="https://github.com/catppuccin/kde/contributors"><img src="https://img.shields.io/github/contributors/catppuccin/kde?colorA=363a4f&colorB=a6da95&style=for-the-badge"></a>
