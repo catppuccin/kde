@@ -6,52 +6,35 @@ body:
   - type: textarea
     id: description
     attributes:
-      label: Description
-      description: A clear and concise description of what the bug is.
+      label: What happened?
+      description: Describe the bug, and what you expected to happen instead.
     validations:
       required: true
   - type: textarea
     id: reproduction
     attributes:
       label: Steps to Reproduce
-      description: What steps did you take to trigger the issue?
       placeholder: |
         1. Run `./install.sh ...`
         2. Open KDE Settings
         3. ...
     validations:
       required: true
-  - type: textarea
-    id: expected
-    attributes:
-      label: Expected Behavior
-      description: What did you expect to happen?
-    validations:
-      required: false
-  - type: textarea
-    id: actual
-    attributes:
-      label: Actual Behavior
-      description: What actually happened?
-    validations:
-      required: true
   - type: dropdown
     id: plasma_version
     attributes:
       label: Plasma Version
-      description: Select the major Plasma version you are running.
       options:
         - Plasma 6.1
         - Plasma 6.0
         - Plasma 5.27 (LTS)
-        - Other (please specify in description)
+        - Other (please specify above)
     validations:
       required: true
   - type: dropdown
     id: distro
     attributes:
       label: Linux Distribution
-      description: Select the Linux distribution you are using.
       options:
         - Arch Linux
         - Fedora
@@ -63,27 +46,26 @@ body:
         - Gentoo
         - Void Linux
         - NixOS
-        - Other (please specify in description)
+        - Other (please specify above)
     validations:
       required: true
   - type: dropdown
     id: flavour
     attributes:
       label: Theme Flavour
-      description: Select the flavour you selected in install.sh.
       options:
         - Mocha
         - Macchiato
         - Frappe
         - Latte
         - Multiple / All
+        - Not sure
     validations:
-      required: true
+      required: false
   - type: dropdown
     id: accent
     attributes:
       label: Theme Accent
-      description: Select the accent color you selected in install.sh.
       options:
         - Rosewater
         - Flamingo
@@ -100,23 +82,24 @@ body:
         - Blue
         - Lavender
         - Multiple / All
+        - Not sure
     validations:
-      required: true
+      required: false
   - type: dropdown
     id: decoration
     attributes:
       label: Window Decoration Style
-      description: Select the window decoration style.
       options:
         - Modern (Mixed)
         - Classic (MacOS like)
         - None / Other
+        - Not sure
     validations:
-      required: true
+      required: false
   - type: textarea
     id: system_details
     attributes:
-      label: System Info / Logs / Screenshots
-      description: Please share any logs (e.g. installer script output, kwin logs) or drag & drop screenshots demonstrating the issue.
+      label: Logs / Screenshots
+      description: Installer output, kwin logs, or drag & drop screenshots showing the issue.
     validations:
       required: false
