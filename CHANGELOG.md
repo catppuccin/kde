@@ -6,6 +6,10 @@ the format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Fixed
+
+- hover fill no longer forces unreadable light text on the accent (#136)
+
 ## [0.3.0] - 2026-06-26
 
 ### Added
