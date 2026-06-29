@@ -14,7 +14,7 @@
         "Id": "Catppuccin---flavour---accentName",
         "License": "MIT",
         "Name": "Catppuccin --flavour --accentName",
-        "Version": "0.3.0"
+        "Version": "0.3.1"
     },
     "X-KPackage-Dependencies": [
         "kns://aurorae.knsrc/api.kde-look.org/--StoreAuroraeNo"
