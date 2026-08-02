@@ -2,3 +2,6 @@
 .directory
 .kate-swp
 dist/**
+
+# Pinned Whiskers binary, fetched by `just` (see justfile)
+.bin/
