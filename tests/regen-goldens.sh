@@ -43,14 +43,10 @@ cp "./dist/Catppuccin-Mocha-Blue/contents/defaults" "$GOLD/global/defaults"
 cp "./dist/Catppuccin-Mocha-Blue/metadata.json" "$GOLD/global/metadata.json"
 cp "./dist/Catppuccin-Mocha-Blue/metadata.desktop" "$GOLD/global/metadata.desktop"
 
-# this reads the .sed internals directly. if the sed pipeline gets replaced or
-# refactored, this parsing breaks. known coupling point.
-# canonical palette: 104 rgbs (26 tokens x 4 flavours) parsed from the .sed pallets.
-# verified against catppuccin upstream by hand at release time.
-: >tests/canonical-palette.txt
-for f in Mocha Macchiato Frappe Latte; do
-    awk -v fl="$f" -F'/' '/^s\/\$/ {tok=$2; sub(/^\$/, "", tok); print fl, tok, $3}' "Installer/Pallets/$f.sed" >>tests/canonical-palette.txt
-done
+# canonical palette snapshot: not regenerated here. tests/canonical-palette.txt is
+# a checked copy of generated/canonical-palette.txt (a committed Whiskers render,
+# `templates/canonical-palette.tera`), drift-guarded by `just check`, not by this
+# script. run `just build` and diff generated/canonical-palette.txt to update it.
 
 rm -rf ./dist
 echo "regenerated fixtures under tests/"

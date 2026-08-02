@@ -23,8 +23,9 @@ want_dir() { if [ -d "$1" ]; then ok "$2"; else bad "$3"; fi; }
 
 FLAVOURS="1:Mocha 2:Macchiato 3:Frappe 4:Latte"
 ACCENTS="1:Rosewater 2:Flamingo 3:Pink 4:Mauve 5:Red 6:Maroon 7:Peach 8:Yellow 9:Green 10:Teal 11:Sky 12:Sapphire 13:Blue 14:Lavender"
-# bare $ is an end-anchor (matches nothing); escape it. covers both token families.
-RESIDUAL='\$[a-z0-9]|--[a-zA-Z]'
+# bare $ is an end-anchor (matches nothing); escape it. covers sed-era token
+# families plus Tera delimiter leaks from the generated/ whiskers tree.
+RESIDUAL='\{\{|\}\}|\{%|%\}|\{#|\$[a-z0-9]|--[a-zA-Z]'
 
 # ---- goldens + palette snapshot (items 18, 20) ----
 section "goldens (regenerate via installer, then diff)"
@@ -56,6 +57,7 @@ for fe in $FLAVOURS; do
 done
 combo_fail=0
 pal_fail=0
+whiskers_fail=0
 for fe in $FLAVOURS; do
     fn=${fe#*:}
     fnum=${fe%%:*}
@@ -85,10 +87,23 @@ for fe in $FLAVOURS; do
             bad "non-canonical rgb in $fn/$an: $(printf '%s' "$noncanon" | tr '\n' ' ')"
             pal_fail=1
         fi
+
+        # the sed pipeline is still what install.sh ships; generated/ is the
+        # whiskers-rendered replacement, not wired in yet. keep them byte-identical
+        # so the eventual cutover (installer rewrite) is a no-op for this file.
+        whiskers_out="generated/color-schemes/Catppuccin$fn$an.colors"
+        if [ ! -f "$whiskers_out" ]; then
+            bad "missing generated/ counterpart: $fn/$an"
+            whiskers_fail=1
+        elif ! diff -q "$out" "$whiskers_out" >/dev/null 2>&1; then
+            bad "generated/ (whiskers) drifted from sed output: $fn/$an"
+            whiskers_fail=1
+        fi
     done
 done
 [ "$combo_fail" -eq 0 ] && ok "56 colour schemes built, non-empty, residual-clean"
 [ "$pal_fail" -eq 0 ] && ok "every generated rgb across 56 combos is a canonical catppuccin value"
+[ "$whiskers_fail" -eq 0 ] && ok "generated/color-schemes (whiskers) byte-identical to sed output across 56 combos"
 
 # splash residual (REPLACE--ACCENT / REPLACE--MANTLE) + generated metadata sanity
 section "smoke + residual (56 splash combos)"

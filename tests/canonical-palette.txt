@@ -41,8 +41,8 @@ Macchiato lavender 183, 189, 248
 Macchiato text 202, 211, 245
 Macchiato subtext1 184, 192, 224
 Macchiato subtext0 165, 173, 203
-Macchiato overlay1 128, 135, 162
 Macchiato overlay2 147, 154, 183
+Macchiato overlay1 128, 135, 162
 Macchiato overlay0 110, 115, 141
 Macchiato surface2 91, 96, 120
 Macchiato surface1 73, 77, 100
