@@ -1,0 +1,154 @@
+---
+whiskers:
+  version: "=2.9.0"
+  matrix: [flavor, accent]
+  filename: "generated/color-schemes/Catppuccin{{flavor.identifier | capitalize}}{{accent | capitalize}}.colors"
+---
+{%- if flavor.identifier == "latte" and accent in ["red", "mauve", "blue"] -%}
+{%- set selfg = "255, 255, 255" -%}
+{%- else -%}
+{%- set selfg = "17, 17, 27" -%}
+{%- endif -%}
+[ColorEffects:Disabled]
+Color={{flavor.colors.base.rgb.r}}, {{flavor.colors.base.rgb.g}}, {{flavor.colors.base.rgb.b}}
+ColorAmount=0.30000000000000004
+ColorEffect=2
+ContrastAmount=0.1
+ContrastEffect=0
+IntensityAmount=-1
+IntensityEffect=0
+
+[ColorEffects:Inactive]
+ChangeSelectionColor=false
+Color={{flavor.colors.base.rgb.r}}, {{flavor.colors.base.rgb.g}}, {{flavor.colors.base.rgb.b}}
+ColorAmount=0.5
+ColorEffect=3
+ContrastAmount=0
+ContrastEffect=0
+Enable=true
+IntensityAmount=0
+IntensityEffect=0
+
+[Colors:Button]
+BackgroundAlternate={{flavor.colors[accent].rgb.r}}, {{flavor.colors[accent].rgb.g}}, {{flavor.colors[accent].rgb.b}}
+BackgroundNormal={{flavor.colors.surface0.rgb.r}}, {{flavor.colors.surface0.rgb.g}}, {{flavor.colors.surface0.rgb.b}}
+DecorationFocus={{flavor.colors[accent].rgb.r}}, {{flavor.colors[accent].rgb.g}}, {{flavor.colors[accent].rgb.b}}
+DecorationHover={{flavor.colors.surface1.rgb.r}}, {{flavor.colors.surface1.rgb.g}}, {{flavor.colors.surface1.rgb.b}}
+ForegroundActive={{flavor.colors.peach.rgb.r}}, {{flavor.colors.peach.rgb.g}}, {{flavor.colors.peach.rgb.b}}
+ForegroundInactive={{flavor.colors.subtext0.rgb.r}}, {{flavor.colors.subtext0.rgb.g}}, {{flavor.colors.subtext0.rgb.b}}
+ForegroundLink={{flavor.colors[accent].rgb.r}}, {{flavor.colors[accent].rgb.g}}, {{flavor.colors[accent].rgb.b}}
+ForegroundNegative={{flavor.colors.red.rgb.r}}, {{flavor.colors.red.rgb.g}}, {{flavor.colors.red.rgb.b}}
+ForegroundNeutral={{flavor.colors.yellow.rgb.r}}, {{flavor.colors.yellow.rgb.g}}, {{flavor.colors.yellow.rgb.b}}
+ForegroundNormal={{flavor.colors.text.rgb.r}}, {{flavor.colors.text.rgb.g}}, {{flavor.colors.text.rgb.b}}
+ForegroundPositive={{flavor.colors.green.rgb.r}}, {{flavor.colors.green.rgb.g}}, {{flavor.colors.green.rgb.b}}
+ForegroundVisited={{flavor.colors.mauve.rgb.r}}, {{flavor.colors.mauve.rgb.g}}, {{flavor.colors.mauve.rgb.b}}
+
+
+[Colors:Complementary]
+BackgroundAlternate={{flavor.colors.crust.rgb.r}}, {{flavor.colors.crust.rgb.g}}, {{flavor.colors.crust.rgb.b}}
+BackgroundNormal={{flavor.colors.mantle.rgb.r}}, {{flavor.colors.mantle.rgb.g}}, {{flavor.colors.mantle.rgb.b}}
+DecorationFocus={{flavor.colors[accent].rgb.r}}, {{flavor.colors[accent].rgb.g}}, {{flavor.colors[accent].rgb.b}}
+DecorationHover={{flavor.colors.surface1.rgb.r}}, {{flavor.colors.surface1.rgb.g}}, {{flavor.colors.surface1.rgb.b}}
+ForegroundActive={{flavor.colors.peach.rgb.r}}, {{flavor.colors.peach.rgb.g}}, {{flavor.colors.peach.rgb.b}}
+ForegroundInactive={{flavor.colors.subtext0.rgb.r}}, {{flavor.colors.subtext0.rgb.g}}, {{flavor.colors.subtext0.rgb.b}}
+ForegroundLink={{flavor.colors[accent].rgb.r}}, {{flavor.colors[accent].rgb.g}}, {{flavor.colors[accent].rgb.b}}
+ForegroundNegative={{flavor.colors.red.rgb.r}}, {{flavor.colors.red.rgb.g}}, {{flavor.colors.red.rgb.b}}
+ForegroundNeutral={{flavor.colors.yellow.rgb.r}}, {{flavor.colors.yellow.rgb.g}}, {{flavor.colors.yellow.rgb.b}}
+ForegroundNormal={{flavor.colors.text.rgb.r}}, {{flavor.colors.text.rgb.g}}, {{flavor.colors.text.rgb.b}}
+ForegroundPositive={{flavor.colors.green.rgb.r}}, {{flavor.colors.green.rgb.g}}, {{flavor.colors.green.rgb.b}}
+ForegroundVisited={{flavor.colors.mauve.rgb.r}}, {{flavor.colors.mauve.rgb.g}}, {{flavor.colors.mauve.rgb.b}}
+
+
+[Colors:Header]
+BackgroundAlternate={{flavor.colors.crust.rgb.r}}, {{flavor.colors.crust.rgb.g}}, {{flavor.colors.crust.rgb.b}}
+BackgroundNormal={{flavor.colors.mantle.rgb.r}}, {{flavor.colors.mantle.rgb.g}}, {{flavor.colors.mantle.rgb.b}}
+DecorationFocus={{flavor.colors[accent].rgb.r}}, {{flavor.colors[accent].rgb.g}}, {{flavor.colors[accent].rgb.b}}
+DecorationHover={{flavor.colors.surface1.rgb.r}}, {{flavor.colors.surface1.rgb.g}}, {{flavor.colors.surface1.rgb.b}}
+ForegroundActive={{flavor.colors.peach.rgb.r}}, {{flavor.colors.peach.rgb.g}}, {{flavor.colors.peach.rgb.b}}
+ForegroundInactive={{flavor.colors.subtext0.rgb.r}}, {{flavor.colors.subtext0.rgb.g}}, {{flavor.colors.subtext0.rgb.b}}
+ForegroundLink={{flavor.colors[accent].rgb.r}}, {{flavor.colors[accent].rgb.g}}, {{flavor.colors[accent].rgb.b}}
+ForegroundNegative={{flavor.colors.red.rgb.r}}, {{flavor.colors.red.rgb.g}}, {{flavor.colors.red.rgb.b}}
+ForegroundNeutral={{flavor.colors.yellow.rgb.r}}, {{flavor.colors.yellow.rgb.g}}, {{flavor.colors.yellow.rgb.b}}
+ForegroundNormal={{flavor.colors.text.rgb.r}}, {{flavor.colors.text.rgb.g}}, {{flavor.colors.text.rgb.b}}
+ForegroundPositive={{flavor.colors.green.rgb.r}}, {{flavor.colors.green.rgb.g}}, {{flavor.colors.green.rgb.b}}
+ForegroundVisited={{flavor.colors.mauve.rgb.r}}, {{flavor.colors.mauve.rgb.g}}, {{flavor.colors.mauve.rgb.b}}
+
+
+[Colors:Selection]
+BackgroundAlternate={{flavor.colors[accent].rgb.r}}, {{flavor.colors[accent].rgb.g}}, {{flavor.colors[accent].rgb.b}}
+BackgroundNormal={{flavor.colors[accent].rgb.r}}, {{flavor.colors[accent].rgb.g}}, {{flavor.colors[accent].rgb.b}}
+DecorationFocus={{flavor.colors[accent].rgb.r}}, {{flavor.colors[accent].rgb.g}}, {{flavor.colors[accent].rgb.b}}
+DecorationHover={{flavor.colors.surface1.rgb.r}}, {{flavor.colors.surface1.rgb.g}}, {{flavor.colors.surface1.rgb.b}}
+ForegroundInactive={{ selfg }}
+ForegroundActive={{ selfg }}
+ForegroundLink={{ selfg }}
+ForegroundNegative={{ selfg }}
+ForegroundNeutral={{ selfg }}
+ForegroundNormal={{ selfg }}
+ForegroundPositive={{ selfg }}
+ForegroundVisited={{ selfg }}
+
+
+[Colors:Tooltip]
+BackgroundAlternate={{flavor.colors.crust.rgb.r}}, {{flavor.colors.crust.rgb.g}}, {{flavor.colors.crust.rgb.b}}
+BackgroundNormal={{flavor.colors.base.rgb.r}}, {{flavor.colors.base.rgb.g}}, {{flavor.colors.base.rgb.b}}
+DecorationFocus={{flavor.colors[accent].rgb.r}}, {{flavor.colors[accent].rgb.g}}, {{flavor.colors[accent].rgb.b}}
+DecorationHover={{flavor.colors.surface1.rgb.r}}, {{flavor.colors.surface1.rgb.g}}, {{flavor.colors.surface1.rgb.b}}
+ForegroundActive={{flavor.colors.peach.rgb.r}}, {{flavor.colors.peach.rgb.g}}, {{flavor.colors.peach.rgb.b}}
+ForegroundInactive={{flavor.colors.subtext0.rgb.r}}, {{flavor.colors.subtext0.rgb.g}}, {{flavor.colors.subtext0.rgb.b}}
+ForegroundLink={{flavor.colors[accent].rgb.r}}, {{flavor.colors[accent].rgb.g}}, {{flavor.colors[accent].rgb.b}}
+ForegroundNegative={{flavor.colors.red.rgb.r}}, {{flavor.colors.red.rgb.g}}, {{flavor.colors.red.rgb.b}}
+ForegroundNeutral={{flavor.colors.yellow.rgb.r}}, {{flavor.colors.yellow.rgb.g}}, {{flavor.colors.yellow.rgb.b}}
+ForegroundNormal={{flavor.colors.text.rgb.r}}, {{flavor.colors.text.rgb.g}}, {{flavor.colors.text.rgb.b}}
+ForegroundPositive={{flavor.colors.green.rgb.r}}, {{flavor.colors.green.rgb.g}}, {{flavor.colors.green.rgb.b}}
+ForegroundVisited={{flavor.colors.mauve.rgb.r}}, {{flavor.colors.mauve.rgb.g}}, {{flavor.colors.mauve.rgb.b}}
+
+
+[Colors:View]
+BackgroundAlternate={{flavor.colors.mantle.rgb.r}}, {{flavor.colors.mantle.rgb.g}}, {{flavor.colors.mantle.rgb.b}}
+BackgroundNormal={{flavor.colors.base.rgb.r}}, {{flavor.colors.base.rgb.g}}, {{flavor.colors.base.rgb.b}}
+DecorationFocus={{flavor.colors[accent].rgb.r}}, {{flavor.colors[accent].rgb.g}}, {{flavor.colors[accent].rgb.b}}
+DecorationHover={{flavor.colors.surface1.rgb.r}}, {{flavor.colors.surface1.rgb.g}}, {{flavor.colors.surface1.rgb.b}}
+ForegroundActive={{flavor.colors.peach.rgb.r}}, {{flavor.colors.peach.rgb.g}}, {{flavor.colors.peach.rgb.b}}
+ForegroundInactive={{flavor.colors.subtext0.rgb.r}}, {{flavor.colors.subtext0.rgb.g}}, {{flavor.colors.subtext0.rgb.b}}
+ForegroundLink={{flavor.colors[accent].rgb.r}}, {{flavor.colors[accent].rgb.g}}, {{flavor.colors[accent].rgb.b}}
+ForegroundNegative={{flavor.colors.red.rgb.r}}, {{flavor.colors.red.rgb.g}}, {{flavor.colors.red.rgb.b}}
+ForegroundNeutral={{flavor.colors.yellow.rgb.r}}, {{flavor.colors.yellow.rgb.g}}, {{flavor.colors.yellow.rgb.b}}
+ForegroundNormal={{flavor.colors.text.rgb.r}}, {{flavor.colors.text.rgb.g}}, {{flavor.colors.text.rgb.b}}
+ForegroundPositive={{flavor.colors.green.rgb.r}}, {{flavor.colors.green.rgb.g}}, {{flavor.colors.green.rgb.b}}
+ForegroundVisited={{flavor.colors.mauve.rgb.r}}, {{flavor.colors.mauve.rgb.g}}, {{flavor.colors.mauve.rgb.b}}
+
+
+[Colors:Window]
+BackgroundAlternate={{flavor.colors.crust.rgb.r}}, {{flavor.colors.crust.rgb.g}}, {{flavor.colors.crust.rgb.b}}
+BackgroundNormal={{flavor.colors.mantle.rgb.r}}, {{flavor.colors.mantle.rgb.g}}, {{flavor.colors.mantle.rgb.b}}
+DecorationFocus={{flavor.colors[accent].rgb.r}}, {{flavor.colors[accent].rgb.g}}, {{flavor.colors[accent].rgb.b}}
+DecorationHover={{flavor.colors.surface1.rgb.r}}, {{flavor.colors.surface1.rgb.g}}, {{flavor.colors.surface1.rgb.b}}
+ForegroundActive={{flavor.colors.peach.rgb.r}}, {{flavor.colors.peach.rgb.g}}, {{flavor.colors.peach.rgb.b}}
+ForegroundInactive={{flavor.colors.subtext0.rgb.r}}, {{flavor.colors.subtext0.rgb.g}}, {{flavor.colors.subtext0.rgb.b}}
+ForegroundLink={{flavor.colors[accent].rgb.r}}, {{flavor.colors[accent].rgb.g}}, {{flavor.colors[accent].rgb.b}}
+ForegroundNegative={{flavor.colors.red.rgb.r}}, {{flavor.colors.red.rgb.g}}, {{flavor.colors.red.rgb.b}}
+ForegroundNeutral={{flavor.colors.yellow.rgb.r}}, {{flavor.colors.yellow.rgb.g}}, {{flavor.colors.yellow.rgb.b}}
+ForegroundNormal={{flavor.colors.text.rgb.r}}, {{flavor.colors.text.rgb.g}}, {{flavor.colors.text.rgb.b}}
+ForegroundPositive={{flavor.colors.green.rgb.r}}, {{flavor.colors.green.rgb.g}}, {{flavor.colors.green.rgb.b}}
+ForegroundVisited={{flavor.colors.mauve.rgb.r}}, {{flavor.colors.mauve.rgb.g}}, {{flavor.colors.mauve.rgb.b}}
+
+
+[General]
+ColorScheme=Catppuccin{{flavor.identifier | capitalize}}{{accent | capitalize}}
+Name=Catppuccin {{flavor.identifier | capitalize}} {{accent | capitalize}}
+accentActiveTitlebar=false
+shadeSortColumn=true
+
+
+[KDE]
+contrast=4
+
+
+[WM]
+activeBackground={{flavor.colors.base.rgb.r}}, {{flavor.colors.base.rgb.g}}, {{flavor.colors.base.rgb.b}}
+activeBlend={{flavor.colors.text.rgb.r}}, {{flavor.colors.text.rgb.g}}, {{flavor.colors.text.rgb.b}}
+activeForeground={{flavor.colors.text.rgb.r}}, {{flavor.colors.text.rgb.g}}, {{flavor.colors.text.rgb.b}}
+inactiveBackground={{flavor.colors.crust.rgb.r}}, {{flavor.colors.crust.rgb.g}}, {{flavor.colors.crust.rgb.b}}
+inactiveBlend={{flavor.colors.subtext0.rgb.r}}, {{flavor.colors.subtext0.rgb.g}}, {{flavor.colors.subtext0.rgb.b}}
+inactiveForeground={{flavor.colors.subtext0.rgb.r}}, {{flavor.colors.subtext0.rgb.g}}, {{flavor.colors.subtext0.rgb.b}}

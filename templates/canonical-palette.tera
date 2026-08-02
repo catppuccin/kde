@@ -1,0 +1,11 @@
+---
+whiskers:
+  version: "=2.9.0"
+  filename: "generated/canonical-palette.txt"
+---
+{%- for name in ["mocha", "macchiato", "frappe", "latte"] -%}
+{%- set f = flavors[name] -%}
+{%- for _, c in f.colors -%}
+{{ f.identifier | capitalize }} {{ c.identifier }} {{ c.rgb.r }}, {{ c.rgb.g }}, {{ c.rgb.b }}
+{% endfor -%}
+{%- endfor -%}
