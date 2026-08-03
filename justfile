@@ -24,7 +24,14 @@ check: _fetch-whiskers
     set -eu
     if [ -d templates ] && [ -n "$(find templates -maxdepth 1 -name '*.tera' -print -quit)" ]; then
         for f in templates/*.tera; do
-            .bin/whiskers "$f" --check
+            # single-output templates (no `matrix:` key, e.g. canonical-palette.tera)
+            # need an explicit example path; multi-output templates reject one.
+            if grep -q '^[[:space:]]*matrix:' "$f"; then
+                .bin/whiskers "$f" --check
+            else
+                example=$(sed -n 's/^[[:space:]]*filename:[[:space:]]*"\(.*\)"[[:space:]]*$/\1/p' "$f" | head -n1)
+                .bin/whiskers "$f" --check "$example"
+            fi
         done
     else
         echo "No templates/*.tera found yet; nothing to check." >&2
