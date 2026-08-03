@@ -109,6 +109,7 @@ done
 section "smoke + residual (56 splash combos)"
 make_sandbox
 splash_fail=0
+splash_whiskers_fail=0
 for fe in $FLAVOURS; do
     fn=${fe#*:}
     fnum=${fe%%:*}
@@ -139,9 +140,78 @@ for fe in $FLAVOURS; do
             bad "generated metadata.desktop missing [Desktop Entry]: $fn/$an"
             splash_fail=1
         }
+
+        # generated/ (whiskers) is not wired into install.sh yet; keep it
+        # byte-identical to the sed-built splash artifacts so the eventual
+        # cutover is a no-op. Splash.qml is rendered per-flavour, not per-combo.
+        whiskers_base="generated/splash/Catppuccin-$fn-$an-splash"
+        for f in contents/splash/images/busywidget.svg metadata.desktop metadata.json; do
+            if ! diff -q "$base/$f" "$whiskers_base/$f" >/dev/null 2>&1; then
+                bad "generated/splash (whiskers) drifted from sed output: $fn/$an/$f"
+                splash_whiskers_fail=1
+            fi
+        done
+        if ! diff -q "$base/contents/splash/Splash.qml" "generated/splash-qml/Catppuccin$fn-Splash.qml" >/dev/null 2>&1; then
+            bad "generated/splash-qml (whiskers) drifted from sed output: $fn"
+            splash_whiskers_fail=1
+        fi
     done
 done
 [ "$splash_fail" -eq 0 ] && ok "56 splash builds residual-clean + valid generated metadata"
+[ "$splash_whiskers_fail" -eq 0 ] && ok "generated/splash + generated/splash-qml (whiskers) byte-identical to sed output across 56 combos"
+
+# ---- smoke + residual over all 112 look-and-feel combos ----
+section "smoke + residual (112 look-and-feel combos)"
+make_sandbox
+global_fail=0
+global_whiskers_fail=0
+DECORATIONS="1:Modern 2:Classic"
+for fe in $FLAVOURS; do
+    fn=${fe#*:}
+    fnum=${fe%%:*}
+    for ae in $ACCENTS; do
+        an=${ae#*:}
+        anum=${ae%%:*}
+        for de in $DECORATIONS; do
+            dn=${de#*:}
+            dnum=${de%%:*}
+            rm -rf ./dist
+            if ! ./install.sh -q "$fnum" "$anum" "$dnum" global >/dev/null 2>&1; then
+                bad "global build failed: $fn/$an/$dn"
+                global_fail=1
+                continue
+            fi
+            base="./dist/Catppuccin-$fn-$an"
+            for asset in "$base/contents/defaults" "$base/metadata.desktop" "$base/metadata.json"; do
+                if [ ! -s "$asset" ]; then
+                    bad "missing global asset $asset"
+                    global_fail=1
+                elif grep -Eq "$RESIDUAL" "$asset"; then
+                    bad "residual in $asset"
+                    global_fail=1
+                fi
+            done
+            jq empty "$base/metadata.json" 2>/dev/null || {
+                bad "invalid generated metadata.json: $fn/$an/$dn"
+                global_fail=1
+            }
+            grep -q '^\[Desktop Entry\]' "$base/metadata.desktop" || {
+                bad "generated metadata.desktop missing [Desktop Entry]: $fn/$an/$dn"
+                global_fail=1
+            }
+
+            whiskers_base="generated/look-and-feel/$dn/Catppuccin-$fn-$an"
+            for f in contents/defaults metadata.desktop metadata.json; do
+                if ! diff -q "$base/$f" "$whiskers_base/$f" >/dev/null 2>&1; then
+                    bad "generated/look-and-feel (whiskers) drifted from sed output: $fn/$an/$dn/$f"
+                    global_whiskers_fail=1
+                fi
+            done
+        done
+    done
+done
+[ "$global_fail" -eq 0 ] && ok "112 look-and-feel builds residual-clean + valid generated metadata"
+[ "$global_whiskers_fail" -eq 0 ] && ok "generated/look-and-feel (whiskers) byte-identical to sed output across 112 combos"
 
 # ---- arg parsing (item 22) ----
 section "arg parsing"
