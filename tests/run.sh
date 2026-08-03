@@ -45,6 +45,26 @@ rm -rf ./dist
 sel=$(grep -A12 '^\[Colors:Selection\]' ./dist/CatppuccinLatteGreen.colors | grep -m1 '^ForegroundNormal=' | cut -d= -f2)
 if [ "$sel" = "17, 17, 27" ]; then ok "Latte/Green selFg stays crust (not white)"; else bad "Latte/Green selFg expected '17, 17, 27', got '$sel'"; fi
 
+# --local-cursor's one runtime edit: the baked defaults ship the accent's own
+# cursor set, which -c must overwrite with the local dir's basename.
+make_sandbox
+rm -rf ./dist
+./install.sh -q -c "$SANDBOX/cursor" 1 13 1 global >/dev/null 2>&1
+cursor_theme=$(grep '^cursorTheme=' ./dist/Catppuccin-Mocha-Blue/contents/defaults | cut -d= -f2)
+if [ "$cursor_theme" = "$(basename "$SANDBOX/cursor")" ]; then
+    ok "-c: installed defaults cursorTheme equals the local cursor dir's basename"
+else
+    bad "-c: defaults cursorTheme expected '$(basename "$SANDBOX/cursor")', got '$cursor_theme'"
+fi
+rm -rf ./dist
+./install.sh -q 1 13 1 global >/dev/null 2>&1
+cursor_theme=$(grep '^cursorTheme=' ./dist/Catppuccin-Mocha-Blue/contents/defaults | cut -d= -f2)
+if [ "$cursor_theme" = "catppuccin-mocha-blue-cursors" ]; then
+    ok "non--c: defaults cursorTheme stays the baked accent default"
+else
+    bad "non--c: defaults cursorTheme expected 'catppuccin-mocha-blue-cursors', got '$cursor_theme'"
+fi
+
 # ---- smoke + residual + palette over all 56 colour combos (items 18, 21) ----
 section "smoke + residual + palette (56 colour combos)"
 # allowed rgbs per flavour = its canonical palette + the two selFg values
@@ -88,22 +108,21 @@ for fe in $FLAVOURS; do
             pal_fail=1
         fi
 
-        # the sed pipeline is still what install.sh ships; generated/ is the
-        # whiskers-rendered replacement, not wired in yet. keep them byte-identical
-        # so the eventual cutover (installer rewrite) is a no-op for this file.
+        # install.sh selects and copies from generated/ (Whiskers output); this
+        # catches a path-construction bug landing the wrong combo's file in dist.
         whiskers_out="generated/color-schemes/Catppuccin$fn$an.colors"
         if [ ! -f "$whiskers_out" ]; then
             bad "missing generated/ counterpart: $fn/$an"
             whiskers_fail=1
         elif ! diff -q "$out" "$whiskers_out" >/dev/null 2>&1; then
-            bad "generated/ (whiskers) drifted from sed output: $fn/$an"
+            bad "dist output doesn't match generated/color-schemes/ source: $fn/$an"
             whiskers_fail=1
         fi
     done
 done
 [ "$combo_fail" -eq 0 ] && ok "56 colour schemes built, non-empty, residual-clean"
 [ "$pal_fail" -eq 0 ] && ok "every generated rgb across 56 combos is a canonical catppuccin value"
-[ "$whiskers_fail" -eq 0 ] && ok "generated/color-schemes (whiskers) byte-identical to sed output across 56 combos"
+[ "$whiskers_fail" -eq 0 ] && ok "dist output matches its generated/color-schemes/ source across 56 combos"
 
 # splash residual (REPLACE--ACCENT / REPLACE--MANTLE) + generated metadata sanity
 section "smoke + residual (56 splash combos)"
@@ -141,24 +160,24 @@ for fe in $FLAVOURS; do
             splash_fail=1
         }
 
-        # generated/ (whiskers) is not wired into install.sh yet; keep it
-        # byte-identical to the sed-built splash artifacts so the eventual
-        # cutover is a no-op. Splash.qml is rendered per-flavour, not per-combo.
+        # install.sh selects and copies from generated/ (Whiskers output); this
+        # catches a path-construction bug landing the wrong combo's file in dist.
+        # Splash.qml is rendered per-flavour, not per-combo.
         whiskers_base="generated/splash/Catppuccin-$fn-$an-splash"
         for f in contents/splash/images/busywidget.svg metadata.desktop metadata.json; do
             if ! diff -q "$base/$f" "$whiskers_base/$f" >/dev/null 2>&1; then
-                bad "generated/splash (whiskers) drifted from sed output: $fn/$an/$f"
+                bad "dist output doesn't match generated/splash/ source: $fn/$an/$f"
                 splash_whiskers_fail=1
             fi
         done
         if ! diff -q "$base/contents/splash/Splash.qml" "generated/splash-qml/Catppuccin$fn-Splash.qml" >/dev/null 2>&1; then
-            bad "generated/splash-qml (whiskers) drifted from sed output: $fn"
+            bad "dist output doesn't match generated/splash-qml/ source: $fn"
             splash_whiskers_fail=1
         fi
     done
 done
 [ "$splash_fail" -eq 0 ] && ok "56 splash builds residual-clean + valid generated metadata"
-[ "$splash_whiskers_fail" -eq 0 ] && ok "generated/splash + generated/splash-qml (whiskers) byte-identical to sed output across 56 combos"
+[ "$splash_whiskers_fail" -eq 0 ] && ok "dist output matches its generated/splash + generated/splash-qml source across 56 combos"
 
 # ---- smoke + residual over all 112 look-and-feel combos ----
 section "smoke + residual (112 look-and-feel combos)"
@@ -200,10 +219,14 @@ for fe in $FLAVOURS; do
                 global_fail=1
             }
 
+            # install.sh selects and copies from generated/ (Whiskers output);
+            # this catches a path-construction bug landing the wrong combo's
+            # file in dist. (contents/defaults only differs from this source
+            # under --local-cursor, not exercised by this non--c loop.)
             whiskers_base="generated/look-and-feel/$dn/Catppuccin-$fn-$an"
             for f in contents/defaults metadata.desktop metadata.json; do
                 if ! diff -q "$base/$f" "$whiskers_base/$f" >/dev/null 2>&1; then
-                    bad "generated/look-and-feel (whiskers) drifted from sed output: $fn/$an/$dn/$f"
+                    bad "dist output doesn't match generated/look-and-feel/ source: $fn/$an/$dn/$f"
                     global_whiskers_fail=1
                 fi
             done
@@ -211,7 +234,7 @@ for fe in $FLAVOURS; do
     done
 done
 [ "$global_fail" -eq 0 ] && ok "112 look-and-feel builds residual-clean + valid generated metadata"
-[ "$global_whiskers_fail" -eq 0 ] && ok "generated/look-and-feel (whiskers) byte-identical to sed output across 112 combos"
+[ "$global_whiskers_fail" -eq 0 ] && ok "dist output matches its generated/look-and-feel/ source across 112 combos"
 
 # ---- arg parsing (item 22) ----
 section "arg parsing"
