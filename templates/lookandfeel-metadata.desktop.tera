@@ -1,0 +1,24 @@
+---
+whiskers:
+  version: "=2.9.0"
+  matrix: [flavor, accent, {decoration: ["Modern", "Classic"]}]
+  filename: "generated/look-and-feel/{{decoration}}/Catppuccin-{{flavor.identifier | capitalize}}-{{accent | capitalize}}/metadata.desktop"
+store_aurorae:
+  mocha: { Modern: "2135229", Classic: "2135228" }
+  macchiato: { Modern: "2135227", Classic: "2135226" }
+  frappe: { Modern: "2135225", Classic: "2135224" }
+  latte: { Modern: "2135223", Classic: "2135222" }
+---
+[Desktop Entry]
+Comment=A theme based on Catppuccin's {{flavor.identifier | capitalize}} flavour
+Name=Catppuccin {{flavor.identifier | capitalize}} {{accent | capitalize}}
+X-KDE-PluginInfo-Author=KDE-Catppuccin
+X-KDE-PluginInfo-Category=Global Themes (Plasma 6)
+X-KDE-PluginInfo-Email=core@catppuccin.com
+X-KDE-PluginInfo-EnabledByDefault=true
+X-KDE-PluginInfo-License=MIT
+X-KDE-PluginInfo-Name=Catppuccin-{{flavor.identifier | capitalize}}-{{accent | capitalize}}
+X-KDE-PluginInfo-Version=0.3.1
+X-KDE-PluginInfo-Website=github.com/catppuccin/KDE
+X-KDE-ServiceTypes=Plasma/LookAndFeel
+X-KPackage-Dependencies=kns://aurorae.knsrc/api.kde-look.org/{{ store_aurorae[flavor.identifier][decoration] }}

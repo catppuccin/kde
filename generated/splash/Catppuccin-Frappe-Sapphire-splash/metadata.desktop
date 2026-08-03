@@ -1,0 +1,12 @@
+[Desktop Entry]
+Comment=A splash screen based on Catppuccin's Frappe flavour
+Name=Catppuccin Frappe Sapphire
+X-KDE-PluginInfo-Author=KDE-Catppuccin
+X-KDE-PluginInfo-Category=Plasma Look And Feel
+X-KDE-PluginInfo-Email=core@catppuccin.com
+X-KDE-PluginInfo-EnabledByDefault=true
+X-KDE-PluginInfo-License=MIT
+X-KDE-PluginInfo-Name=Catppuccin-Frappe-Sapphire-splash
+X-KDE-PluginInfo-Version=0.3.1
+X-KDE-PluginInfo-Website=github.com/catppuccin/KDE
+X-KDE-ServiceTypes=Plasma/LookAndFeel

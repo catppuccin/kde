@@ -1,0 +1,19 @@
+{
+    "KPackageStructure": "Plasma/LookAndFeel",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "core@catppuccin.com",
+                "Name": "Catppuccin"
+            }
+        ],
+        "Category": "Plasma Look And Feel",
+        "Dependencies": [
+        ],
+        "EnabledByDefault": true,
+        "Id": "Catppuccin-Frappe-Maroon-splash",
+        "License": "MIT",
+        "Name": "Catppuccin Frappe Maroon",
+        "Version": "0.3.1"
+    }
+}

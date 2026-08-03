@@ -1,0 +1,19 @@
+{
+    "KPackageStructure": "Plasma/LookAndFeel",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "core@catppuccin.com",
+                "Name": "Catppuccin"
+            }
+        ],
+        "Category": "Plasma Look And Feel",
+        "Dependencies": [
+        ],
+        "EnabledByDefault": true,
+        "Id": "Catppuccin-Macchiato-Rosewater-splash",
+        "License": "MIT",
+        "Name": "Catppuccin Macchiato Rosewater",
+        "Version": "0.3.1"
+    }
+}
