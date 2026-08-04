@@ -75,10 +75,46 @@ jobs:
       - name: run test suite
         run: tests/run.sh
 
+  whiskers-drift:
+    name: whiskers-drift
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: cache whiskers binary
+        id: cache-whiskers
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.cargo/bin/whiskers
+          key: whiskers-${{ runner.os }}-${{ hashFiles('templates/*.tera') }}
+      # auto-detects the pinned version from each template's `whiskers.version`
+      # frontmatter (the org-wide convention); do not pass whiskers-version.
+      - name: setup whiskers
+        if: steps.cache-whiskers.outputs.cache-hit != 'true'
+        uses: catppuccin/setup-whiskers@b62bd68fffdac4112097d2cf4bc77aba69ee008e # v2
+      - name: whiskers --check (drift guard)
+        run: |
+          for f in templates/*.tera; do
+            if grep -q '^[[:space:]]*matrix:' "$f"; then
+              whiskers "$f" --check
+            else
+              example=$(sed -n 's/^[[:space:]]*filename:[[:space:]]*"\(.*\)"[[:space:]]*$/\1/p' "$f" | head -n1)
+              whiskers "$f" --check "$example"
+            fi
+          done
+      - name: generated/ tracked and complete
+        run: |
+          count=$(git ls-files generated/ | wc -l)
+          if [ "$count" -ne 565 ]; then
+            echo "::error::expected 565 tracked files under generated/, found $count"
+            exit 1
+          fi
+      - name: name-list provenance
+        run: WHISKERS=whiskers tests/provenance.sh
+
   ci:
     name: ci
     if: always()
-    needs: [lint, assets, completeness, tests]
+    needs: [lint, assets, completeness, tests, whiskers-drift]
     runs-on: ubuntu-latest
     steps:
       - name: verify all jobs passed
