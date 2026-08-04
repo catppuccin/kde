@@ -62,6 +62,17 @@ Example (Mocha, Blue, Classic):
 2. If you encounter an error similar to 'connection refused' while running the installation script, it may be due to store.kde.org being down or issues with your internet connection.
 
 
+## Development
+Colour schemes, splash screens, and look-and-feel metadata are rendered from `templates/*.tera` into the committed `generated/` tree by [Whiskers](https://github.com/catppuccin/whiskers); `install.sh` only ever reads `generated/`, never the templates or the palette directly, so end users need no Rust/Cargo toolchain.
+
+Requires [`just`](https://github.com/casey/just#installation).
+
+- `just build`: fetch a pinned, checksum-verified Whiskers binary into `.bin/` (gitignored) and render `templates/*.tera` into `generated/`.
+- `just check`: verify `generated/` matches a fresh render (the same check CI runs).
+
+After editing a template, run `just build`, review the diff, and commit the template change together with the regenerated `generated/` output.
+
+
 ## 💝 Current Maintainers
 - [Sourcastic](https://github.com/Sourcastic)
 - [soleynn](https://github.com/soleynn)
