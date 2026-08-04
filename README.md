@@ -44,7 +44,9 @@
 #### Automated Installation
 Install without any prompts by passing the flavour, accent, and window-decoration numbers plus `auto`:
 
-`./install.sh [-q|--quiet] <flavour 1-4> <accent 1-14> <window_decoration 1-2> auto`
+`./install.sh [-q|--quiet] [-n|--no-cursor] <flavour 1-4> <accent 1-14> <window_decoration 1-2> auto`
+
+Pass `-n`/`--no-cursor` to keep your current cursor theme untouched.
 
 Example (Mocha, Blue, Classic):
 `./install.sh 1 13 2 auto`

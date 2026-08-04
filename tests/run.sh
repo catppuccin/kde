@@ -93,6 +93,29 @@ else
     bad "non--c: defaults cursorTheme expected 'catppuccin-mocha-blue-cursors', got '$cursor_theme'"
 fi
 
+# --no-cursor drops the whole [kcminputrc][Mouse] section, not just the value:
+# plasma-apply-lookandfeel applies every key in defaults verbatim, so a baked
+# cursorTheme would still overwrite the user's current cursor even though no
+# cursor was ever installed.
+rm -rf ./dist
+./install.sh -q --no-cursor 1 13 1 global >/dev/null 2>&1
+nocursor_defaults=$(cat ./dist/Catppuccin-Mocha-Blue/contents/defaults)
+if ! printf '%s' "$nocursor_defaults" | grep -q 'kcminputrc\|cursorTheme'; then
+    ok "--no-cursor: [kcminputrc][Mouse] section absent from installed defaults"
+else
+    bad "--no-cursor: defaults still references kcminputrc/cursorTheme"
+fi
+rm -rf ./dist
+./install.sh -q 1 13 1 global >/dev/null 2>&1
+# remove the header line through the following blank line, same span install.sh
+# itself drops, so this is a fair byte-for-byte comparison of "everything else"
+baseline_stripped=$(sed '/^\[kcminputrc\]\[Mouse\]$/,/^$/d' ./dist/Catppuccin-Mocha-Blue/contents/defaults)
+if [ "$nocursor_defaults" = "$baseline_stripped" ]; then
+    ok "--no-cursor: rest of defaults is untouched apart from that section"
+else
+    bad "--no-cursor: defaults diverged beyond the [kcminputrc][Mouse] section"
+fi
+
 # ---- smoke + residual + palette over all 56 colour combos (items 18, 21) ----
 section "smoke + residual + palette (56 colour combos)"
 # allowed rgbs per flavour = its canonical palette + the two selFg values
@@ -287,6 +310,8 @@ expect_fail "missing accent under -q" "Missing accent" -q 1
 expect_fail "-c without a path" "Missing local cursor path" -c
 expect_fail "-c with a bad path" "must be a cursor theme directory" -c /no/such/dir 1 13 1 color
 expect_fail "cursor mode rejects -c" "does not support --local-cursor" -c "$SANDBOX/cursor" 1 13 1 cursor
+expect_fail "cursor mode rejects -n" "does not support --no-cursor" -n 1 13 1 cursor
+expect_fail "-c and -n are mutually exclusive" "mutually exclusive" -c "$SANDBOX/cursor" -n 1 13 1 color
 
 # ---- sandboxed e2e (item 23) ----
 section "e2e (sandboxed full install)"
@@ -299,6 +324,22 @@ if ./install.sh -q -c "$SANDBOX/cursor" 4 13 2 auto >/dev/null 2>&1; then
     want_dir "$SANDBOX/data/icons/cursor" "auto -c: offline cursor landed under basename" "auto -c: cursor missing"
 else
     bad "auto -c: installer exited non-zero"
+fi
+
+# --no-cursor: full auto install, no cursor ever downloaded or touched
+make_sandbox
+rm -rf ./dist
+if ./install.sh -q --no-cursor 1 13 2 auto >/dev/null 2>&1; then
+    want_file "$SANDBOX/data/color-schemes/CatppuccinMochaBlue.colors" "auto --no-cursor: colour scheme landed" "auto --no-cursor: colour scheme missing"
+    want_dir "$SANDBOX/data/aurorae/themes/CatppuccinMocha-Classic" "auto --no-cursor: aurorae theme landed" "auto --no-cursor: aurorae missing"
+    want_file "$SANDBOX/data/kpackagetool6.calls" "auto --no-cursor: kpackagetool6 stub was called" "auto --no-cursor: kpackagetool6 stub was not called"
+    if [ -z "$(ls -A "$SANDBOX/data/icons" 2>/dev/null)" ]; then
+        ok "auto --no-cursor: no cursor theme installed"
+    else
+        bad "auto --no-cursor: unexpected content in icons dir: $(ls "$SANDBOX/data/icons")"
+    fi
+else
+    bad "auto --no-cursor: installer exited non-zero"
 fi
 
 # -c where the source already is the install target: the copy must skip, not wipe it

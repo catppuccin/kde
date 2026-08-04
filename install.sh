@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Syntax [-q|--quiet] [-c|--local-cursor <path>] <Flavour = 1-4 > <Accent = 1-14> <WindowDec = 1/2> <Debug = aurorae/global/color/splash/cursor>
+# Syntax [-q|--quiet] [-c|--local-cursor <path>] [-n|--no-cursor] <Flavour = 1-4 > <Accent = 1-14> <WindowDec = 1/2> <Debug = aurorae/global/color/splash/cursor>
 
 set -eu
 
@@ -9,6 +9,8 @@ QUIET=0
 LOCAL_CURSOR=0
 LOCAL_CURSOR_PATH=""
 LOCAL_CURSOR_NAME=""
+
+NO_CURSOR=0
 
 while [ "$#" -gt 0 ]; do
     case "$1" in
@@ -25,6 +27,10 @@ while [ "$#" -gt 0 ]; do
             LOCAL_CURSOR=1
             LOCAL_CURSOR_PATH=$1
             LOCAL_CURSOR_NAME=$(basename "$LOCAL_CURSOR_PATH")
+            shift
+            ;;
+        -n | --no-cursor)
+            NO_CURSOR=1
             shift
             ;;
         *)
@@ -75,6 +81,14 @@ clear_screen() {
 
 if [ "$LOCAL_CURSOR" -eq 1 ] && [ "$DEBUGMODE" = "cursor" ]; then
     invalid_arg "Debug mode 'cursor' does not support --local-cursor."
+fi
+
+if [ "$NO_CURSOR" -eq 1 ] && [ "$DEBUGMODE" = "cursor" ]; then
+    invalid_arg "Debug mode 'cursor' does not support --no-cursor."
+fi
+
+if [ "$LOCAL_CURSOR" -eq 1 ] && [ "$NO_CURSOR" -eq 1 ]; then
+    invalid_arg "--local-cursor and --no-cursor are mutually exclusive."
 fi
 
 COLORDIR="${XDG_DATA_HOME:-$HOME/.local/share}/color-schemes"
@@ -240,8 +254,8 @@ esac
 # dependency checks run after the flavour/accent/decoration validation so a bad
 # argument reports the right error even headless. only the full install needs the
 # plasma tools; the build-only debug modes (color/aurorae/splash/cursor) don't.
-[ "$LOCAL_CURSOR" -eq 1 ] || check_command_exists "wget"
-[ "$LOCAL_CURSOR" -eq 1 ] || check_command_exists "unzip"
+[ "$LOCAL_CURSOR" -eq 1 ] || [ "$NO_CURSOR" -eq 1 ] || check_command_exists "wget"
+[ "$LOCAL_CURSOR" -eq 1 ] || [ "$NO_CURSOR" -eq 1 ] || check_command_exists "unzip"
 check_command_exists "tar"
 case "$DEBUGMODE" in
     global) check_command_exists "kpackagetool6" ;;
@@ -320,13 +334,32 @@ InstallGlobalTheme() {
     # every non--c install. --local-cursor's basename is only known here, at
     # runtime, so it's the one line rewritten in place rather than pre-rendered.
     cp "./generated/look-and-feel/$WINDECSTYLENAME/Catppuccin-$FLAVOURNAME-$ACCENTNAME/contents/defaults" "./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME/contents/defaults"
+    defaults="./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME/contents/defaults"
     if [ "$LOCAL_CURSOR" -eq 1 ]; then
-        defaults="./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME/contents/defaults"
         while IFS= read -r line; do
             case $line in
                 cursorTheme=*) printf '%s\n' "cursorTheme=$CURSORTHEME" ;;
                 *) printf '%s\n' "$line" ;;
             esac
+        done <"$defaults" >"$defaults.tmp" && mv "$defaults.tmp" "$defaults"
+    elif [ "$NO_CURSOR" -eq 1 ]; then
+        # plasma-apply-lookandfeel applies every key in defaults verbatim, so a
+        # baked cursorTheme would still overwrite the user's current cursor even
+        # though no cursor was ever installed. drop the whole section instead.
+        in_section=0
+        while IFS= read -r line; do
+            case $line in
+                '[kcminputrc][Mouse]')
+                    in_section=1
+                    continue
+                    ;;
+                '['*)
+                    in_section=0
+                    ;;
+                *) ;;
+            esac
+            [ "$in_section" -eq 1 ] && continue
+            printf '%s\n' "$line"
         done <"$defaults" >"$defaults.tmp" && mv "$defaults.tmp" "$defaults"
     fi
 
@@ -459,8 +492,12 @@ if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
     # Build Colorscheme
     InstallColorscheme
 
-    log "Installing Catppuccin Cursor theme.."
-    InstallCursor
+    if [ "$NO_CURSOR" -eq 1 ]; then
+        log "Skipping cursor install (--no-cursor).."
+    else
+        log "Installing Catppuccin Cursor theme.."
+        InstallCursor
+    fi
 
     # Cleanup
     log "Cleaning up.."
@@ -482,7 +519,7 @@ if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
             [ "$QUIET" -eq 1 ] || clear_screen
         fi
         # Some legacy apps still look in ~/.icons
-        if [ "$QUIET" -ne 1 ]; then
+        if [ "$QUIET" -ne 1 ] && [ "$NO_CURSOR" -ne 1 ]; then
             cat <<EOF
 The cursors will fully apply once you log out
 You may want to run the following in your terminal if you notice any inconsistencies for the cursor theme:
