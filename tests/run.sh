@@ -38,6 +38,34 @@ else
     git --no-pager diff --stat -- tests/goldens tests/canonical-palette.txt >&2
 fi
 
+# ---- generated/ structural completeness: catches a partial regenerate ----
+section "generated/ structural completeness"
+n=$(find generated/color-schemes -maxdepth 1 -name '*.colors' | wc -l | tr -d ' ')
+[ "$n" -eq 56 ] && ok "56 .colors files in generated/color-schemes" || bad "expected 56 .colors files, found $n"
+n=$(find generated/splash -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d ' ')
+[ "$n" -eq 56 ] && ok "56 combo dirs in generated/splash" || bad "expected 56 splash dirs, found $n"
+n=$(find generated/splash-qml -maxdepth 1 -name '*.qml' | wc -l | tr -d ' ')
+[ "$n" -eq 4 ] && ok "4 Splash.qml files in generated/splash-qml" || bad "expected 4 Splash.qml files, found $n"
+n=$(find generated/look-and-feel -mindepth 2 -maxdepth 2 -type d | wc -l | tr -d ' ')
+[ "$n" -eq 112 ] && ok "112 combo dirs in generated/look-and-feel" || bad "expected 112 look-and-feel dirs, found $n"
+want_file generated/canonical-palette.txt "generated/canonical-palette.txt present" "generated/canonical-palette.txt missing"
+
+# ---- StoreAuroraeNo table: a frontmatter-map typo whiskers --check can't see,
+# since a wrong-but-syntactically-valid id renders and diffs clean either way ----
+section "StoreAuroraeNo table (8 flavour x decoration ids)"
+check_store_aurorae() {
+    got=$(grep -o 'kns://aurorae.knsrc/api.kde-look.org/[0-9]*' "generated/look-and-feel/$2/Catppuccin-$1-Blue/metadata.desktop" | grep -o '[0-9]*$')
+    if [ "$got" = "$3" ]; then ok "StoreAuroraeNo $1/$2 = $3"; else bad "StoreAuroraeNo $1/$2 expected $3, got $got"; fi
+}
+check_store_aurorae Mocha Modern 2135229
+check_store_aurorae Mocha Classic 2135228
+check_store_aurorae Macchiato Modern 2135227
+check_store_aurorae Macchiato Classic 2135226
+check_store_aurorae Frappe Modern 2135225
+check_store_aurorae Frappe Classic 2135224
+check_store_aurorae Latte Modern 2135223
+check_store_aurorae Latte Classic 2135222
+
 # negative assert: a non-override accent on Latte keeps the crust selFg, not white
 make_sandbox
 rm -rf ./dist
