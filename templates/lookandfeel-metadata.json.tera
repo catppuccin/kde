@@ -31,4 +31,4 @@ store_aurorae:
         "kns://aurorae.knsrc/api.kde-look.org/{% endraw %}{{ store_aurorae[flavor.identifier][decoration] }}{% raw %}"
     ]
 }
-{% endraw %}
+{% endraw -%}

@@ -23,4 +23,4 @@ whiskers:
         "Version": "0.3.1"
     }
 }
-{% endraw %}
+{% endraw -%}

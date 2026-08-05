@@ -93,4 +93,4 @@ Rectangle {
         easing.type: Easing.InOutQuad
     }
 }
-{% endraw %}
+{% endraw -%}
