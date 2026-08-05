@@ -25,7 +25,7 @@ store_aurorae:
         "Id": "Catppuccin-{% endraw %}{{flavor.identifier | capitalize}}{% raw %}-{% endraw %}{{accent | capitalize}}{% raw %}",
         "License": "MIT",
         "Name": "Catppuccin {% endraw %}{{flavor.identifier | capitalize}}{% raw %} {% endraw %}{{accent | capitalize}}{% raw %}",
-        "Version": "0.3.1"
+        "Version": "0.4.0"
     },
     "X-KPackage-Dependencies": [
         "kns://aurorae.knsrc/api.kde-look.org/{% endraw %}{{ store_aurorae[flavor.identifier][decoration] }}{% raw %}"

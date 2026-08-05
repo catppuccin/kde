@@ -14,7 +14,7 @@
         "Id": "Catppuccin-Mocha-Lavender",
         "License": "MIT",
         "Name": "Catppuccin Mocha Lavender",
-        "Version": "0.3.1"
+        "Version": "0.4.0"
     },
     "X-KPackage-Dependencies": [
         "kns://aurorae.knsrc/api.kde-look.org/2135229"
