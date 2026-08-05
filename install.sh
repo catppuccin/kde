@@ -108,7 +108,8 @@ if [ -z "$FLAVOUR" ]; then
     if [ "$QUIET" -eq 1 ]; then
         missing_arg "flavour"
     fi
-    cat <<EOF
+    while :; do
+        cat <<EOF
 
 Choose flavor out of -
     1. Mocha
@@ -117,7 +118,13 @@ Choose flavor out of -
     4. Latte
     (Type the number corresponding to said palette)
 EOF
-    read -r FLAVOUR || true
+        # EOF means nobody can answer; fail like -q instead of looping forever
+        read -r FLAVOUR || missing_arg "flavour"
+        case "$FLAVOUR" in
+            1 | 2 | 3 | 4) break ;;
+            *) echo "Not a valid flavour name: $FLAVOUR" >&2 ;;
+        esac
+    done
     clear_screen
 fi
 
@@ -138,7 +145,8 @@ if [ -z "$ACCENT" ]; then
     if [ "$QUIET" -eq 1 ]; then
         missing_arg "accent"
     fi
-    cat <<EOF
+    while :; do
+        cat <<EOF
 Choose an accent -
     1. Rosewater
     2. Flamingo
@@ -155,7 +163,12 @@ Choose an accent -
     13. Blue
     14. Lavender
 EOF
-    read -r ACCENT || true
+        read -r ACCENT || missing_arg "accent"
+        case "$ACCENT" in
+            1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14) break ;;
+            *) echo "Not a valid accent: $ACCENT" >&2 ;;
+        esac
+    done
     clear_screen
 fi
 
@@ -208,13 +221,19 @@ if [ -z "$WINDECSTYLE" ]; then
     if [ "$QUIET" -eq 1 ]; then
         missing_arg "window decoration"
     fi
-    cat <<EOF
+    while :; do
+        cat <<EOF
 
 Choose window decoration style -
     1. Modern (Mixed)
     2. Classic (MacOS like)
 EOF
-    read -r WINDECSTYLE || true
+        read -r WINDECSTYLE || missing_arg "window decoration"
+        case "$WINDECSTYLE" in
+            1 | 2) break ;;
+            *) echo "Not a valid Window decoration" >&2 ;;
+        esac
+    done
     clear_screen
 fi
 
@@ -483,7 +502,10 @@ case "$DEBUGMODE" in
         BuildSplashScreen
         ;;
     cursor) GetCursor ;;
-    *) echo "Invalid Debug Mode" >&2 ;;
+    *)
+        echo "Invalid Debug Mode" >&2
+        exit 1
+        ;;
 esac
 
 if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
@@ -535,5 +557,8 @@ EOF
         [ "$QUIET" -eq 1 ] || sleep 1
     fi
 else
+    # nothing was built; drop the dist dir only if this run created it empty,
+    # so artifacts from an earlier debug run survive
+    rmdir ./dist 2>/dev/null || true
     log "Exiting.."
 fi

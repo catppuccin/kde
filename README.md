@@ -44,9 +44,11 @@
 #### Automated Installation
 Install without any prompts by passing the flavour, accent, and window-decoration numbers plus `auto`:
 
-`./install.sh [-q|--quiet] [-n|--no-cursor] <flavour 1-4> <accent 1-14> <window_decoration 1-2> auto`
+`./install.sh [-q|--quiet] [-n|--no-cursor] [-c|--local-cursor <dir>] <flavour 1-4> <accent 1-14> <window_decoration 1-2> auto`
 
 Pass `-n`/`--no-cursor` to keep your current cursor theme untouched.
+
+Pass `-c <dir>`/`--local-cursor <dir>` to install an already-downloaded cursor theme directory instead of fetching one.
 
 Example (Mocha, Blue, Classic):
 `./install.sh 1 13 2 auto`
@@ -62,6 +64,7 @@ Example (Mocha, Blue, Classic):
 ## Notes
 1. If you are using KDE 5.27 or below, you might want to run `git checkout v0.2.5`  before running the install script to avoid running into compatibility issues. Alternatively, the release binaries are available [here](https://github.com/catppuccin/kde/releases/tag/v0.2.5).
 2. If you encounter an error similar to 'connection refused' while running the installation script, it may be due to store.kde.org being down or issues with your internet connection.
+3. Applying the theme writes `BorderSizeAuto=false` to `~/.config/kwinrc` (for borderless windows); this is the only setting the installer changes outside the theme directories.
 
 
 ## Development

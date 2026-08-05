@@ -346,6 +346,33 @@ expect_fail "-c with a bad path" "must be a cursor theme directory" -c /no/such/
 expect_fail "cursor mode rejects -c" "does not support --local-cursor" -c "$SANDBOX/cursor" 1 13 1 cursor
 expect_fail "cursor mode rejects -n" "does not support --no-cursor" -n 1 13 1 cursor
 expect_fail "-c and -n are mutually exclusive" "mutually exclusive" -c "$SANDBOX/cursor" -n 1 13 1 color
+expect_fail "invalid debug mode exits non-zero" "Invalid Debug Mode" -q 1 13 1 typo
+expect_fail "EOF at the flavour prompt exits with missing arg" "Missing flavour"
+
+# ---- interactive prompts ----
+section "interactive prompts (re-prompt on invalid input, decline cleanup)"
+make_sandbox
+rm -rf ./dist
+out=$(printf '9\n1\n99\n13\n3\n2\nn\n' | ./install.sh 2>&1)
+rc=$?
+if [ "$rc" -eq 0 ]; then
+    ok "interactive declined run exits 0"
+else
+    bad "interactive declined run exited $rc: $out"
+fi
+reprompt_fail=0
+for want in "Not a valid flavour name: 9" "Not a valid accent: 99" "Not a valid Window decoration" "Mocha(1) palette was selected." "Blue(13) accent color was selected."; do
+    printf '%s\n' "$out" | grep -qF "$want" || {
+        bad "re-prompt output missing: $want"
+        reprompt_fail=1
+    }
+done
+[ "$reprompt_fail" -eq 0 ] && ok "invalid prompt answers re-prompt until a valid choice"
+if [ ! -d ./dist ]; then
+    ok "declined install removes the empty dist dir"
+else
+    bad "declined install left ./dist behind"
+fi
 
 # ---- sandboxed e2e (item 23) ----
 section "e2e (sandboxed full install)"
