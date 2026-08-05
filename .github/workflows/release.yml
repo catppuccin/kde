@@ -29,23 +29,25 @@ jobs:
             exit 1
           fi
 
-          # 2. Check metadata.json files (10 files)
+          # 2. Check metadata.json files: the 8 static Aurorae themes under
+          # Resources/, plus every Whiskers-rendered combo under generated/
+          # (168 splash + look-and-feel dirs; colour schemes carry no version).
           while IFS= read -r f; do
             file_ver=$(jq -r '.KPlugin.Version' "$f")
             if [ "$file_ver" != "$version" ]; then
               echo "::error::$f version ($file_ver) does not match tag version ($version)"
               exit 1
             fi
-          done < <(find Resources -name "metadata.json")
+          done < <(find Resources generated -name "metadata.json")
 
-          # 3. Check metadata.desktop files (10 files)
+          # 3. Check metadata.desktop files, same scope as above.
           while IFS= read -r f; do
             file_ver=$(grep "^X-KDE-PluginInfo-Version=" "$f" | cut -d'=' -f2)
             if [ "$file_ver" != "$version" ]; then
               echo "::error::$f version ($file_ver) does not match tag version ($version)"
               exit 1
             fi
-          done < <(find Resources -name "metadata.desktop")
+          done < <(find Resources generated -name "metadata.desktop")
 
           echo "All version checks passed!"
 
