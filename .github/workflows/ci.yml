@@ -92,15 +92,7 @@ jobs:
         if: steps.cache-whiskers.outputs.cache-hit != 'true'
         uses: catppuccin/setup-whiskers@b62bd68fffdac4112097d2cf4bc77aba69ee008e # v2
       - name: whiskers --check (drift guard)
-        run: |
-          for f in templates/*.tera; do
-            if grep -q '^[[:space:]]*matrix:' "$f"; then
-              whiskers "$f" --check
-            else
-              example=$(sed -n 's/^[[:space:]]*filename:[[:space:]]*"\(.*\)"[[:space:]]*$/\1/p' "$f" | head -n1)
-              whiskers "$f" --check "$example"
-            fi
-          done
+        run: tests/whiskers-check.sh
       - name: generated/ tracked and complete
         run: |
           count=$(git ls-files generated/ | wc -l)
