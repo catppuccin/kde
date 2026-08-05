@@ -21,6 +21,37 @@ section() { printf '\n== %s ==\n' "$1"; }
 want_file() { if [ -f "$1" ]; then ok "$2"; else bad "$3"; fi; }
 want_dir() { if [ -d "$1" ]; then ok "$2"; else bad "$3"; fi; }
 
+# shared by the splash and look-and-feel combo loops: checks metadata.json is
+# valid, metadata.desktop has [Desktop Entry], and every asset (metadata plus
+# whatever mode-specific paths are passed in) is non-empty and residual-clean.
+# returns non-zero on any failure; caller sets its own fail-flag variable.
+# (cma_ prefix: POSIX sh functions share the caller's scope, and both loops
+# already use "base" for their own combo path.)
+check_metadata_assets() {
+    cma_base=$1
+    cma_label=$2
+    shift 2
+    cma_fail=0
+    for cma_asset in "$@" "$cma_base/metadata.json" "$cma_base/metadata.desktop"; do
+        if [ ! -s "$cma_asset" ]; then
+            bad "missing asset $cma_asset"
+            cma_fail=1
+        elif grep -Eq "$RESIDUAL" "$cma_asset"; then
+            bad "residual in $cma_asset"
+            cma_fail=1
+        fi
+    done
+    jq empty "$cma_base/metadata.json" 2>/dev/null || {
+        bad "invalid generated metadata.json: $cma_label"
+        cma_fail=1
+    }
+    grep -q '^\[Desktop Entry\]' "$cma_base/metadata.desktop" || {
+        bad "generated metadata.desktop missing [Desktop Entry]: $cma_label"
+        cma_fail=1
+    }
+    return "$cma_fail"
+}
+
 FLAVOURS="1:Mocha 2:Macchiato 3:Frappe 4:Latte"
 ACCENTS="1:Rosewater 2:Flamingo 3:Pink 4:Mauve 5:Red 6:Maroon 7:Peach 8:Yellow 9:Green 10:Teal 11:Sky 12:Sapphire 13:Blue 14:Lavender"
 # bare $ is an end-anchor (matches nothing); escape it. covers sed-era token
@@ -50,12 +81,44 @@ n=$(find generated/look-and-feel -mindepth 2 -maxdepth 2 -type d | wc -l | tr -d
 [ "$n" -eq 112 ] && ok "112 combo dirs in generated/look-and-feel" || bad "expected 112 look-and-feel dirs, found $n"
 want_file generated/canonical-palette.txt "generated/canonical-palette.txt present" "generated/canonical-palette.txt missing"
 
-# ---- StoreAuroraeNo table: a frontmatter-map typo whiskers --check can't see,
-# since a wrong-but-syntactically-valid id renders and diffs clean either way ----
+# lookandfeel-defaults.tera interpolates the decoration matrix variable
+# ({{decoration}}) with no validation of its own; a casing typo there would
+# silently render a theme= line matching no Aurorae directory on disk. also
+# pin the exact [kcminputrc][Mouse] header string install.sh's --no-cursor
+# section-strip matches against, so a template edit that drifts it (a stray
+# space, different casing) is caught here instead of silently disabling -n.
+decoration_fail=0
+header_fail=0
+for f in generated/look-and-feel/*/*/contents/defaults; do
+    theme_line=$(grep '^theme=' "$f")
+    case "$theme_line" in
+        theme=__aurorae__svg__Catppuccin*-Modern | theme=__aurorae__svg__Catppuccin*-Classic) ;;
+        *)
+            bad "unexpected decoration suffix in $f: $theme_line"
+            decoration_fail=1
+            ;;
+    esac
+    grep -qx '\[kcminputrc\]\[Mouse\]' "$f" || {
+        bad "kcminputrc header missing/altered in $f"
+        header_fail=1
+    }
+done
+[ "$decoration_fail" -eq 0 ] && ok "every generated look-and-feel defaults has an exact Modern/Classic decoration suffix"
+[ "$header_fail" -eq 0 ] && ok "every generated look-and-feel defaults has the literal [kcminputrc][Mouse] header --no-cursor matches against"
+
+# ---- StoreAuroraeNo table: catches a frontmatter-map typo whiskers --check can't see (a wrong-but-valid id renders and diffs clean either way) ----
 section "StoreAuroraeNo table (8 flavour x decoration ids)"
 check_store_aurorae() {
-    got=$(grep -o 'kns://aurorae.knsrc/api.kde-look.org/[0-9]*' "generated/look-and-feel/$2/Catppuccin-$1-Blue/metadata.desktop" | grep -o '[0-9]*$')
-    if [ "$got" = "$3" ]; then ok "StoreAuroraeNo $1/$2 = $3"; else bad "StoreAuroraeNo $1/$2 expected $3, got $got"; fi
+    # the store_aurorae map is duplicated by hand across the .desktop and .json
+    # templates; check both copies so the two can't silently desync.
+    base="generated/look-and-feel/$2/Catppuccin-$1-Blue"
+    got_desktop=$(grep -o 'kns://aurorae.knsrc/api.kde-look.org/[0-9]*' "$base/metadata.desktop" | grep -o '[0-9]*$')
+    got_json=$(grep -o 'kns://aurorae.knsrc/api.kde-look.org/[0-9]*' "$base/metadata.json" | grep -o '[0-9]*$')
+    if [ "$got_desktop" = "$3" ] && [ "$got_json" = "$3" ]; then
+        ok "StoreAuroraeNo $1/$2 = $3 (metadata.desktop + metadata.json agree)"
+    else
+        bad "StoreAuroraeNo $1/$2 expected $3, got desktop=$got_desktop json=$got_json"
+    fi
 }
 check_store_aurorae Mocha Modern 2135229
 check_store_aurorae Mocha Classic 2135228
@@ -193,23 +256,9 @@ for fe in $FLAVOURS; do
             continue
         fi
         base="./dist/Catppuccin-$fn-$an-splash"
-        for asset in "$base/contents/splash/images/busywidget.svg" "$base/contents/splash/Splash.qml"; do
-            if [ ! -s "$asset" ]; then
-                bad "missing splash asset $asset"
-                splash_fail=1
-            elif grep -Eq "$RESIDUAL" "$asset"; then
-                bad "residual in $asset"
-                splash_fail=1
-            fi
-        done
-        jq empty "$base/metadata.json" 2>/dev/null || {
-            bad "invalid generated metadata.json: $fn/$an"
+        check_metadata_assets "$base" "$fn/$an" \
+            "$base/contents/splash/images/busywidget.svg" "$base/contents/splash/Splash.qml" ||
             splash_fail=1
-        }
-        grep -q '^\[Desktop Entry\]' "$base/metadata.desktop" || {
-            bad "generated metadata.desktop missing [Desktop Entry]: $fn/$an"
-            splash_fail=1
-        }
 
         # install.sh selects and copies from generated/ (Whiskers output); this
         # catches a path-construction bug landing the wrong combo's file in dist.
@@ -252,23 +301,8 @@ for fe in $FLAVOURS; do
                 continue
             fi
             base="./dist/Catppuccin-$fn-$an"
-            for asset in "$base/contents/defaults" "$base/metadata.desktop" "$base/metadata.json"; do
-                if [ ! -s "$asset" ]; then
-                    bad "missing global asset $asset"
-                    global_fail=1
-                elif grep -Eq "$RESIDUAL" "$asset"; then
-                    bad "residual in $asset"
-                    global_fail=1
-                fi
-            done
-            jq empty "$base/metadata.json" 2>/dev/null || {
-                bad "invalid generated metadata.json: $fn/$an/$dn"
+            check_metadata_assets "$base" "$fn/$an/$dn" "$base/contents/defaults" ||
                 global_fail=1
-            }
-            grep -q '^\[Desktop Entry\]' "$base/metadata.desktop" || {
-                bad "generated metadata.desktop missing [Desktop Entry]: $fn/$an/$dn"
-                global_fail=1
-            }
 
             # install.sh selects and copies from generated/ (Whiskers output);
             # this catches a path-construction bug landing the wrong combo's

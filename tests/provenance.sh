@@ -50,4 +50,21 @@ else
     fail=1
 fi
 
+# templates/canonical-palette.tera hardcodes its flavour iteration order
+# (deliberately: it matches the historical Mocha-first order, not the crate's
+# light-to-dark order) instead of iterating whiskers' own flavour data, so
+# cross-check its SET of flavours (order doesn't matter here) against whiskers
+# -- a hypothetical new upstream flavour would otherwise be silently dropped
+# from canonical-palette.txt with nothing else to catch it.
+template_flavours=$(grep -oE 'for name in \[.*\]' templates/canonical-palette.tera | grep -oE '"\w+"' | tr -d '"' | sort)
+whiskers_flavours_sorted=$("$WHISKERS" --list-flavors -o plain | sort)
+if [ "$template_flavours" = "$whiskers_flavours_sorted" ]; then
+    echo "provenance: ok (canonical-palette.tera's flavour set matches whiskers --list-flavors)"
+else
+    echo "provenance: canonical-palette.tera's hardcoded flavour list doesn't match whiskers --list-flavors" >&2
+    echo "  template:  $(printf '%s' "$template_flavours" | tr '\n' ' ')" >&2
+    echo "  whiskers:  $(printf '%s' "$whiskers_flavours_sorted" | tr '\n' ' ')" >&2
+    fail=1
+fi
+
 exit "$fail"
