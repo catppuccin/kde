@@ -72,13 +72,13 @@ fi
 # ---- generated/ structural completeness: catches a partial regenerate ----
 section "generated/ structural completeness"
 n=$(find generated/color-schemes -maxdepth 1 -name '*.colors' | wc -l | tr -d ' ')
-[ "$n" -eq 56 ] && ok "56 .colors files in generated/color-schemes" || bad "expected 56 .colors files, found $n"
+if [ "$n" -eq 56 ]; then ok "56 .colors files in generated/color-schemes"; else bad "expected 56 .colors files, found $n"; fi
 n=$(find generated/splash -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d ' ')
-[ "$n" -eq 56 ] && ok "56 combo dirs in generated/splash" || bad "expected 56 splash dirs, found $n"
+if [ "$n" -eq 56 ]; then ok "56 combo dirs in generated/splash"; else bad "expected 56 splash dirs, found $n"; fi
 n=$(find generated/splash-qml -maxdepth 1 -name '*.qml' | wc -l | tr -d ' ')
-[ "$n" -eq 4 ] && ok "4 Splash.qml files in generated/splash-qml" || bad "expected 4 Splash.qml files, found $n"
+if [ "$n" -eq 4 ]; then ok "4 Splash.qml files in generated/splash-qml"; else bad "expected 4 Splash.qml files, found $n"; fi
 n=$(find generated/look-and-feel -mindepth 2 -maxdepth 2 -type d | wc -l | tr -d ' ')
-[ "$n" -eq 112 ] && ok "112 combo dirs in generated/look-and-feel" || bad "expected 112 look-and-feel dirs, found $n"
+if [ "$n" -eq 112 ]; then ok "112 combo dirs in generated/look-and-feel"; else bad "expected 112 look-and-feel dirs, found $n"; fi
 want_file generated/canonical-palette.txt "generated/canonical-palette.txt present" "generated/canonical-palette.txt missing"
 
 # lookandfeel-defaults.tera interpolates the decoration matrix variable
