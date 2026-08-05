@@ -20,7 +20,7 @@ whiskers:
         "Id": "Catppuccin-{% endraw %}{{flavor.identifier | capitalize}}{% raw %}-{% endraw %}{{accent | capitalize}}{% raw %}-splash",
         "License": "MIT",
         "Name": "Catppuccin {% endraw %}{{flavor.identifier | capitalize}}{% raw %} {% endraw %}{{accent | capitalize}}{% raw %}",
-        "Version": "0.3.1"
+        "Version": "0.4.0"
     }
 }
 {% endraw -%}
