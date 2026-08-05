@@ -1,0 +1,22 @@
+{
+    "KPackageStructure": "Plasma/LookAndFeel",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "core@catppuccin.com",
+                "Name": "Catppuccin"
+            }
+        ],
+        "Category": "Global Themes (Plasma 6)",
+        "Dependencies": [
+        ],
+        "EnabledByDefault": true,
+        "Id": "Catppuccin-Latte-Mauve",
+        "License": "MIT",
+        "Name": "Catppuccin Latte Mauve",
+        "Version": "0.3.1"
+    },
+    "X-KPackage-Dependencies": [
+        "kns://aurorae.knsrc/api.kde-look.org/2135223"
+    ]
+}

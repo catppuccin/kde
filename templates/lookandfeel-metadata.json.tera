@@ -1,0 +1,34 @@
+---
+whiskers:
+  version: "=2.9.0"
+  matrix: [flavor, accent, {decoration: ["Modern", "Classic"]}]
+  filename: "generated/look-and-feel/{{decoration}}/Catppuccin-{{flavor.identifier | capitalize}}-{{accent | capitalize}}/metadata.json"
+store_aurorae:
+  mocha: { Modern: "2135229", Classic: "2135228" }
+  macchiato: { Modern: "2135227", Classic: "2135226" }
+  frappe: { Modern: "2135225", Classic: "2135224" }
+  latte: { Modern: "2135223", Classic: "2135222" }
+---
+{% raw %}{
+    "KPackageStructure": "Plasma/LookAndFeel",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "core@catppuccin.com",
+                "Name": "Catppuccin"
+            }
+        ],
+        "Category": "Global Themes (Plasma 6)",
+        "Dependencies": [
+        ],
+        "EnabledByDefault": true,
+        "Id": "Catppuccin-{% endraw %}{{flavor.identifier | capitalize}}{% raw %}-{% endraw %}{{accent | capitalize}}{% raw %}",
+        "License": "MIT",
+        "Name": "Catppuccin {% endraw %}{{flavor.identifier | capitalize}}{% raw %} {% endraw %}{{accent | capitalize}}{% raw %}",
+        "Version": "0.3.1"
+    },
+    "X-KPackage-Dependencies": [
+        "kns://aurorae.knsrc/api.kde-look.org/{% endraw %}{{ store_aurorae[flavor.identifier][decoration] }}{% raw %}"
+    ]
+}
+{% endraw -%}

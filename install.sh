@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Syntax [-q|--quiet] [-c|--local-cursor <path>] <Flavour = 1-4 > <Accent = 1-14> <WindowDec = 1/2> <Debug = aurorae/global/color/splash/cursor>
+# Syntax [-q|--quiet] [-c|--local-cursor <path>] [-n|--no-cursor] <Flavour = 1-4 > <Accent = 1-14> <WindowDec = 1/2> <Debug = aurorae/global/color/splash/cursor>
 
 set -eu
 
@@ -9,6 +9,8 @@ QUIET=0
 LOCAL_CURSOR=0
 LOCAL_CURSOR_PATH=""
 LOCAL_CURSOR_NAME=""
+
+NO_CURSOR=0
 
 while [ "$#" -gt 0 ]; do
     case "$1" in
@@ -25,6 +27,10 @@ while [ "$#" -gt 0 ]; do
             LOCAL_CURSOR=1
             LOCAL_CURSOR_PATH=$1
             LOCAL_CURSOR_NAME=$(basename "$LOCAL_CURSOR_PATH")
+            shift
+            ;;
+        -n | --no-cursor)
+            NO_CURSOR=1
             shift
             ;;
         *)
@@ -77,6 +83,14 @@ if [ "$LOCAL_CURSOR" -eq 1 ] && [ "$DEBUGMODE" = "cursor" ]; then
     invalid_arg "Debug mode 'cursor' does not support --local-cursor."
 fi
 
+if [ "$NO_CURSOR" -eq 1 ] && [ "$DEBUGMODE" = "cursor" ]; then
+    invalid_arg "Debug mode 'cursor' does not support --no-cursor."
+fi
+
+if [ "$LOCAL_CURSOR" -eq 1 ] && [ "$NO_CURSOR" -eq 1 ]; then
+    invalid_arg "--local-cursor and --no-cursor are mutually exclusive."
+fi
+
 COLORDIR="${XDG_DATA_HOME:-$HOME/.local/share}/color-schemes"
 AURORAEDIR="${XDG_DATA_HOME:-$HOME/.local/share}/aurorae/themes"
 LOOKANDFEELDIR="${XDG_DATA_HOME:-$HOME/.local/share}/plasma/look-and-feel"
@@ -94,7 +108,8 @@ if [ -z "$FLAVOUR" ]; then
     if [ "$QUIET" -eq 1 ]; then
         missing_arg "flavour"
     fi
-    cat <<EOF
+    while :; do
+        cat <<EOF
 
 Choose flavor out of -
     1. Mocha
@@ -103,7 +118,13 @@ Choose flavor out of -
     4. Latte
     (Type the number corresponding to said palette)
 EOF
-    read -r FLAVOUR || true
+        # EOF means nobody can answer; fail like -q instead of looping forever
+        read -r FLAVOUR || missing_arg "flavour"
+        case "$FLAVOUR" in
+            1 | 2 | 3 | 4) break ;;
+            *) echo "Not a valid flavour name: $FLAVOUR" >&2 ;;
+        esac
+    done
     clear_screen
 fi
 
@@ -124,7 +145,8 @@ if [ -z "$ACCENT" ]; then
     if [ "$QUIET" -eq 1 ]; then
         missing_arg "accent"
     fi
-    cat <<EOF
+    while :; do
+        cat <<EOF
 Choose an accent -
     1. Rosewater
     2. Flamingo
@@ -141,152 +163,32 @@ Choose an accent -
     13. Blue
     14. Lavender
 EOF
-    read -r ACCENT || true
+        read -r ACCENT || missing_arg "accent"
+        case "$ACCENT" in
+            1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14) break ;;
+            *) echo "Not a valid accent: $ACCENT" >&2 ;;
+        esac
+    done
     clear_screen
 fi
 
-# Sets accent based on the palette selected (Best to fold this in your respective editor)
+# Every RGB value lives in generated/ now (rendered by Whiskers from the
+# catppuccin crate); this only needs to resolve the number to a display name.
 case "$ACCENT" in
-    1)
-        case "$FLAVOUR" in
-            1) ACCENTCOLOR="245, 224, 220" ;;
-            2) ACCENTCOLOR="244, 219, 214" ;;
-            3) ACCENTCOLOR="242, 213, 207" ;;
-            4) ACCENTCOLOR="220, 138, 120" ;;
-            *) ;;
-        esac
-        ACCENTNAME="Rosewater"
-        ;;
-    2)
-        case "$FLAVOUR" in
-            1) ACCENTCOLOR="242, 205, 205" ;;
-            2) ACCENTCOLOR="240, 198, 198" ;;
-            3) ACCENTCOLOR="238, 190, 190" ;;
-            4) ACCENTCOLOR="221, 120, 120" ;;
-            *) ;;
-        esac
-        ACCENTNAME="Flamingo"
-        ;;
-    3)
-        case "$FLAVOUR" in
-            1) ACCENTCOLOR="245, 194, 231" ;;
-            2) ACCENTCOLOR="245, 189, 230" ;;
-            3) ACCENTCOLOR="244, 184, 228" ;;
-            4) ACCENTCOLOR="234, 118, 203" ;;
-            *) ;;
-        esac
-        ACCENTNAME="Pink"
-        ;;
-    4)
-        case "$FLAVOUR" in
-            1) ACCENTCOLOR="203, 166, 247" ;;
-            2) ACCENTCOLOR="198, 160, 246" ;;
-            3) ACCENTCOLOR="202, 158, 230" ;;
-            4) ACCENTCOLOR="136, 57, 239" ;;
-            *) ;;
-        esac
-        ACCENTNAME="Mauve"
-        ;;
-    5)
-        case "$FLAVOUR" in
-            1) ACCENTCOLOR="243, 139, 168" ;;
-            2) ACCENTCOLOR="237, 135, 150" ;;
-            3) ACCENTCOLOR="231, 130, 132" ;;
-            4) ACCENTCOLOR="210, 15, 57" ;;
-            *) ;;
-        esac
-        ACCENTNAME="Red"
-        ;;
-    6)
-        case "$FLAVOUR" in
-            1) ACCENTCOLOR="235, 160, 172" ;;
-            2) ACCENTCOLOR="238, 153, 160" ;;
-            3) ACCENTCOLOR="234, 153, 156" ;;
-            4) ACCENTCOLOR="230, 69, 83" ;;
-            *) ;;
-        esac
-        ACCENTNAME="Maroon"
-        ;;
-    7)
-        case "$FLAVOUR" in
-            1) ACCENTCOLOR="250, 179, 135" ;;
-            2) ACCENTCOLOR="245, 169, 127" ;;
-            3) ACCENTCOLOR="239, 159, 118" ;;
-            4) ACCENTCOLOR="254, 100, 11" ;;
-            *) ;;
-        esac
-        ACCENTNAME="Peach"
-        ;;
-    8)
-        case "$FLAVOUR" in
-            1) ACCENTCOLOR="249, 226, 175" ;;
-            2) ACCENTCOLOR="238, 212, 159" ;;
-            3) ACCENTCOLOR="229, 200, 144" ;;
-            4) ACCENTCOLOR="223, 142, 29" ;;
-            *) ;;
-        esac
-        ACCENTNAME="Yellow"
-        ;;
-    9)
-        case "$FLAVOUR" in
-            1) ACCENTCOLOR="166, 227, 161" ;;
-            2) ACCENTCOLOR="166, 218, 149" ;;
-            3) ACCENTCOLOR="166, 209, 137" ;;
-            4) ACCENTCOLOR="64, 160, 43" ;;
-            *) ;;
-        esac
-        ACCENTNAME="Green"
-        ;;
-    10)
-        case "$FLAVOUR" in
-            1) ACCENTCOLOR="148, 226, 213" ;;
-            2) ACCENTCOLOR="139, 213, 202" ;;
-            3) ACCENTCOLOR="129, 200, 190" ;;
-            4) ACCENTCOLOR="23, 146, 153" ;;
-            *) ;;
-        esac
-        ACCENTNAME="Teal"
-        ;;
-    11)
-        case "$FLAVOUR" in
-            1) ACCENTCOLOR="137, 220, 235" ;;
-            2) ACCENTCOLOR="145, 215, 227" ;;
-            3) ACCENTCOLOR="153, 209, 219" ;;
-            4) ACCENTCOLOR="4, 165, 229" ;;
-            *) ;;
-        esac
-        ACCENTNAME="Sky"
-        ;;
-    12)
-        case "$FLAVOUR" in
-            1) ACCENTCOLOR="116, 199, 236" ;;
-            2) ACCENTCOLOR="125, 196, 228" ;;
-            3) ACCENTCOLOR="133, 193, 220" ;;
-            4) ACCENTCOLOR="32, 159, 181" ;;
-            *) ;;
-        esac
-        ACCENTNAME="Sapphire"
-        ;;
-    13)
-        case "$FLAVOUR" in
-            1) ACCENTCOLOR="137, 180, 250" ;;
-            2) ACCENTCOLOR="138, 173, 244" ;;
-            3) ACCENTCOLOR="140, 170, 238" ;;
-            4) ACCENTCOLOR="30, 102, 245" ;;
-            *) ;;
-        esac
-        ACCENTNAME="Blue"
-        ;;
-    14)
-        case "$FLAVOUR" in
-            1) ACCENTCOLOR="180, 190, 254" ;;
-            2) ACCENTCOLOR="183, 189, 248" ;;
-            3) ACCENTCOLOR="186, 187, 241" ;;
-            4) ACCENTCOLOR="114, 135, 253" ;;
-            *) ;;
-        esac
-        ACCENTNAME="Lavender"
-        ;;
+    1) ACCENTNAME="Rosewater" ;;
+    2) ACCENTNAME="Flamingo" ;;
+    3) ACCENTNAME="Pink" ;;
+    4) ACCENTNAME="Mauve" ;;
+    5) ACCENTNAME="Red" ;;
+    6) ACCENTNAME="Maroon" ;;
+    7) ACCENTNAME="Peach" ;;
+    8) ACCENTNAME="Yellow" ;;
+    9) ACCENTNAME="Green" ;;
+    10) ACCENTNAME="Teal" ;;
+    11) ACCENTNAME="Sky" ;;
+    12) ACCENTNAME="Sapphire" ;;
+    13) ACCENTNAME="Blue" ;;
+    14) ACCENTNAME="Lavender" ;;
     *)
         echo "Not a valid accent: $ACCENT" >&2
         exit 1
@@ -319,13 +221,19 @@ if [ -z "$WINDECSTYLE" ]; then
     if [ "$QUIET" -eq 1 ]; then
         missing_arg "window decoration"
     fi
-    cat <<EOF
+    while :; do
+        cat <<EOF
 
 Choose window decoration style -
     1. Modern (Mixed)
     2. Classic (MacOS like)
 EOF
-    read -r WINDECSTYLE || true
+        read -r WINDECSTYLE || missing_arg "window decoration"
+        case "$WINDECSTYLE" in
+            1 | 2) break ;;
+            *) echo "Not a valid Window decoration" >&2 ;;
+        esac
+    done
     clear_screen
 fi
 
@@ -333,15 +241,6 @@ WINDECSTYLENAME=""
 case "$WINDECSTYLE" in
     1)
         WINDECSTYLENAME=Modern
-        WINDECSTYLECODE=__aurorae__svg__Catppuccin"$FLAVOURNAME"-Modern
-
-        case "$FLAVOUR" in
-            1) StoreAuroraeNo="2135229" ;;
-            2) StoreAuroraeNo="2135227" ;;
-            3) StoreAuroraeNo="2135225" ;;
-            4) StoreAuroraeNo="2135223" ;;
-            *) ;;
-        esac
 
         if [ "$QUIET" -ne 1 ]; then
             cat <<EOF
@@ -357,15 +256,6 @@ EOF
         ;;
     2)
         WINDECSTYLENAME=Classic
-        WINDECSTYLECODE=__aurorae__svg__Catppuccin"$FLAVOURNAME"-Classic
-
-        case "$FLAVOUR" in
-            1) StoreAuroraeNo="2135228" ;;
-            2) StoreAuroraeNo="2135226" ;;
-            3) StoreAuroraeNo="2135224" ;;
-            4) StoreAuroraeNo="2135222" ;;
-            *) ;;
-        esac
 
         if [ "$QUIET" -ne 1 ]; then
             cat <<EOF
@@ -383,9 +273,8 @@ esac
 # dependency checks run after the flavour/accent/decoration validation so a bad
 # argument reports the right error even headless. only the full install needs the
 # plasma tools; the build-only debug modes (color/aurorae/splash/cursor) don't.
-[ "$LOCAL_CURSOR" -eq 1 ] || check_command_exists "wget"
-[ "$LOCAL_CURSOR" -eq 1 ] || check_command_exists "unzip"
-check_command_exists "sed"
+[ "$LOCAL_CURSOR" -eq 1 ] || [ "$NO_CURSOR" -eq 1 ] || check_command_exists "wget"
+[ "$LOCAL_CURSOR" -eq 1 ] || [ "$NO_CURSOR" -eq 1 ] || check_command_exists "unzip"
 check_command_exists "tar"
 case "$DEBUGMODE" in
     global) check_command_exists "kpackagetool6" ;;
@@ -397,48 +286,45 @@ case "$DEBUGMODE" in
     *) ;;
 esac
 
+# generated/ is a required, tracked part of the repo (a stripped clone or a
+# partial regenerate is otherwise a `cp: cannot stat` mid-install after
+# partial XDG writes). fail cleanly here, before any destination write.
+# aurorae/cursor debug modes never touch generated/, same scoping as the
+# plasma-tool dependency checks above.
+case "$DEBUGMODE" in
+    aurorae | cursor) ;;
+    *)
+        for genpath in \
+            "./generated/color-schemes/Catppuccin$FLAVOURNAME$ACCENTNAME.colors" \
+            "./generated/splash-qml/Catppuccin$FLAVOURNAME-Splash.qml"; do
+            [ -r "$genpath" ] || invalid_arg "Missing generated theme data; re-clone or run 'just build'."
+        done
+        # directories also need +x to be traversed, not just +r to be listed
+        for genpath in \
+            "./generated/look-and-feel/$WINDECSTYLENAME/Catppuccin-$FLAVOURNAME-$ACCENTNAME" \
+            "./generated/splash/Catppuccin-$FLAVOURNAME-$ACCENTNAME-splash"; do
+            { [ -r "$genpath" ] && [ -x "$genpath" ]; } || invalid_arg "Missing generated theme data; re-clone or run 'just build'."
+        done
+        ;;
+esac
+
 BuildColorscheme() {
-    # Add Metadata & Replace Accent in colors file
-    # Selection text is dark (crust) on the accent. Latte's darkest accents
-    # (red/mauve/blue) need white instead, crust is too low-contrast there.
-    SELFG="17, 17, 27"
-    if [ "$FLAVOURNAME" = "Latte" ]; then
-        case "$ACCENTNAME" in
-            Red | Mauve | Blue) SELFG="255, 255, 255" ;;
-            *) ;;
-        esac
-    fi
-    sed "s/--accentColor/$ACCENTCOLOR/g; s/--selFg/$SELFG/g; s/--flavour/$FLAVOURNAME/g; s/--accentName/$ACCENTNAME/g" ./Resources/Base.colors >./dist/base.colors
-    # Hydrate Dummy colors according to Pallet
-    ./Installer/color-build.sh -f "$FLAVOURNAME" -o ./dist/Catppuccin"$FLAVOURNAME$ACCENTNAME".colors -s ./dist/base.colors
+    cp "./generated/color-schemes/Catppuccin$FLAVOURNAME$ACCENTNAME.colors" "./dist/Catppuccin$FLAVOURNAME$ACCENTNAME.colors"
 }
 
 BuildSplashScreen() {
-    case "$FLAVOUR" in
-        1) MANTLECOLOR="#181825" ;;
-        2) MANTLECOLOR="#1e2030" ;;
-        3) MANTLECOLOR="#292c3c" ;;
-        4) MANTLECOLOR="#e6e9ef" ;;
-        *) ;;
-    esac
-
-    # Hydrate Dummy colors according to Pallet
-    ./Installer/color-build.sh -f "$FLAVOURNAME" -s ./Resources/splash-screen/contents/splash/images/busywidget.svg -o ./dist/"$SPLASHSCREENNAME"/contents/splash/images/_busywidget.svg
-    # Replace Accent in colors file
-    sed "s/REPLACE--ACCENT/$ACCENTCOLOR/g" ./dist/"$SPLASHSCREENNAME"/contents/splash/images/_busywidget.svg >./dist/"$SPLASHSCREENNAME"/contents/splash/images/busywidget.svg
-    # Cleanup temporary file
-    rm ./dist/"$SPLASHSCREENNAME"/contents/splash/images/_busywidget.svg
-
-    # Hydrate Dummy colors according to Pallet (QML file)
-    sed -e "s/REPLACE--MANTLE/$MANTLECOLOR/g" ./Resources/splash-screen/contents/splash/Splash.qml >./dist/"$SPLASHSCREENNAME"/contents/splash/Splash.qml
+    cp "./generated/splash/$SPLASHSCREENNAME/contents/splash/images/busywidget.svg" "./dist/$SPLASHSCREENNAME/contents/splash/images/busywidget.svg"
+    # Splash.qml's only substitution (mantle hex) is flavour-scoped, not
+    # accent-scoped, so it's rendered once per flavour, not once per combo.
+    cp "./generated/splash-qml/Catppuccin$FLAVOURNAME-Splash.qml" "./dist/$SPLASHSCREENNAME/contents/splash/Splash.qml"
     # Add CTP Logo
     if [ "$FLAVOUR" -ne 4 ]; then
         cp ./Resources/splash-screen/contents/splash/images/Logo.png ./dist/"$SPLASHSCREENNAME"/contents/splash/images/Logo.png
     else
         cp ./Resources/splash-screen/contents/splash/images/Latte_Logo.png ./dist/"$SPLASHSCREENNAME"/contents/splash/images/Logo.png
     fi
-    sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g" ./Resources/splash-screen/metadata.desktop >./dist/"$SPLASHSCREENNAME"/metadata.desktop
-    sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g" ./Resources/splash-screen/metadata.json >./dist/"$SPLASHSCREENNAME"/metadata.json
+    cp "./generated/splash/$SPLASHSCREENNAME/metadata.desktop" "./dist/$SPLASHSCREENNAME/metadata.desktop"
+    cp "./generated/splash/$SPLASHSCREENNAME/metadata.json" "./dist/$SPLASHSCREENNAME/metadata.json"
     mkdir -p ./dist/"$SPLASHSCREENNAME"/contents/previews
     cp ./Resources/splash-previews/"$FLAVOURNAME".png ./dist/"$SPLASHSCREENNAME"/contents/previews/splash.png
     # cp ./Resources/splash-previews/"$FLAVOURNAME".png ./dist/"$SPLASHSCREENNAME"/contents/previews/preview.png
@@ -464,12 +350,41 @@ InstallGlobalTheme() {
     cp -r ./Resources/LookAndFeel/Catppuccin-"$FLAVOURNAME"-Global ./dist/"$GLOBALTHEMENAME"
     mkdir -p ./dist/"$SPLASHSCREENNAME"/contents/splash/images
 
-    # Hydrate Metadata with Pallet + Accent Info
-    sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g; s/--StoreAuroraeNo/$StoreAuroraeNo/g" ./Resources/LookAndFeel/metadata.desktop >./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/metadata.desktop
-    sed "s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g; s/--StoreAuroraeNo/$StoreAuroraeNo/g" ./Resources/LookAndFeel/metadata.json >./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/metadata.json
+    cp "./generated/look-and-feel/$WINDECSTYLENAME/Catppuccin-$FLAVOURNAME-$ACCENTNAME/metadata.desktop" "./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME/metadata.desktop"
+    cp "./generated/look-and-feel/$WINDECSTYLENAME/Catppuccin-$FLAVOURNAME-$ACCENTNAME/metadata.json" "./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME/metadata.json"
 
-    # Modify 'defaults' to set the correct Aurorae Theme
-    sed "s/--cursorTheme/$CURSORTHEME/g; s/--lcflavour/$LCFLAVOUR/g; s/--lcaccentName/$LCACCENT/g; s/--accentName/$ACCENTNAME/g; s/--flavour/$FLAVOURNAME/g; s/--aurorae/$WINDECSTYLECODE/g" ./Resources/LookAndFeel/defaults >./dist/Catppuccin-"$FLAVOURNAME"-"$ACCENTNAME"/contents/defaults
+    # defaults is baked with the accent's own cursor set, which is correct for
+    # every non--c install. --local-cursor's basename is only known here, at
+    # runtime, so it's the one line rewritten in place rather than pre-rendered.
+    cp "./generated/look-and-feel/$WINDECSTYLENAME/Catppuccin-$FLAVOURNAME-$ACCENTNAME/contents/defaults" "./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME/contents/defaults"
+    defaults="./dist/Catppuccin-$FLAVOURNAME-$ACCENTNAME/contents/defaults"
+    if [ "$LOCAL_CURSOR" -eq 1 ]; then
+        while IFS= read -r line; do
+            case $line in
+                cursorTheme=*) printf '%s\n' "cursorTheme=$CURSORTHEME" ;;
+                *) printf '%s\n' "$line" ;;
+            esac
+        done <"$defaults" >"$defaults.tmp" && mv "$defaults.tmp" "$defaults"
+    elif [ "$NO_CURSOR" -eq 1 ]; then
+        # plasma-apply-lookandfeel applies every key in defaults verbatim, so a
+        # baked cursorTheme would still overwrite the user's current cursor even
+        # though no cursor was ever installed. drop the whole section instead.
+        in_section=0
+        while IFS= read -r line; do
+            case $line in
+                '[kcminputrc][Mouse]')
+                    in_section=1
+                    continue
+                    ;;
+                '['*)
+                    in_section=0
+                    ;;
+                *) ;;
+            esac
+            [ "$in_section" -eq 1 ] && continue
+            printf '%s\n' "$line"
+        done <"$defaults" >"$defaults.tmp" && mv "$defaults.tmp" "$defaults"
+    fi
 
     # Install Global Theme.
     # This refers to the QDBusConnection: error: could not send signal to service error
@@ -587,7 +502,10 @@ case "$DEBUGMODE" in
         BuildSplashScreen
         ;;
     cursor) GetCursor ;;
-    *) echo "Invalid Debug Mode" >&2 ;;
+    *)
+        echo "Invalid Debug Mode" >&2
+        exit 1
+        ;;
 esac
 
 if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
@@ -600,8 +518,12 @@ if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
     # Build Colorscheme
     InstallColorscheme
 
-    log "Installing Catppuccin Cursor theme.."
-    InstallCursor
+    if [ "$NO_CURSOR" -eq 1 ]; then
+        log "Skipping cursor install (--no-cursor).."
+    else
+        log "Installing Catppuccin Cursor theme.."
+        InstallCursor
+    fi
 
     # Cleanup
     log "Cleaning up.."
@@ -623,7 +545,7 @@ if [ "$CONFIRMATION" = "Y" ] || [ "$CONFIRMATION" = "y" ]; then
             [ "$QUIET" -eq 1 ] || clear_screen
         fi
         # Some legacy apps still look in ~/.icons
-        if [ "$QUIET" -ne 1 ]; then
+        if [ "$QUIET" -ne 1 ] && [ "$NO_CURSOR" -ne 1 ]; then
             cat <<EOF
 The cursors will fully apply once you log out
 You may want to run the following in your terminal if you notice any inconsistencies for the cursor theme:
@@ -635,5 +557,8 @@ EOF
         [ "$QUIET" -eq 1 ] || sleep 1
     fi
 else
+    # nothing was built; drop the dist dir only if this run created it empty,
+    # so artifacts from an earlier debug run survive
+    rmdir ./dist 2>/dev/null || true
     log "Exiting.."
 fi

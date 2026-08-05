@@ -1,0 +1,26 @@
+---
+whiskers:
+  version: "=2.9.0"
+  matrix: [flavor, accent]
+  filename: "generated/splash/Catppuccin-{{flavor.identifier | capitalize}}-{{accent | capitalize}}-splash/metadata.json"
+---
+{% raw %}{
+    "KPackageStructure": "Plasma/LookAndFeel",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "core@catppuccin.com",
+                "Name": "Catppuccin"
+            }
+        ],
+        "Category": "Plasma Look And Feel",
+        "Dependencies": [
+        ],
+        "EnabledByDefault": true,
+        "Id": "Catppuccin-{% endraw %}{{flavor.identifier | capitalize}}{% raw %}-{% endraw %}{{accent | capitalize}}{% raw %}-splash",
+        "License": "MIT",
+        "Name": "Catppuccin {% endraw %}{{flavor.identifier | capitalize}}{% raw %} {% endraw %}{{accent | capitalize}}{% raw %}",
+        "Version": "0.3.1"
+    }
+}
+{% endraw -%}

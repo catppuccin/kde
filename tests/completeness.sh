@@ -43,5 +43,14 @@ done
     fail=1
 }
 
-[ "$fail" -eq 0 ] && echo "completeness: ok ($themes themes share one file set)"
+# the aurorae SVGs are hand-authored static art, deliberately not templated (they
+# carry non-canonical hex the palette can't reproduce). filename set-equality above
+# can't catch a silent recolor of the pixels themselves; a content hash can.
+if ! sha256sum -c tests/aurorae-hashes.txt --quiet; then
+    echo "completeness: aurorae content drifted from tests/aurorae-hashes.txt (recolor or edit?)" >&2
+    echo "  if intentional, regenerate: find Resources/Aurorae -type f | sort | xargs sha256sum > tests/aurorae-hashes.txt" >&2
+    fail=1
+fi
+
+[ "$fail" -eq 0 ] && echo "completeness: ok ($themes themes share one file set, aurorae content unchanged)"
 exit "$fail"
