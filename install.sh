@@ -277,10 +277,14 @@ case "$DEBUGMODE" in
     *)
         for genpath in \
             "./generated/color-schemes/Catppuccin$FLAVOURNAME$ACCENTNAME.colors" \
-            "./generated/look-and-feel/$WINDECSTYLENAME/Catppuccin-$FLAVOURNAME-$ACCENTNAME" \
-            "./generated/splash/Catppuccin-$FLAVOURNAME-$ACCENTNAME-splash" \
             "./generated/splash-qml/Catppuccin$FLAVOURNAME-Splash.qml"; do
-            [ -e "$genpath" ] || invalid_arg "Missing generated theme data; re-clone or run 'just build'."
+            [ -r "$genpath" ] || invalid_arg "Missing generated theme data; re-clone or run 'just build'."
+        done
+        # directories also need +x to be traversed, not just +r to be listed
+        for genpath in \
+            "./generated/look-and-feel/$WINDECSTYLENAME/Catppuccin-$FLAVOURNAME-$ACCENTNAME" \
+            "./generated/splash/Catppuccin-$FLAVOURNAME-$ACCENTNAME-splash"; do
+            { [ -r "$genpath" ] && [ -x "$genpath" ]; } || invalid_arg "Missing generated theme data; re-clone or run 'just build'."
         done
         ;;
 esac
