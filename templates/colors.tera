@@ -4,6 +4,7 @@ whiskers:
   matrix: [flavor, accent]
   filename: "generated/color-schemes/Catppuccin{{flavor.identifier | capitalize}}{{accent | capitalize}}.colors"
 ---
+{#- Latte's darkest accents need a white selection foreground; crust (the default) is too low-contrast there. -#}
 {%- if flavor.identifier == "latte" and accent in ["red", "mauve", "blue"] -%}
 {%- set selfg = "255, 255, 255" -%}
 {%- else -%}
