@@ -1,6 +1,6 @@
 ---
 whiskers:
-  version: "=2.9.0"
+  version: "=2.10.0"
   matrix: [flavor]
   filename: "generated/splash-qml/Catppuccin{{flavor.identifier | capitalize}}-Splash.qml"
 ---

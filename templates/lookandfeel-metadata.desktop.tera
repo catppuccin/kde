@@ -1,6 +1,6 @@
 ---
 whiskers:
-  version: "=2.9.0"
+  version: "=2.10.0"
   matrix: [flavor, accent, {decoration: ["Modern", "Classic"]}]
   filename: "generated/look-and-feel/{{decoration}}/Catppuccin-{{flavor.identifier | capitalize}}-{{accent | capitalize}}/metadata.desktop"
 store_aurorae:

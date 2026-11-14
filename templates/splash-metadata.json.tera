@@ -1,6 +1,6 @@
 ---
 whiskers:
-  version: "=2.9.0"
+  version: "=2.10.0"
   matrix: [flavor, accent]
   filename: "generated/splash/Catppuccin-{{flavor.identifier | capitalize}}-{{accent | capitalize}}-splash/metadata.json"
 ---
